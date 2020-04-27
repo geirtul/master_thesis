@@ -14,7 +14,7 @@ This can be rewritten with matrix notation
 
 \begin{equation}
 	RSS(\beta) = (\hat{y}-\vec{X}\beta)^T(\hat{y} - \hat{X}\beta)
-\end{equation}. ~\cite{James2013}
+\end{equation}. ~\cite{James2000}
 
 As we want to minimize the residual sum of squares, we require
 \begin{equation}
@@ -59,7 +59,7 @@ and
 \(\lambda > 0 \) is a complexity parameter that controls the amount
 of shrinkage. The larger the value of \(\lambda\) the greater amount of
 shrinkage.
-\cite{James2013}
+\cite{James2000}
 
 This can also be written in a non-vector format which makes
 explicit the size constraint on the parameters.
@@ -75,7 +75,7 @@ subject to
 	\sum\limits_{j=1}^p \beta_j^2 \leq t
 \end{equation}
 There is a one to one correspondence between \(\lambda\) and \(t\).
-\cite{James2013}
+\cite{James2000}
 
 \section{Logistic regression and classification problems}\label{seq:logistic}
 Differently to linear regression, classification problems
@@ -162,6 +162,8 @@ widely used methods that reveal information about the model that the simple
 accuracy metric can't.
 
 \subsection{Imbalanced Data in Classification}
+The physical world is rarely balanced.
+
 A common challenge in classification is imbalanced data, in which a large
 amount of the labeled data belongs to just one or a few of the classes.
 For binary classification, if 90\% of the data belongs to one of the classes,

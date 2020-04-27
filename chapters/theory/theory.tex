@@ -1,5 +1,213 @@
-This is the theory. Update.
+\section{Linear Regression}
+
+\subsection{Ordinary Least Squares}\label{section:ols}
+The Ordinary Least Squares (OLS) method picks the coefficients
+\(\beta = (\beta_0, \beta_1, \dots, \beta_p)^T\) to minimize the
+residual sum of squares given by
+\begin{align}
+	RSS(\beta) &= \sum\limits_{i=1}^N (y_i - f(x_i))^2\\
+				&= \sum\limits_{i=1}^N
+				(y_i - \beta_0 - \sum\limits_{j=1}^p X_{ij}\beta_j )^2\\
+\end{align}
+
+This can be rewritten with matrix notation
+
 \begin{equation}
-\sum_{1}^{N}{3-i+4}
+	RSS(\beta) = (\hat{y}-\vec{X}\beta)^T(\hat{y} - \hat{X}\beta)
+\end{equation}. ~\cite{James2013}
+
+As we want to minimize the residual sum of squares, we require
+\begin{equation}
+	\frac{\partial RSS(\hat{\beta})}{\partial \hat{\beta}}
+	= 0
+	= \hat{X}^T(\hat{y} - \hat{X}\hat{\beta})
 \end{equation}
-After the equation we add some text and cite someone \cite{Kuchera2019}.
+
+This can be rewritten as
+\begin{equation}
+	\hat{X}^T\hat{y} = \hat{X}^T\hat{X}\hat{\beta}
+\end{equation}.
+
+We then assume that the matrix \(\hat{X}^T\hat{X}\)
+is invertible to get the solution
+
+\subsection{Ridge Regression}\label{section:ridge}
+OLS will not give a solution if the design matrix \(\hat{X}\) is singular
+or near singular, as it depends on \(\hat{X}^T\hat{X}\) being invertible. (cite?)
+
+Ridge regression is known as a shrinkage method. It shrinks the regression
+coefficients \(\hat{\beta}\) by imposing a penalty on their size (cite?). We are in other words adding a diagonal component
+to the matrix to invert. From OLS we therefore make the following change
+
+\begin{equation}
+	\hat{X}^T\hat{X} \rightarrow \hat{X}^T\hat{X} + \lambda \hat{I}
+\end{equation}
+
+where $I$ is the identity matrix. (cite?).
+This gives
+
+\begin{equation}
+	RSS(\lambda) = (\hat{y}-\hat{X}\hat{\beta)}^T(\hat{y}
+	- \hat{X}\hat{\beta})
+	- \lambda \hat{\beta}^T\hat{\beta}
+\end{equation}
+and
+\begin{equation}
+	\hat{\beta}^{ridge} = (\hat{X}^T\hat{X}
+	+ \lambda \hat{I})^{-1}\hat{X}^T\hat{y}
+\end{equation}
+\(\lambda > 0 \) is a complexity parameter that controls the amount
+of shrinkage. The larger the value of \(\lambda\) the greater amount of
+shrinkage.
+\cite{James2013}
+
+This can also be written in a non-vector format which makes
+explicit the size constraint on the parameters.
+It also makes it easier to see the difference from Lasso regression:
+
+\begin{equation}
+	\hat{\beta}^{ridge} = \operatorname{argmin}_{beta}
+							\sum\limits_{i=1}^N \left(y_i - \beta_0
+							-\sum\limits_{j=1}^p x_{ij}\beta_j\right)^2
+\end{equation}
+subject to
+\begin{equation}
+	\sum\limits_{j=1}^p \beta_j^2 \leq t
+\end{equation}
+There is a one to one correspondence between \(\lambda\) and \(t\).
+\cite{James2013}
+
+\section{Logistic regression and classification problems}\label{seq:logistic}
+Differently to linear regression, classification problems
+are concerned with outcomes taking the form of discrete variables.
+For a specific physical problem, we'd like to identify its state, say whether
+it is an ordered of disordered system. (cite?) One of the most basic examples
+of a classifier algorithm is logistic regression.
+
+\subsection{Cost functions}\label{seq:cost}
+In order for a logistic regressor to improve it needs a way to
+track how it's performing. This is the purpose of a cost function. Essentially,
+the cost function says something about how wrong the model is in classifying the
+input. The objective in machine learning, and logistic regression, is then to minimize
+this error.
+
+The cost function used in this project is called the \textbf{cross-entropy}, or the
+'negative log likelihood', and takes the form
+\begin{equation}\label{eq:cross-entropy}
+	\mathcal{C}(\hat{\beta})=-\sum_{i=1}^n  \left(y_i(\beta_0+\beta_1x_i) -\log{(1+\exp{(\beta_0+\beta_1x_i)})}\right)
+\end{equation}
+
+\subsection{Gradient Descent}\label{seq:gradient}
+Minimizing the cost function is done using Gradient Descent.
+The jist of it is that in order to optimize the weights or coefficients,
+and biases to minimize the cost function, one can change their values to
+
+\begin{equation}\label{eq:delta-c}
+	\frac{\partial \mathcal{C}(\hat{\beta})}{\partial \hat{\beta}} = -\hat{X}^T\left(\hat{y}-\hat{p}\right)
+\end{equation}
+
+\subsubsection{Stochastic gradient decent}
+The stochastic gradient decent method address some of the shortcomings
+of the normal gradient decent method. The gradient decent method is
+for instance sensitive to the choise of learning rate (cite?).
+
+The underlying idea of stochastic gradient decent comes form observing
+that the cost function we want to minimize, almost always can be written as
+a sum over \(n\) data points. (cite?). Which gives
+
+\begin{equation}
+	C(\beta) = \sum\limits_{i=1}^n c_i (\mathbf{x}_i\beta)
+\end{equation} (cite?)
+
+This means that we also can find the gradient as a sum over i gradients
+as follows:
+
+\begin{equation}
+	\Delta_{\beta} C(\beta) = \sum\limits_{i}^n \Delta_{\beta}c_i (\mathbf{x}_i\beta)
+\end{equation} (cite?)
+
+Randomness is included by only taking the gradient on a subset of data.
+
+\section{Neural Network}
+The concept of a neural network is essentially to mimick how neurons in the
+brain are connected and learn. The network consists of interconnected layers
+of neurons, or 'nodes'. In the type of network used in this project, a
+Feed Forward Neural Network (FFNN), each node in a layer has a connection to
+every single node in the previous layer. As an input signal is 'fed' forward
+through the network, each node in each layer will 'fire' or 'activate'
+based on the sum of the signals from the nodes in the preceding layer, until
+the signal reaches the output layer which, in this project, outputs a
+probability that the original input is in one of two classes.
+In short, the FFNN is a binary classifier which takes an input and outputs
+the likelihood of that input belonging to one of the classes.
+
+The network doesn't know how to do this without first being trained.
+Training the network involves analyzing the error the network makes in
+classifying an input, and propagating this error backwards through the network
+such that the next time an input of that class is seen, the network will be
+better at classifying it.
+An example of this type of binary classification could be to say whether or
+not there is a cat in a picture.
+
+Numerous articles and books are available on the subject of neural networks,
+so for an in-depth explanation of the concepts involved (especially the
+backpropagation of error), we recommend seeking out these texts.
+Examples are the online book \href{http://neuralnetworksanddeeplearning.com/}{Nielsen's}, or the article by Mehta et al (\cite{Mehta2019}).
+
+\section{Assessing the Performance of Models}
+If classification accuracy is not enough to gauge whether a model is
+performing well, or well in the desired way, alternative way to measure
+performance must be explored. For cases of imbalanced data there are a few
+widely used methods that reveal information about the model that the simple
+accuracy metric can't.
+
+\subsection{Imbalanced Data in Classification}
+A common challenge in classification is imbalanced data, in which a large
+amount of the labeled data belongs to just one or a few of the classes.
+For binary classification, if 90\% of the data belongs to one of the classes,
+then the classifier is likely to end up placing every single
+input in that class, as it will bring its accuracy to 90\%. Techincally, this
+accuracy is correct, but it's not very useful since the decision isn't at all
+affected by the features of the input. Accuracy alone isn't a good enough
+measure of performance to reveal this.
+
+\subsection{Confusion Matrix}
+A confusion matrix is an n by n matrix containing correct classifications
+on the diagonal, and false positives and negatives in the off-diagonal elements.
+An example of such a matrix could be the following table:
+\begin{table}[h]
+    \centering
+    \begin{tabular}{c|c|c|c}
+     & True Cat & True Dog & True Rabbit \\
+    \hline
+    Predicted Cat & \textbf{5} & 2 & 0 \\
+    \hline
+    Predicted Dog & 3 & \textbf{3} & 2 \\
+    \hline
+    Predicted Rabbit & 0 & 1 & \textbf{11} \\
+\end{tabular}
+\caption{Confusion matrix for an example classification where the classes
+         are Cat, Dog and Rabbit. Correct classifications in bold.}
+\label{tab:confmat-example}
+\end{table}
+In the table above (\ref{tab:confmat-example}), the diagonal elements
+$i = j$ are the correct classifications, while the other elements correspond
+to cases where the model predicted class $i$ but should've predicted class $j$.
+The confusion matrix thus gives information about false positives and false
+negatives, in addition to classification accuracy. This is very useful
+in cases where for example false positives can be readily ignored or filtere
+later, but false negatives may have severe consequences. An example of this
+could be detection of cancer, in which a false positive can be ruled out
+from further testing, while a false negative may lead to a patient being sent
+home when actually needing help. For a more in-depth look at confusion matrices
+see \cite{Fawcett2006}.
+
+\subsection{Receiver Operating Characteristic}
+The Receiver Operating Characteristic (ROC) is a widely used measure of a
+classifiers performance . The performance is measured as the effect
+of the true positive rate (TPR) and the false positive rate (FPR) as a function
+of thresholding the positive class. To evaluate the ROC curve for a model,
+traditionally the Area Under the Curve (AUC) is used, which ranges from 0
+(an ideal "opposite" classifier) to 1.0 (an ideal classifier) with 0.5
+indicating a random choice classifier,
+For a thorough explanation of ROC curves and the underlying concepts, see \cite{Fawcett2006}.

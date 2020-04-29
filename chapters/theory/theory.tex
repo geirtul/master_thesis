@@ -1,8 +1,20 @@
-\section{Linear Regression}
+\section{Supervised Learning}
+Prediction and classification. From standard regression methods for predicting
+a continuous variable, to classifying with logistic regression and neural
+networks.
 
-\subsection{Ordinary Least Squares}\label{section:ols}
+\subsection{Linear Regression}
+\subsubsection{Ordinary Least Squares}\label{section:ols}
+Suppose you have a data set consisting of $N$ data points. Each point is associated
+with a scalar target $y_i$, and a vector $\vec{x}$ containing values for $p$ input
+features. Assuming the target variable $y_i$ is linear in the inputs, it can be
+written as a linear function of the features, given by
+\begin{equation}
+y_i = \beta_0 x_{i,0} + \beta_1 x_{i,1} + ... + \beta_{p-1} x_{i, p-1} + \varepsilon_i,
+\end{equation}
+where $\vec{\beta}$ is vector of length $p$ containing unknown values.
 The Ordinary Least Squares (OLS) method picks the coefficients
-\(\beta = (\beta_0, \beta_1, \dots, \beta_p)^T\) to minimize the
+\(\vec{\beta} = (\beta_0, \beta_1, \dots, \beta_{p-1})^T\) to minimize the
 residual sum of squares given by
 \begin{align}
 	RSS(\beta) &= \sum\limits_{i=1}^N (y_i - f(x_i))^2\\
@@ -14,7 +26,7 @@ This can be rewritten with matrix notation
 
 \begin{equation}
 	RSS(\beta) = (\hat{y}-\vec{X}\beta)^T(\hat{y} - \hat{X}\beta)
-\end{equation}. ~\cite{James2000}
+\end{equation}.
 
 As we want to minimize the residual sum of squares, we require
 \begin{equation}
@@ -29,9 +41,9 @@ This can be rewritten as
 \end{equation}.
 
 We then assume that the matrix \(\hat{X}^T\hat{X}\)
-is invertible to get the solution
+is invertible to get the solution. ~\cite{James2000}
 
-\subsection{Ridge Regression}\label{section:ridge}
+\subsubsection{Ridge Regression}\label{section:ridge}
 OLS will not give a solution if the design matrix \(\hat{X}\) is singular
 or near singular, as it depends on \(\hat{X}^T\hat{X}\) being invertible. (cite?)
 
@@ -76,15 +88,15 @@ subject to
 \end{equation}
 There is a one to one correspondence between \(\lambda\) and \(t\).
 \cite{James2000}
-
-\section{Logistic regression and classification problems}\label{seq:logistic}
+\subsection{Classification}
+\subsubsection{Logistic Regression}\label{seq:logistic}
 Differently to linear regression, classification problems
 are concerned with outcomes taking the form of discrete variables.
 For a specific physical problem, we'd like to identify its state, say whether
 it is an ordered of disordered system. (cite?) One of the most basic examples
 of a classifier algorithm is logistic regression.
 
-\subsection{Cost functions}\label{seq:cost}
+\subsection{Cost Functions}\label{seq:cost-functions}
 In order for a logistic regressor to improve it needs a way to
 track how it's performing. This is the purpose of a cost function. Essentially,
 the cost function says something about how wrong the model is in classifying the
@@ -106,7 +118,7 @@ and biases to minimize the cost function, one can change their values to
 	\frac{\partial \mathcal{C}(\hat{\beta})}{\partial \hat{\beta}} = -\hat{X}^T\left(\hat{y}-\hat{p}\right)
 \end{equation}
 
-\subsubsection{Stochastic gradient decent}
+\subsubsection{Stochastic Gradient Decent}
 The stochastic gradient decent method address some of the shortcomings
 of the normal gradient decent method. The gradient decent method is
 for instance sensitive to the choise of learning rate (cite?).
@@ -128,31 +140,12 @@ as follows:
 
 Randomness is included by only taking the gradient on a subset of data.
 
-\section{Neural Network}
-The concept of a neural network is essentially to mimick how neurons in the
-brain are connected and learn. The network consists of interconnected layers
-of neurons, or 'nodes'. In the type of network used in this project, a
-Feed Forward Neural Network (FFNN), each node in a layer has a connection to
-every single node in the previous layer. As an input signal is 'fed' forward
-through the network, each node in each layer will 'fire' or 'activate'
-based on the sum of the signals from the nodes in the preceding layer, until
-the signal reaches the output layer which, in this project, outputs a
-probability that the original input is in one of two classes.
-In short, the FFNN is a binary classifier which takes an input and outputs
-the likelihood of that input belonging to one of the classes.
+\section{Neural Networks}
+\subsection{Perceptron}
 
-The network doesn't know how to do this without first being trained.
-Training the network involves analyzing the error the network makes in
-classifying an input, and propagating this error backwards through the network
-such that the next time an input of that class is seen, the network will be
-better at classifying it.
-An example of this type of binary classification could be to say whether or
-not there is a cat in a picture.
+\subsubsection{Multilayer Perceptron}
 
-Numerous articles and books are available on the subject of neural networks,
-so for an in-depth explanation of the concepts involved (especially the
-backpropagation of error), we recommend seeking out these texts.
-Examples are the online book \href{http://neuralnetworksanddeeplearning.com/}{Nielsen's}, or the article by Mehta et al (\cite{Mehta2019}).
+\subsection{Backpropagation}
 
 \section{Assessing the Performance of Models}
 If classification accuracy is not enough to gauge whether a model is

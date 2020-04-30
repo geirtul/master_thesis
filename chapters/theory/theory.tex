@@ -5,53 +5,58 @@ networks.
 
 \subsection{Linear Regression}
 \subsubsection{Ordinary Least Squares}\label{section:ols}
-Suppose you have a data set consisting of $N$ data points. Each point is associated
-with a scalar target $y_i$, and a vector $x$ containing values for $p$ input
+Suppose you have a data set consisting of $n$ data points. Each point is associated
+with a scalar target $y_i$, and a vector $\hat{x}$ containing values for $p$ input
 features. Assuming the target variable $y_i$ is linear in the inputs, it can be
 written as a linear function of the features, given by
 \begin{equation}\label{eq:ols-target}
 y_i = \beta_0 x_{i,0} + \beta_1 x_{i,1} + ... + \beta_{p-1} x_{i, p-1} + \varepsilon_i,
 \end{equation}
 where $\beta = (\beta_0, \beta_1, \dots, \beta_{p-1})^T$ is a vector of length
-$p$ containing unknown values, and
-$\varepsilon$ are the variables, random or otherwise, that influence the
-target values, but are unaccounted for in the features $x$.
-The above equation (\ref{eq:ols-target}) can be written on vector form as
-\begin{equation}\label{eq:ols-target-vec}
-y_i = x_i^T\beta + \varepsilon_i,
-\end{equation}
-and further, in matrix notation
+$p$ containing unknown values, and $\varepsilon$ are the errors in our estimate.
+This gives us a system of linear equation, which can be written in matrix form as
 \begin{equation}\label{eq:ols-target-mat}
-\hat{y} = \vec{X}\hat{\beta} + \hat{\varepsilon}.
+  \hat{y} = \vec{X}\hat{\beta} + \hat{\varepsilon},
 \end{equation}
-
-In order to find the best possible coefficients $\beta$ we want suitable
-quantity to optimize - a \textbf{cost function} $\mathcal{C}$. One example is the average
-squared error, which we want to minmize.
-This function is defined as
+where
 \begin{equation}
-	\mathcal{C}(\beta) = \frac{1}{N}\sum\limits_{i=0}^{N-1} (y_i - f(x_i))^2
+\vec{X} = \left[
+\begin{matrix}
+x_{0,0} & x_{0,1} & x_{0,2} & ... & x_{0,p-1}\\
+x_{1,0} & x_{1,1} & x_{1,2} & ... & x_{1,p-1}\\
+x_{2,0} & x_{2,1} & x_{2,2} & ... & x_{2,p-1}\\
+\vdots & \vdots & \vdots & \ddots & \vdots\\
+x_{n-1,0} & x_{n-1,1} & x_{n-1,2} & ... & x_{n-1,p-1}
+\end{matrix}
+\right]
 \end{equation}
 
+In order to find the best possible coefficients $\beta$ we want a suitable
+quantity to optimize - a \textbf{cost function}, $\mathcal{C}$. An example of such a
+function is the average squared error, defined as
+\begin{equation}
+	\mathcal{C}(\beta) = \frac{1}{n}\sum\limits_{i=0}^{n-1} (y_i - f(x_i))^2,
+\end{equation}
+which we want to minimize.
 This can be rewritten in matrix notation
-
 \begin{equation}
-	\mathcal{C}(\beta) = (\hat{y}-\vec{X}\beta)^T(\hat{y} - \vec{X}\beta)
+	\mathcal{C}(\beta) = (\hat{y}-\vec{X}\beta)^T(\hat{y} - \vec{X}\beta).
 \end{equation}.
 
-As we want to minimize the residual sum of squares, we require
-\begin{equation}
-	\frac{\partial \mathcal{C}(\hat{\beta})}{\partial \hat{\beta}}
-	= 0
-	= \vec{X}^T(\hat{y} - \vec{X}\hat{\beta})
-\end{equation}
+To minimize the cost function $\mathcal{C}(\hat{\beta})$, we take the derivative
+with respect to the coefficients $\beta$
+\begin{align}
+	\frac{\partial \mathcal{C}(\hat{\beta})}{\partial {\beta_j}}
+	&= \frac{\partial}{\partial \beta_j}\frac{1}{n}\sum\limits_{i=0}^{n-1} (y_i - f(x_i))^2\\
+  &= \frac{2}{n}\sum\limits_{i=0}^{n-1} x_{ij}(y_i - f(x_i))
+\end{align}
 
 This can be rewritten as
 \begin{equation}
-	\hat{X}^T\hat{y} = \hat{X}^T\hat{X}\hat{\beta}
+	\vec{X}^T\hat{y} = \vec{X}^T\vec{X}\hat{\beta}.
 \end{equation}.
 
-We then assume that the matrix \(\hat{X}^T\hat{X}\)
+We then assume that the matrix \(\vec{X}^T\vec{X}\)
 is invertible to get the solution. ~\cite{James2000}
 
 \subsubsection{Ridge Regression}\label{section:ridge}
@@ -90,7 +95,7 @@ It also makes it easier to see the difference from Lasso regression:
 
 \begin{equation}
 	\hat{\beta}^{ridge} = \operatorname{argmin}_{beta}
-							\sum\limits_{i=1}^N \left(y_i - \beta_0
+							\sum\limits_{i=1}^n \left(y_i - \beta_0
 							-\sum\limits_{j=1}^p x_{ij}\beta_j\right)^2
 \end{equation}
 subject to

@@ -1,17 +1,29 @@
 \section{Simulated data}
 \subsection{Classification}
-%Present results of classification. Table of multiple training runs? Should run
-%current best model training using k-fold cross-validation, using the min, max,
-%and mean performance metrics as model evaluation.
-%ROC-curves and area under curve. The performance metrics should likely be
-%presented for both close/difficult events, and for all events.
+
+All results should be reported with k-fold cross validation accuracies, using
+standard deviation in the folds as an uncertainty estimate.
+\begin{itemize}
+  \item ? - Logistic regression results to argue necessity for more complex model
+  \item ? - Dense network to demonstrate increased performance over logistic
+  \item ? - Pretrained network? VGG since we base the architecture of current model on the VGG paper recommendations?
+  \item Project model - Attempt to reproduce results. k-fold results on same data as current model
+  \item Current best performing model for classifications
+\end{itemize}
+
 \begin{figure}
 \centering
-\includegraphics[width=0.8    \textwidth, height=6.5cm]{plots/dummy.pdf}
-\caption[Titletext]{generic text}\label{fig:vgg_n_samples}
+\includegraphics[width=0.8    \textwidth, height=6.5cm]{chapters/results/figures/roc_simulated.pdf}
+\caption[Titletext]{generic text}\label{fig:roc_simulated}
 \end{figure}
 
 \subsection{Regression}
+Same approach as for classification.
+\begin{itemize}
+  \item ? - Linear approach?
+  \item ? - Dense network                                                                   Q
+  \item ? - CNN
+\end{itemize}
 \subsubsection{Position}
 \subsubsection{Energy}
 \subsection{Experimental data}

@@ -1,0 +1,16 @@
+\begin{table}
+\centering
+\caption{
+Mean F1-scores for classification of simulated data using multiple models. 
+Error estimates are the standard deviation in results from k-fold cross-validation 
+with $K=5$ folds.
+}
+\label{tab:classification-simulated-f1}
+\begin{tabular}{llll}
+\toprule
+                                           Logistic &                                               Dense &                                       Convolutional &                                    Pretrained VGG16 \\
+\midrule
+ $\underset{\num{+- 7.727e-03 }  }{\num{ 0.734 } }$ &  $\underset{\num{+- 1.329e-02 }  }{\num{ 0.907 } }$ &  $\underset{\num{+- 6.286e-03 }  }{\num{ 0.959 } }$ &  $\underset{\num{+- 1.591e-02 }  }{\num{ 0.894 } }$ \\
+\bottomrule
+\end{tabular}
+\end{table}

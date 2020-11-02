@@ -1,0 +1,18 @@
+\begin{table}
+\centering
+\caption{
+Mean confusion matrix values for classification of simulated data using multiple models. 
+Error estimates are the standard deviation in results from k-fold cross-validation with $K=5$ folds.
+}
+\label{tab:classification-simulated-confmat}
+\begin{tabular}{lllll}
+\toprule
+{} &                                                     TN &                                                     FP &                                                     FN &                                                     TP \\
+\midrule
+Logistic         &  $\underset{\num{+- 1.546e+04 }  }{\num{ 1.28e+05 } }$ &  $\underset{\num{+- 1.546e+04 }  }{\num{ 6.16e+04 } }$ &  $\underset{\num{+- 1.118e+04 }  }{\num{ 4.39e+04 } }$ &  $\underset{\num{+- 1.118e+04 }  }{\num{ 1.46e+05 } }$ \\
+Dense            &  $\underset{\num{+- 1.125e+04 }  }{\num{ 1.72e+05 } }$ &  $\underset{\num{+- 1.125e+04 }  }{\num{ 1.85e+04 } }$ &  $\underset{\num{+- 5.205e+03 }  }{\num{ 1.73e+04 } }$ &  $\underset{\num{+- 5.205e+03 }  }{\num{ 1.73e+05 } }$ \\
+Convolutional    &  $\underset{\num{+- 7.287e+02 }  }{\num{ 1.89e+05 } }$ &  $\underset{\num{+- 7.290e+02 }  }{\num{ 1.39e+03 } }$ &  $\underset{\num{+- 2.692e+03 }  }{\num{ 1.37e+04 } }$ &  $\underset{\num{+- 2.692e+03 }  }{\num{ 1.76e+05 } }$ \\
+Pretrained VGG16 &  $\underset{\num{+- 9.079e+03 }  }{\num{ 1.79e+05 } }$ &  $\underset{\num{+- 9.080e+03 }  }{\num{ 1.15e+04 } }$ &  $\underset{\num{+- 9.409e+03 }  }{\num{ 2.71e+04 } }$ &  $\underset{\num{+- 9.408e+03 }  }{\num{ 1.63e+05 } }$ \\
+\bottomrule
+\end{tabular}
+\end{table}

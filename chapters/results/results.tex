@@ -13,25 +13,26 @@ The simulated data contains two classes of events - a single electron and a doub
 In table \ref{tab:classification-simulated-f1} the performance of each model 
 trained is reported using the f1-score. The model architecture for each model is described in (ref appendix).
 As a benchmark, we are including a state of the art pretrained network (\cite{}VGG HERE) applied to the data 
-using the approach described in \ref{section:chapter-pretrained}.
+using the approach described in \ref{section:method-pretrained}.
 \input{chapters/results/figures/classification_simulated_f1.tex}
 To give a broader picture of the performance we also include the calculated confusion matrix values in
 table \ref{tab:classification-simulated-confmat}. Even if f1-scores are similar, there may still be differences
 in either of the confusion matrix values.
 \input{chapters/results/figures/classification_simulated_confmat.tex}
-\ref{tab:classification-simulated-confmat}.
 \input{chapters/results/figures/dummyfig.tex}
 
-\subsection{Regression}
-
+\subsection{Experimental data}
+\section{Regression}
+On data already classified, we seek to predict the energy of the events and the position of origin for
+the electrons. Because there is a travel distance between the ejection site and the scintillator array,
+the positions aren't necessarily the locations of the highest-intensity pixels in the detector images.
 \begin{itemize}
   \item ? - Linear approach?
   \item ? - Dense network
   \item ? - CNN
+  \item ? - Pretrained
 \end{itemize}
-\subsection{Experimental data}
-\section{Regression}
-\subsection{Position}
-\subsection{Energy}
-\subsection{Position}
-\subsection{Energy}
+\subsection{Position - Single electron}
+\subsection{Energy - Single electron}
+\subsection{Position - Double electron}
+\subsection{Energy - Double electron}

@@ -8,18 +8,20 @@ is to train models on simulated data. The idea being that simulated and experime
 data are similar enough that the learned patterns from simulated data are, to some degree,
 transferrable to experimental data.
 The simulated data contains two classes of events - a single electron and a double electron.
+
 \subsection{Simulated data}
-In table \colorlinks{green}{\ref{tab:classification-simulated-f1}} the performance of each model trained is reported
-as the f1-score. The model architecture for each model is described in (ref appendix).
-... including a state of the art pretrained network (\cite{}VGG HERE) applied to the data using
-the approach described in \ref{section:chapter-pretrained}.
+In table \ref{tab:classification-simulated-f1} the performance of each model 
+trained is reported using the f1-score. The model architecture for each model is described in (ref appendix).
+As a benchmark, we are including a state of the art pretrained network (\cite{}VGG HERE) applied to the data 
+using the approach described in \ref{section:chapter-pretrained}.
 \input{chapters/results/figures/classification_simulated_f1.tex}
-To give a broader picture of the performance we also include the confusion matrix values in
-table \ref{tab:classification-simulated-confmat}. Similar f1-scores may still show differences
+To give a broader picture of the performance we also include the calculated confusion matrix values in
+table \ref{tab:classification-simulated-confmat}. Even if f1-scores are similar, there may still be differences
 in either of the confusion matrix values.
 \input{chapters/results/figures/classification_simulated_confmat.tex}
 \ref{tab:classification-simulated-confmat}.
 \input{chapters/results/figures/dummyfig.tex}
+
 \subsection{Regression}
 
 \begin{itemize}

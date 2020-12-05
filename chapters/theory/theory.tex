@@ -1,10 +1,4 @@
-\section{Supervised Learning}
-Prediction and classification. From standard regression methods for predicting
-a continuous variable, to classifying with logistic regression and neural
-networks.
-
-\subsection{Linear Regression}
-\subsubsection{Ordinary Least Squares}\label{section:ols}
+\section{Linear Regression}\label{sec:linreg}
 Suppose you have a data set consisting of $n$ data points. Each point is associated
 with a scalar target $y_i$, and a vector $\hat{x}$ containing values for $p$ input
 features. Assuming the target variable $y_i$ is linear in the inputs, it can be
@@ -14,9 +8,9 @@ y_i = \beta_0 x_{i,0} + \beta_1 x_{i,1} + ... + \beta_{p-1} x_{i, p-1} + \vareps
 \end{equation}
 where $\beta = (\beta_0, \beta_1, \dots, \beta_{p-1})^T$ is a vector of length
 $p$ containing unknown values, and $\varepsilon$ are the errors in our estimate.
-This gives us a system of linear equation, which can be written in matrix form as
+This gives us a system of linear equations, which can be written in matrix form as
 \begin{equation}\label{eq:ols-target-mat}
-  \hat{y} = \vec{X}\hat{\beta} + \hat{\varepsilon},
+  \hat{y} = \boldsymbol{X\beta} + \hat{\varepsilon},
 \end{equation}
 where
 \begin{equation}
@@ -30,93 +24,93 @@ x_{n-1,0} & x_{n-1,1} & x_{n-1,2} & ... & x_{n-1,p-1}
 \end{matrix}
 \right]
 \end{equation}
-
-In order to find the best possible coefficients $\beta$ we want a suitable
-quantity to optimize - a \textbf{cost function}, $\mathcal{C}$. An example of such a
-function is the average squared error, defined as
+The unknown values $\boldsymbol{\beta}$ are commonly referred to as \textit{weights}, denoted $\boldsymbol{w}$,
+in machine learning literature. We will adopt this notation going forward.
+To find the best possible weights $\boldsymbol{w}$ we want a suitable
+quantity to optimize - a \textbf{cost function}, $\mathcal{C}$ (also referred to as an
+\textbf{objective function}). An example of such a function is the squared error - or the Euclidian vector norm, defined as
 \begin{equation}
-	\mathcal{C}(\beta) = \frac{1}{n}\sum\limits_{i=0}^{n-1} (y_i - f(x_i))^2,
+	L_2(\boldsymbol{x}) =||\boldsymbol{x}||_2 = \left(\sum x_i^2\right)^{\frac{1}{2}}.
 \end{equation}
-which we want to minimize.
-This can be rewritten in matrix notation
+From this we define the cost function
 \begin{equation}
-	\mathcal{C}(\beta) = (\hat{y}-\vec{X}\beta)^T(\hat{y} - \vec{X}\beta).
-\end{equation}.
-
-To minimize the cost function $\mathcal{C}(\hat{\beta})$, we take the derivative
-with respect to the coefficients $\beta$
+	\mathcal{C} = || \boldsymbol{\hat{y}} - \boldsymbol{y} ||_2 ^2.
+\end{equation}
+In machine learning, it is most common to cast the optimization as a minimization problem
+("minimize the cost"). To find the minimum of the cost function as defined above, we need
+a differentiation. To simplify that process, we rewrite the cost function on matrix form
+\begin{align*}
+\mathcal{C} &= || \boldsymbol{\hat{y}} - \boldsymbol{y} ||_2 ^2, \\
+\mathcal{C} &= ( \boldsymbol{\hat{y}} - \boldsymbol{Xw})^T( \boldsymbol{\hat{y}} - \boldsymbol{Xw}).
+\end{align*}
+To minimize we take the derivative with respect to the weights $\boldsymbol{w}$,
+and find the minima by setting the derivative equal to zero
 \begin{align}
-	\frac{\partial \mathcal{C}(\hat{\beta})}{\partial {\beta_j}}
-	&= \frac{\partial}{\partial \beta_j}\frac{1}{n}\sum\limits_{i=0}^{n-1} (y_i - f(x_i))^2\\
-  &= \frac{2}{n}\sum\limits_{i=0}^{n-1} x_{ij}(y_i - f(x_i))
+\nabla _{\boldsymbol{w}}\mathcal{C} &= \nabla _{\boldsymbol{w}} ( \boldsymbol{\hat{y}} - \boldsymbol{Xw})^T( \boldsymbol{\hat{y}} - \boldsymbol{Xw}), \\
+&= -2\boldsymbol{X}^T\boldsymbol{\hat{y}} + 2\boldsymbol{X}^T\boldsymbol{X}\boldsymbol{w}, \\
+\boldsymbol{0} &= -2\boldsymbol{X}^T\boldsymbol{\hat{y}} + 2\boldsymbol{X}^T\boldsymbol{X}\boldsymbol{w}, \\
+\boldsymbol{X}^T\boldsymbol{\hat{y}} &= \boldsymbol{X}^T\boldsymbol{X}\boldsymbol{w}, \\
+\boldsymbol{w} &=(\boldsymbol{X}^T\boldsymbol{X})^{-1} \boldsymbol{X}^T\boldsymbol{\hat{y}}. \label{eq:ols}
 \end{align}
-
-This can be rewritten as
-\begin{equation}
-	\vec{X}^T\hat{y} = \vec{X}^T\vec{X}\hat{\beta}.
-\end{equation}
-
 We then assume that the matrix \(\vec{X}^T\vec{X}\)
-is invertible to get the solution
+is invertible to get the solution \cite{James2000}.
 
-(\cite{James2000}).
+\section{Over- and underfitting}
 
-\subsubsection{Ridge Regression}\label{section:ridge}
-OLS will not give a solution if the design matrix \(\hat{X}\) is singular
-or near singular, as it depends on \(\hat{X}^T\hat{X}\) being invertible. (cite?)
-
-Ridge regression is known as a shrinkage method. It shrinks the regression
-coefficients \(\hat{\beta}\) by imposing a penalty on their size (cite?). We are in other words adding a diagonal component
-to the matrix to invert. From OLS we therefore make the following change
-
-\begin{equation}
-	\hat{X}^T\hat{X} \rightarrow \hat{X}^T\hat{X} + \lambda \hat{I}
-\end{equation}
-
-where $I$ is the identity matrix. (cite?).
-This gives
-
-\begin{equation}
-	RSS(\lambda) = (\hat{y}-\hat{X}\hat{\beta)}^T(\hat{y}
-	- \hat{X}\hat{\beta})
-	- \lambda \hat{\beta}^T\hat{\beta}
-\end{equation}
-and
-\begin{equation}
-	\hat{\beta}^{ridge} = (\hat{X}^T\hat{X}
-	+ \lambda \hat{I})^{-1}\hat{X}^T\hat{y}
-\end{equation}
-\(\lambda > 0 \) is a complexity parameter that controls the amount
-of shrinkage. The larger the value of \(\lambda\) the greater amount of
-shrinkage.
-\cite{James2000}
-
-This can also be written in a non-vector format which makes
-explicit the size constraint on the parameters.
-It also makes it easier to see the difference from Lasso regression:
-
-\begin{equation}
-	\hat{\beta}^{ridge} = \operatorname{argmin}_{beta}
-							\sum\limits_{i=1}^n \left(y_i - \beta_0
-							-\sum\limits_{j=1}^p x_{ij}\beta_j\right)^2
-\end{equation}
-subject to
-\begin{equation}
-	\sum\limits_{j=1}^p \beta_j^2 \leq t
-\end{equation}
-There is a one to one correspondence between \(\lambda\) and \(t\).
-\cite{James2000}
-\subsection{Classification}
-\subsubsection{Logistic Regression}\label{seq:logistic}
+\section{Regularization}\label{section:regularization}
+%OLS will not give a solution if the design matrix \(\hat{X}\) is singular
+%or near singular, as it depends on \(\hat{X}^T\hat{X}\) being invertible. (cite?)
+%
+%Ridge regression is known as a shrinkage method. It shrinks the regression
+%coefficients \(\hat{\beta}\) by imposing a penalty on their size (cite?). We are in other words adding a diagonal component
+%to the matrix to invert. From OLS we therefore make the following change
+%
+%\begin{equation}
+%	\hat{X}^T\hat{X} \rightarrow \hat{X}^T\hat{X} + \lambda \hat{I}
+%\end{equation}
+%
+%where $I$ is the identity matrix. (cite?).
+%This gives
+%
+%\begin{equation}
+%	RSS(\lambda) = (\hat{y}-\hat{X}\hat{\beta)}^T(\hat{y}
+%	- \hat{X}\hat{\beta})
+%	- \lambda \hat{\beta}^T\hat{\beta}
+%\end{equation}
+%and
+%\begin{equation}
+%	\hat{\beta}^{ridge} = (\hat{X}^T\hat{X}
+%	+ \lambda \hat{I})^{-1}\hat{X}^T\hat{y}
+%\end{equation}
+%\(\lambda > 0 \) is a complexity parameter that controls the amount
+%of shrinkage. The larger the value of \(\lambda\) the greater amount of
+%shrinkage.
+%\cite{James2000}
+%
+%This can also be written in a non-vector format which makes
+%explicit the size constraint on the parameters.
+%It also makes it easier to see the difference from Lasso regression:
+%
+%\begin{equation}
+%	\hat{\beta}^{ridge} = \operatorname{argmin}_{beta}
+%							\sum\limits_{i=1}^n \left(y_i - \beta_0
+%							-\sum\limits_{j=1}^p x_{ij}\beta_j\right)^2
+%\end{equation}
+%subject to
+%\begin{equation}
+%	\sum\limits_{j=1}^p \beta_j^2 \leq t
+%\end{equation}
+%There is a one to one correspondence between \(\lambda\) and \(t\).
+%\cite{James2000}
+\section{Logistic Regression}\label{seq:logistic}
 Differently to linear regression, classification problems
 are concerned with outcomes taking the form of discrete variables.
 For a specific physical problem, we'd like to identify its state, say whether
 it is an ordered of disordered system. (cite?) One of the most basic examples
 of a classifier algorithm is logistic regression.
 
-\subsection{Cost Functions}\label{seq:cost-functions}
-In order for a logistic regressor to improve it needs a way to
-track how it's performing. This is the purpose of a cost function. Essentially,
+For a logistic regressor to improve it needs a way to
+track its performance. This is the purpose of a cost function. Essentially,
 the cost function says something about how wrong the model is in classifying the
 input. The objective in machine learning, and logistic regression, is then to minimize
 this error.
@@ -124,24 +118,24 @@ this error.
 The cost function used in this project is called the \textbf{cross-entropy}, or the
 'negative log likelihood', and takes the form
 \begin{equation}\label{eq:cross-entropy}
-	\mathcal{C}(\hat{\beta})=-\sum_{i=1}^n  \left(y_i(\beta_0+\beta_1x_i) -\log{(1+\exp{(\beta_0+\beta_1x_i)})}\right)
+	\mathcal{C}(\boldsymbol{w})=-\sum_{i=1}^n  \left(y_i(w_0+w_1x_i) -\log{(1+\exp{(w_0+w_1x_i)})}\right)
 \end{equation}
 
-\subsection{Gradient Descent}\label{seq:gradient}
+\section{Gradient Descent}\label{seq:gradient}
 Minimizing the cost function is done using Gradient Descent.
-The jist of it is that in order to optimize the weights or coefficients,
+The gist of it is that to optimize the weights or coefficients,
 and biases to minimize the cost function, one can change their values to
 
 \begin{equation}\label{eq:delta-c}
-	\frac{\partial \mathcal{C}(\hat{\beta})}{\partial \hat{\beta}} = -\hat{X}^T\left(\hat{y}-\hat{p}\right)
+	\frac{\partial \mathcal{C}(\boldsymbol{w})}{\partial \boldsymbol{w}} = -\boldsymbol{X}^T\left(\hat{y}-\hat{p}\right)
 \end{equation}
 
-\subsubsection{Stochastic Gradient Decent}
-The stochastic gradient decent method address some of the shortcomings
-of the normal gradient decent method. The gradient decent method is
-for instance sensitive to the choise of learning rate (cite?).
+\subsection{Stochastic Gradient Descent}
+The stochastic gradient descent method address some of the shortcomings
+of the normal gradient descent method. The gradient descent method is
+for instance sensitive to the choice of learning rate (cite?).
 
-The underlying idea of stochastic gradient decent comes form observing
+The underlying idea of stochastic gradient descent comes from observing
 that the cost function we want to minimize, almost always can be written as
 a sum over \(n\) data points. (cite?). Which gives
 

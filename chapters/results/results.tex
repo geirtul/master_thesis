@@ -1,5 +1,5 @@
 \section{Classification}
-Our primary objective is separating experimental data into two possible categories.
+Our primary objective is to separate experimental data into two possible categories.
 Supervised learning typically leverages large amounts of labeled data to learn
 representations of the classes present in the inputs. A challenge in Physics is that
 experiments generate enormous amounts of data, but it is not labeled. Hand-labeling
@@ -22,17 +22,17 @@ in either of the confusion matrix values.
 \input{chapters/results/figures/dummyfig.tex}
 
 \subsection{Experimental data}
+
 \section{Regression}
-On data already classified, we seek to predict the energy of the events and the position of origin for
+On data already classified, we attempt to predict the energy of the events and the position of origin for
 the electrons. Because there is a travel distance between the ejection site and the scintillator array,
 the positions aren't necessarily the locations of the highest-intensity pixels in the detector images.
-\begin{itemize}
-  \item ? - Linear approach?
-  \item ? - Dense network
-  \item ? - CNN
-  \item ? - Pretrained
-\end{itemize}
-\subsection{Position - Single electron}
-\subsection{Energy - Single electron}
-\subsection{Position - Double electron}
-\subsection{Energy - Double electron}
+\subsection{Simulated data}
+\subsubsection{Position - Single electron}
+\input{chapters/results/figures/regression_simulated_single_position_r2.tex}
+\subsubsection{Energy - Single electron}
+\input{chapters/results/figures/regression_simulated_single_energy_r2.tex}
+\subsubsection{Position - Double electron}
+\input{chapters/results/figures/regression_simulated_double_position_r2.tex}
+\subsubsection{Energy - Double electron}
+\input{chapters/results/figures/regression_simulated_double_energy_r2.tex}

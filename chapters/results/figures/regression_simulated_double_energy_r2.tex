@@ -1,0 +1,16 @@
+\begin{table}
+\centering
+\caption{
+Mean R2-scores for regresson of energy values, on double events in simulated data, using multiple models. 
+Error estimates are the standard deviation in results from k-fold cross-validation 
+with $K=5$ folds.
+}
+\label{tab:regression-simulated-double-energy-r2}
+\begin{tabular}{llll}
+\toprule
+                                             Linear &                                               Dense &                                       Convolutional &                                    Pretrained VGG16 \\
+\midrule
+ $\underset{\num{+- 6.501e-02 }  }{\num{ 0.415 } }$ &  $\underset{\num{+- 6.632e-02 }  }{\num{ 0.416 } }$ &  $\underset{\num{+- 5.027e-02 }  }{\num{ 0.428 } }$ &  $\underset{\num{+- 5.308e-02 }  }{\num{ 0.404 } }$ \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,16 @@
+\begin{table}
+\centering
+\caption{
+Mean R2-scores for regresson of energy values, on single events in simulated data, using multiple models. 
+Error estimates are the standard deviation in results from k-fold cross-validation 
+with $K=5$ folds.
+}
+\label{tab:regression-simulated-single-energy-r2}
+\begin{tabular}{llll}
+\toprule
+                                             Linear &                                               Dense &                                       Convolutional &                                    Pretrained VGG16 \\
+\midrule
+ $\underset{\num{+- 3.691e-02 }  }{\num{ 0.926 } }$ &  $\underset{\num{+- 3.364e-02 }  }{\num{ 0.931 } }$ &  $\underset{\num{+- 3.282e-02 }  }{\num{ 0.936 } }$ &  $\underset{\num{+- 1.945e-02 }  }{\num{ 0.935 } }$ \\
+\bottomrule
+\end{tabular}
+\end{table}

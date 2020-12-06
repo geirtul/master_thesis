@@ -56,6 +56,9 @@ We then assume that the matrix \(\vec{X}^T\vec{X}\)
 is invertible to get the solution \cite{James2000}.
 
 \section{Over- and underfitting}\label{sec:overfitting}
+In statistics, overfitting is "the production of an analysis that corresponds too closely or exactly to a 
+particular set of data, and may therefore fail to fit additional data or predict future observations reliably".
+(cite oxford dictionary).
 When fitting a model to a set of data points, we seek to capture the underlying structure in the data,
 with the ultimate goal of accurately predicting behaviour outside the region of the available data points.
 A step in this process is splitting the available data in two - training data and test data. We fit, or 'train'
@@ -67,6 +70,7 @@ if ever, noiseless. For a more in-depth look at over- and underfitting, we refer
 
 
 \section{Regularization}\label{section:regularization}
+
 With the computing resources available today, increasing model complexity to deal with underfitting is
 usually a simple task. However, this computational freedom has led to overfitting being the common challenge
 to overcome.

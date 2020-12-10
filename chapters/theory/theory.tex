@@ -56,17 +56,26 @@ We then assume that the matrix \(\vec{X}^T\vec{X}\)
 is invertible to get the solution \cite{James2000}.
 
 \section{Over- and underfitting}\label{sec:overfitting}
+In machine learning, when fitting a model to a data set the goal is nearly always to predict 
+values or classify samples from regions of data the model has not seen. This is not a simple task,
+especially taking into consideration that data is rarely, if ever, noiseless. When extrapolating to 
+unseen regions we must take steps to ensure the model complexity is appropriate - we want it to fit 
+the signal, not the noise. First off - what do the terms "overfit" and "underfit" mean?
+An overfit model will typically perform well during the fitting procedure, but when presented with
+data outside the fitted region its performance decreases considerably.
+An underfit model lacks the expressive power to capture essential signal variations in the data.
+
+
 In statistics, overfitting is "the production of an analysis that corresponds too closely or exactly to a 
 particular set of data, and may therefore fail to fit additional data or predict future observations reliably".
-(cite oxford dictionary).
-When fitting a model to a set of data points, we seek to capture the underlying structure in the data,
-with the ultimate goal of accurately predicting behaviour outside the region of the available data points.
+(cite oxford dictionary). Mehta et. al \cite{Mehta2019} demonstrates this concept very well
+through polynomial regression.
+
 A step in this process is splitting the available data in two - training data and test data. We fit, or 'train'
 the model on the training data, and then assess the performance of the model on the test data. This allows us
 to combat the problem of model complexity. If the model is too simple, it may fail to express the global trends 
 in the data - it is underfitting. More complex models may be able to capture the global trends, but run the risk of 
-also capturing spurious correlations in the data, e.g noise - the model is overfitting. After all, data is rarely,
-if ever, noiseless. For a more in-depth look at over- and underfitting, we refer to Mehta et al. \cite{Mehta2019}.
+also capturing spurious correlations in the data, e.g noise - the model is overfitting.
 
 
 \section{Regularization}\label{section:regularization}

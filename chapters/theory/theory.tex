@@ -64,26 +64,41 @@ the signal, not the noise. First off - what do the terms "overfit" and "underfit
 An overfit model will typically perform well during the fitting procedure, but when presented with
 data outside the fitted region its performance decreases considerably.
 An underfit model lacks the expressive power to capture core signal variations in the data.
+Mehta et. al \cite{Mehta2019} demonstrates this concept very well through polynomial regression.
 
-
-
-In statistics, overfitting is "the production of an analysis that corresponds too closely or exactly to a 
-particular set of data, and may therefore fail to fit additional data or predict future observations reliably".
-(cite oxford dictionary). Mehta et. al \cite{Mehta2019} demonstrates this concept very well
-through polynomial regression.
-
-A step in this process is splitting the available data in two - training data and test data. We fit, or 'train'
-the model on the training data, and then assess the performance of the model on the test data. This allows us
-to combat the problem of model complexity. If the model is too simple, it may fail to express the global trends 
+In machine learning literature and practice, you will encounter the concept of
+splitting the available data into two - training data and test data. We fit, or 'train'
+the model on the training data, and then assess the performance of the model on the 
+test data. This practice lets us evaluate whether the model is overfitting to unseen
+data by comparing performance on the training data and test data.
+The the work of Mehta et. al \cite{Mehta2019} the authors provide a list of universal
+lessons to keep in mind, which we quote here:his allows us to combat the problem of model complexity. If the model is too simple, it may fail to express the global trends 
 in the data - it is underfitting. More complex models may be able to capture the global trends, but run the risk of 
 also capturing spurious correlations in the data, e.g noise - the model is overfitting.
 
 
-\section{Regularization}\label{section:regularization}
+\begin{itemize}
+	\item Fitting is not predicting. Fitting existing data well is fundamentally
+	different from making predictions about new data.
+	\item Using a complex model can result in overfitting. Increasing a model's
+	complexity  (i.e number of fitting parameters) will usually yield better results
+	on the training data. However when the training data size is small and the data
+	are noisy, this results in \textit{overfitting} and can substantially degrade the
+	predictive performance of the model.
+	\item For complex datasets and small training sets, simple models can be better
+	at prediction complex models due to the bias-variance tradeoff. It takes less
+	data to train a simple model than a complex one. Therefore, even though the 
+	correct model is guaranteed to have better predictive performance for an infinite
+	amount of training data (less bias), the training errors stemming from finite-size
+	sampling (variance) can cause simpler models to outperform the more complex model
+	when sampling is limited.
 
-With the computing resources available today, increasing model complexity to deal with underfitting is
-usually a simple task. However, this computational freedom has led to overfitting being the common challenge
-to overcome.
+\end{itemize}
+
+\section{Regularization}\label{section:regularization}
+With the computing resources available today, increasing model complexity to deal 
+with underfitting is usually a simple task. However, this computational freedom 
+has led to overfitting being the common challenge to overcome.
 
 
 %OLS will not give a solution if the design matrix \(\hat{X}\) is singular

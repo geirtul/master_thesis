@@ -71,11 +71,12 @@ splitting the available data into two - training data and test data. We fit, or 
 the model on the training data, and then assess the performance of the model on the 
 test data. This practice lets us evaluate whether the model is overfitting to unseen
 data by comparing performance on the training data and test data.
-The the work of Mehta et. al \cite{Mehta2019} the authors provide a list of universal
-lessons to keep in mind, which we quote here:his allows us to combat the problem of model complexity. If the model is too simple, it may fail to express the global trends 
-in the data - it is underfitting. More complex models may be able to capture the global trends, but run the risk of 
-also capturing spurious correlations in the data, e.g noise - the model is overfitting.
 
+\subsection{The Bias-Variance Tradeoff}
+
+
+The work of Mehta et. al \cite{Mehta2019} the authors provide a list of universal
+lessons to keep in mind, which we quote here:
 
 \begin{itemize}
 	\item Fitting is not predicting. Fitting existing data well is fundamentally
@@ -95,56 +96,12 @@ also capturing spurious correlations in the data, e.g noise - the model is overf
 
 \end{itemize}
 
+
 \section{Regularization}\label{section:regularization}
 With the computing resources available today, increasing model complexity to deal 
 with underfitting is usually a simple task. However, this computational freedom 
 has led to overfitting being the common challenge to overcome.
 
-
-%OLS will not give a solution if the design matrix \(\hat{X}\) is singular
-%or near singular, as it depends on \(\hat{X}^T\hat{X}\) being invertible. (cite?)
-%
-%Ridge regression is known as a shrinkage method. It shrinks the regression
-%coefficients \(\hat{\beta}\) by imposing a penalty on their size (cite?). We are in other words adding a diagonal component
-%to the matrix to invert. From OLS we therefore make the following change
-%
-%\begin{equation}
-%	\hat{X}^T\hat{X} \rightarrow \hat{X}^T\hat{X} + \lambda \hat{I}
-%\end{equation}
-%
-%where $I$ is the identity matrix. (cite?).
-%This gives
-%
-%\begin{equation}
-%	RSS(\lambda) = (\hat{y}-\hat{X}\hat{\beta)}^T(\hat{y}
-%	- \hat{X}\hat{\beta})
-%	- \lambda \hat{\beta}^T\hat{\beta}
-%\end{equation}
-%and
-%\begin{equation}
-%	\hat{\beta}^{ridge} = (\hat{X}^T\hat{X}
-%	+ \lambda \hat{I})^{-1}\hat{X}^T\hat{y}
-%\end{equation}
-%\(\lambda > 0 \) is a complexity parameter that controls the amount
-%of shrinkage. The larger the value of \(\lambda\) the greater amount of
-%shrinkage.
-%\cite{James2000}
-%
-%This can also be written in a non-vector format which makes
-%explicit the size constraint on the parameters.
-%It also makes it easier to see the difference from Lasso regression:
-%
-%\begin{equation}
-%	\hat{\beta}^{ridge} = \operatorname{argmin}_{beta}
-%							\sum\limits_{i=1}^n \left(y_i - \beta_0
-%							-\sum\limits_{j=1}^p x_{ij}\beta_j\right)^2
-%\end{equation}
-%subject to
-%\begin{equation}
-%	\sum\limits_{j=1}^p \beta_j^2 \leq t
-%\end{equation}
-%There is a one to one correspondence between \(\lambda\) and \(t\).
-%\cite{James2000}
 \section{Logistic Regression}\label{seq:logistic}
 Differently to linear regression, classification problems
 are concerned with outcomes taking the form of discrete variables.
@@ -167,7 +124,7 @@ The cost function used in this project is called the \textbf{cross-entropy}, or 
 \section{Gradient Descent}\label{seq:gradient}
 Minimizing the cost function is done using Gradient Descent.
 The gist of it is that to optimize the weights or coefficients,
-and biases to minimize the cost function, one can change their values to
+and biases to minimize the cost function, we can change their values to
 
 \begin{equation}\label{eq:delta-c}
 	\frac{\partial \mathcal{C}(\boldsymbol{w})}{\partial \boldsymbol{w}} = -\boldsymbol{X}^T\left(\hat{y}-\hat{p}\right)

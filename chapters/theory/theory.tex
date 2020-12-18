@@ -207,20 +207,12 @@ form of mathematical functions between layers. All layers can contain
 an arbitrary number of neurons, and each connection is represented by
 a weight variable.
 
-In natural science, ANNs have already found numerous
-applications. In statistical physics, they have been applied to detect
+In natural sciences, ANNs have already found numerous applications.
+In statistical physics, they have been applied to detect
 phase transitions in 2D Ising and Potts models, lattice gauge
 theories, and different phases of polymers, or solving the
 Navier-Stokes equation in weather forecasting.  Deep learning has also
-found interesting applications in quantum physics. Various quantum
-phase transitions can be detected and studied using ANNs,
-topological phases, and even non-equilibrium many-body
-localization. Representing quantum states as ANNs quantum state
-tomography are among some of the impressive achievements to reveal the
-potential of DNNs to facilitate the study of quantum systems.
-
-In quantum information theory, it has been shown that one can perform
-gate decompositions with the help of neural. 
+found interesting applications in quantum and nuclear physics.
 
 The applications are not limited to the natural sciences. There is a
 plethora of applications in essentially all disciplines, from the
@@ -239,20 +231,201 @@ signals, which must exceed an activation threshold to yield an
 output. If the threshold is not overcome, the neuron remains inactive,
 i.e. has zero output.
 
-This behaviour has inspired a simple mathematical model for an artificial neuron.
+This behaviour inspired a simple mathematical model for an artificial neuron.
 
-\begin{equation}
- y = f\left(\sum_{i=1}^n w_ix_i\right) = f(u)
- label{artificialNeuron}
+\begin{equation}\label{eq:artificial-neuron}
+ y = f\left(\sum_{i=1}^n w_ix_i\right) = f(z)
 \end{equation}
-!et
-Here, the output $y$ of the neuron is the value of its activation function, which have as input
-a weighted sum of signals $x_i, \dots ,x_n$ received by $n$ other neurons.
 
-\subsection{Perceptron}
+Here, the output $y$ of the neuron is the value of its activation function,
+which receives as input a weighted sum of signals $x_i, \dots ,x_n$ received by $n$ other neurons.
+Neurons are often referred to as "nodes" or "units" in machine learning literature,
+and we will use these interchangeably in the following sections.
 
-\subsubsection{Multilayer Perceptron}
+\textbf{Add figure for single layer FFNN / perceptron}
 
+\subsection{The network model}
+The output $y$ is produced via the activation function $f(z)$ in the equation above(\ref{eq:artificial-neuron}
+This function receives $x_i$ as inputs and computes the activation 
+$z=(\sum_{i=1}^n w_ix_i+b_i)$. 
+In an FFNN of such nodes, the \textit{inputs} $x_i$ are the \textit{outputs} of
+the neurons in the preceding layer. Furthermore, an MLP is
+fully-connected, which means that each neuron receives a weighted sum
+of the outputs of \textit{all} neurons in the previous layer.
+
+First, for each node $i$ in the first hidden layer, we calculate a weighted sum $z_i^1$ of the input coordinates $x_j$,
+
+
+\begin{equation} 
+	z_i^1 = \sum_{j=1}^{M} w_{ij}^1 x_j + b_i^1
+\end{equation}
+
+Here $b_i$ is the so-called bias which is normally needed in
+case of zero activation weights or inputs. How to fix the biases and
+the weights will be discussed below.  The value of $z_i^1$ is the
+argument to the activation function $f_i$ of each node $i$, The
+variable $M$ stands for all possible inputs to a given node $i$ in the
+first layer.  We define  the output $y_i^1$ of all neurons in layer 1 as
+
+\begin{equation}\label{eq:output-layer}
+	y_i^1 = f(z_i^1) = f\left(\sum_{j=1}^M w_{ij}^1 x_j  + b_i^1\right)
+\end{equation}
+
+where we assume that all nodes in the same layer have identical
+activation functions, hence the notation $f$. In general, we could assume in the more general case that different layers have different activation functions.
+In this case we would identify these functions with a superscript $l$ for the $l$-th layer,
+
+\begin{equation}\label{eq:general-layer}
+	y_i^l = f^l(u_i^l) = f^l\left(\sum_{j=1}^{N_{l-1}} w_{ij}^l y_j^{l-1} + b_i^l\right)
+\end{equation}
+
+where $N_l$ is the number of nodes in layer $l$. When the output of
+all the nodes in the first hidden layer are computed, the values of
+the subsequent layer can be calculated and so forth until the output
+is obtained.
+
+The output of neuron $i$ in layer 2 is thus,
+
+\begin{align}\label{eq:output-layer-2}
+	y_i^2 &= f^2\left(\sum_{j=1}^N w_{ij}^2 y_j^1 + b_i^2\right) \\
+	&= f^2\left[\sum_{j=1}^N w_{ij}^2f^1\left(\sum_{k=1}^M w_{jk}^1 x_k + b_j^1\right) + b_i^2\right]
+\end{align}
+where we have substituted $y_k^1$ with the inputs $x_k$. Finally, the ANN output reads
+
+\begin{align}
+	y_i^3 &= f^3\left(\sum_{j=1}^N w_{ij}^3 y_j^2 + b_i^3\right) \\
+	&= f_3\left[\sum_{j} w_{ij}^3 f^2\left(\sum_{k} w_{jk}^2 f^1\left(\sum_{m} w_{km}^1 x_m + b_k^1\right) + b_j^2\right)
+	+ b_1^3\right]
+\end{align}
+
+We can generalize this expression to an MLP with $l$ hidden
+layers. The complete functional form is,
+
+\begin{align}\label{eq:complete-nn}
+&y^{l+1}_i = f^{l+1}\left[\!\sum_{j=1}^{N_l} w_{ij}^3 f^l\left(\sum_{k=1}^{N_{l-1}}w_{jk}^{l-1}\left(\dots f^1\left(\sum_{n=1}^{N_0} w_{mn}^1 x_n+ b_m^1\right)\dots\right)+b_k^2\right)+b_1^3\right] &&
+\end{align}
+
+which illustrates a basic property of MLPs: The only independent
+variables are the input values $x_n$.
+
+This confirms that an MLP, despite its quite convoluted
+mathematical form, is nothing more than an analytic function, specifically a
+mapping of real-valued vectors $\hat{x} \in \mathbb{R}^n \rightarrow
+\hat{y} \in \mathbb{R}^m$.
+
+Furthermore, the flexibility and universality of an MLP can be
+illustrated by realizing that the expression is essentially a nested
+sum of scaled activation functions of the form
+\begin{equation}
+ f(x) = c_1 f(c_2 x + c_3) + c_4
+\end{equation}
+
+where the parameters $c_i$ are weights and biases. By adjusting these
+parameters, the activation functions can be shifted up and down or
+left and right, change slope or be rescaled which is the key to the
+flexibility of a neural network.
+
+We will now introduce a more convenient notation for the activations in an ANN. 
+We can represent the biases and activations
+as layer-wise column vectors $\hat{b}_l$ and $\hat{y}_l$, so that the $i$-th element of each vector 
+is the bias $b_i^l$ and activation $y_i^l$ of node $i$ in layer $l$ respectively. 
+
+We have that $\mathrm{W}_l$ is an $N_{l-1} \times N_l$ matrix, 
+while $\hat{b}_l$ and $\hat{y}_l$ are $N_l \times 1$ column vectors. 
+With this notation, the sum becomes a matrix-vector multiplication, and we can write
+the equation for the activations of hidden layer 2 (assuming three nodes for simplicity) as
+\begin{equation}
+ \hat{y}_2 = f_2(\mathrm{W}_2 \hat{y}_{1} + \hat{b}_{2}) = 
+ f_2\left(\left[\begin{array}{ccc}
+    w^2_{11} &w^2_{12} &w^2_{13} \\
+    w^2_{21} &w^2_{22} &w^2_{23} \\
+    w^2_{31} &w^2_{32} &w^2_{33} \\
+    \end{array} \right] \cdot
+    \left[\begin{array}{c}
+           y^1_1 \\
+           y^1_2 \\
+           y^1_3 \\
+          \end{array}\right] + 
+    \left[\begin{array}{c}
+           b^2_1 \\
+           b^2_2 \\
+           b^2_3 \\
+          \end{array}\right]\right).
+\end{equation}
+
+The activation of node $i$ in layer 2 is
+\begin{equation}
+ y^2_i = f_2\Bigr(w^2_{i1}y^1_1 + w^2_{i2}y^1_2 + w^2_{i3}y^1_3 + b^2_i\Bigr) = 
+ f_2\left(\sum_{j=1}^3 w^2_{ij} y_j^1 + b^2_i\right).
+\end{equation}
+
+This is not just a convenient and compact notation, but also a useful
+and intuitive way to think about MLPs: The output is calculated by a
+series of matrix-vector multiplications and vector additions that are
+used as input to the activation functions. For each operation
+$\mathrm{W}_l \hat{y}_{l-1}$ we move forward one layer.
+
+\subsection{Types of neural networks}
+
+\subsubsection*{Feed-forward Neural Network}
+
+The feed-forward neural network (FFNN) was the first and simplest type
+of ANNs that were devised. In this network, the information moves in
+only one direction: forward through the layers.
+
+Nodes are represented by circles, while the arrows display the
+connections between the nodes, including the direction of information
+flow. Additionally, each arrow corresponds to a weight variable
+(figure to come).  We observe that each node in a layer is connected
+to \textit{all} nodes in the subsequent layer, giving the network its
+name - \textit{fully-connected} FFNN.
+
+\subsubsection*{Convolutional Neural Network}
+
+A different variant of FFNNs are \textit{convolutional neural networks}
+(CNNs), which have a connectivity pattern inspired by the animal
+visual cortex. Individual neurons in the visual cortex only respond to
+stimuli from small sub-regions of the visual field, called a receptive
+field. This makes the neurons well-suited to exploit the strong
+spatially local correlation present in natural images. The response of
+each neuron can be approximated mathematically as a convolution
+operation.  (figure to come)
+
+Convolutional neural networks emulate the behaviour of neurons in the
+visual cortex by enforcing a *local* connectivity pattern between
+nodes of adjacent layers: Each node in a convolutional layer is
+connected only to a subset of the nodes in the previous layer, in
+contrast to the fully-connected FFNN.  Often, CNNs consist of several
+convolutional layers that learn local features of the input, with a
+fully-connected layer at the end, which gathers all the local data and
+produces the outputs. They have wide applications in image and video
+recognition.
+
+\subsubsection*{Recurrent neural networks}
+
+So far we have only mentioned ANNs where information flows in one
+direction: forward. *Recurrent neural networks* on the other hand,
+have connections between nodes that form directed *cycles*. This
+creates a form of internal memory which are able to capture
+information on what has been calculated before; the output is
+dependent on the previous computations. Recurrent NNs make use of
+sequential information by performing the same task for every element
+in a sequence, where each element depends on previous elements. An
+example of such information is sentences, making recurrent NNs
+especially well-suited for handwriting and speech recognition.
+
+\subsubsection*{Other types of networks}
+
+There are many other kinds of ANNs that have been developed. One type
+that is specifically designed for interpolation in multidimensional
+space is the radial basis function (RBF) network. RBFs are typically
+made up of three layers: an input layer, a hidden layer with
+non-linear radial symmetric activation functions and a linear output
+layer (''linear'' here means that each node in the output layer has a
+linear activation function). The layers are normally fully-connected
+and there are no cycles, thus RBFs can be viewed as a type of
+fully-connected FFNN. They are however usually treated as a separate
+type of NN due the unusual activation functions.
 \subsection{Backpropagation}
 
 \section{Assessing the Performance of Models}

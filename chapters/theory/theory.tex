@@ -1,16 +1,17 @@
 \section{Linear Regression}\label{sec:linreg}
-Suppose you have a data set consisting of $n$ data points. Each point is associated
-with a scalar target $y_i$, and a vector $\hat{x}$ containing values for $p$ input
+Suppose you have a data set $\mathcal{L}$ consisting of the data
+$\mathbf{X}_\mathcal{L}=\{(y_i, x_i), i=0\ldots n-1\}$. Each point is associated
+with a scalar target $y_i$, and a vector $\bs{x}$ containing values for $p$ input
 features. Assuming the target variable $y_i$ is linear in the inputs, it can be
 written as a linear function of the features, given by
 \begin{equation}\label{eq:ols-target}
-y_i = \beta_0 x_{i,0} + \beta_1 x_{i,1} + ... + \beta_{p-1} x_{i, p-1} + \varepsilon_i,
+y_i = w_0 x_{i,0} + w_1 x_{i,1} + ... + w_{p-1} x_{i, p-1} + \epsilon_i,
 \end{equation}
-where $\beta = (\beta_0, \beta_1, \dots, \beta_{p-1})^T$ is a vector of length
-$p$ containing unknown values, and $\varepsilon$ are the errors in our estimate.
+where $\bs{w} = (w_0, w_1, \dots, w_{p-1})^T$ is a vector of length
+$p$ containing unknown values, and $\epsilon$ are the errors in our estimate.
 This gives us a system of linear equations, which can be written in matrix form as
 \begin{equation}\label{eq:ols-target-mat}
-  \hat{y} = \boldsymbol{X\beta} + \hat{\varepsilon},
+  \bs{y} = \bs{Xw} + \bs{}{\epsilon},
 \end{equation}
 where
 \begin{equation}
@@ -24,36 +25,48 @@ x_{n-1,0} & x_{n-1,1} & x_{n-1,2} & ... & x_{n-1,p-1}
 \end{matrix}
 \right]
 \end{equation}
-The unknown values $\boldsymbol{\beta}$ are commonly referred to as \textit{weights}, denoted $\boldsymbol{w}$,
-in machine learning literature. We will adopt this notation going forward.
-To find the best possible weights $\boldsymbol{w}$ we want a suitable
+The unknown values $\bs{w}$ are commonly referred to as \textit{weights} in machine 
+learning literature. To find the best possible weights $\bs{w}$ we want a suitable
 quantity to optimize - a \textbf{cost function}, $\mathcal{C}$ (also referred to as an
 \textbf{objective function}). An example of such a function is the squared error - or the Euclidian vector norm, defined as
 \begin{equation}
-	L_2(\boldsymbol{x}) =||\boldsymbol{x}||_2 = \left(\sum x_i^2\right)^{\frac{1}{2}}.
+	L_2(\bs{x}) =||\bs{x}||_2 = \left(\sum x_i^2\right)^{\frac{1}{2}}.
 \end{equation}
 From this we define the cost function
 \begin{equation}
-	\mathcal{C} = || \boldsymbol{\hat{y}} - \boldsymbol{y} ||_2 ^2.
+	\mathcal{C} = || \bs{\hat{y}} - \bs{y} ||_2 ^2.
 \end{equation}
 In machine learning, it is most common to cast the optimization as a minimization problem
-("minimize the cost"). To find the minimum of the cost function as defined above, we need
-a differentiation. To simplify that process, we rewrite the cost function on matrix form
+("minimize the cost"). Our task is then to find an approximation
+\begin{equation}\label{eq:ols-approximation}
+	\bs{\hat{y}} = \bs{Xw}
+\end{equation}
+which minimizes this cost function.
+To find the minimum we need a differentiation. To simplify that process, we rewrite the cost function on matrix form
 \begin{align*}
-\mathcal{C} &= || \boldsymbol{\hat{y}} - \boldsymbol{y} ||_2 ^2, \\
-\mathcal{C} &= ( \boldsymbol{\hat{y}} - \boldsymbol{Xw})^T( \boldsymbol{\hat{y}} - \boldsymbol{Xw}).
+\mathcal{C} &= || \bs{\hat{y}} - \bs{y} ||_2 ^2, \\
+\mathcal{C} &= ( \bs{\hat{y}} - \bs{Xw})^T( \bs{\hat{y}} - \bs{Xw}).
 \end{align*}
-To minimize we take the derivative with respect to the weights $\boldsymbol{w}$,
+To minimize we take the derivative with respect to the weights $\bs{w}$,
 and find the minima by setting the derivative equal to zero
 \begin{align}
-\nabla _{\boldsymbol{w}}\mathcal{C} &= \nabla _{\boldsymbol{w}} ( \boldsymbol{\hat{y}} - \boldsymbol{Xw})^T( \boldsymbol{\hat{y}} - \boldsymbol{Xw}), \\
-&= -2\boldsymbol{X}^T\boldsymbol{\hat{y}} + 2\boldsymbol{X}^T\boldsymbol{X}\boldsymbol{w}, \\
-\boldsymbol{0} &= -2\boldsymbol{X}^T\boldsymbol{\hat{y}} + 2\boldsymbol{X}^T\boldsymbol{X}\boldsymbol{w}, \\
-\boldsymbol{X}^T\boldsymbol{\hat{y}} &= \boldsymbol{X}^T\boldsymbol{X}\boldsymbol{w}, \\
-\boldsymbol{w} &=(\boldsymbol{X}^T\boldsymbol{X})^{-1} \boldsymbol{X}^T\boldsymbol{\hat{y}}. \label{eq:ols}
+\nabla _{\bs{w}}\mathcal{C} &= \nabla _{\bs{w}} ( \bs{\hat{y}} - \bs{Xw})^T( \bs{\hat{y}} - \bs{Xw}), \\
+&= -2\bs{X}^T\bs{\hat{y}} + 2\bs{X}^T\bs{X}\bs{w}, \\
+\bs{0} &= -2\bs{X}^T\bs{\hat{y}} + 2\bs{X}^T\bs{X}\bs{w}, \\
+\bs{X}^T\bs{\hat{y}} &= \bs{X}^T\bs{X}\bs{w}, \\
+\bs{w} &=(\bs{X}^T\bs{X})^{-1} \bs{X}^T\bs{\hat{y}}. \label{eq:ols}
 \end{align}
-We then assume that the matrix \(\vec{X}^T\vec{X}\)
-is invertible to get the solution \cite{James2000}.
+This requires matrix \(\vec{X}^T\vec{X}\) to be invertible to get the solution 
+\cite{James2000}.
+
+The residuals $\bs{\epsilon}$ are given by
+$$\bs{\epsilon} = \bs{y}-\bs{\hat{y}} = \bs{y}-\bs{X}\bs{w},$$
+and with 
+$$\bs{X}^T\left( \bs{y}-\bs{X}\bs{w}\right)= 0,$$
+we have
+$$\bs{X}^T\bs{\epsilon}=\bs{X}^T\left( \bs{y}-\bs{X}\bs{w}\right)= 0,$$
+meaning that the solution for $\bs{w}$ is the one which minimizes the residuals.
+This method of regression is known as Ordinary Least Squares.
 
 \section{Over- and underfitting}\label{sec:overfitting}
 In machine learning, when fitting a model to a data set the goal is nearly always to predict 
@@ -64,7 +77,7 @@ the signal, not the noise. First off - what do the terms "overfit" and "underfit
 An overfit model will typically perform well during the fitting procedure, but when presented with
 data outside the fitted region its performance decreases considerably.
 An underfit model lacks the expressive power to capture core signal variations in the data.
-Mehta et. al \cite{Mehta2019} demonstrates this concept very well through polynomial regression.
+Mehta et. al \cite{Mehta2019} demonstrates this concept through polynomial regression.
 
 In machine learning literature and practice, you will encounter the concept of
 splitting the available data into two - training data and test data. We fit, or 'train'
@@ -72,11 +85,33 @@ the model on the training data, and then assess the performance of the model on 
 test data. This practice lets us evaluate whether the model is overfitting to unseen
 data by comparing performance on the training data and test data.
 
-\subsection{The Bias-Variance Tradeoff}
+\section{The Bias-Variance Tradeoff}\label{sec:bias-variance}
+Considering the same dataset $\mathcal{L}$ consisting of the data,
+let us assume that the true data is generated from a noisy model
 
+$$\mathbf{y}=f(\bs{x}) + \bs{\epsilon},$$
+where $\epsilon$ is normally distributed with mean zero and standard deviation $\sigma^2$.
 
-The work of Mehta et. al \cite{Mehta2019} the authors provide a list of universal
-lessons to keep in mind, which we quote here:
+In our derivation of the ordinary least squares method we defined
+an approximation (\ref{eq:ols-approximation}) to the function $f$ in terms of the 
+weights $\bs{w}$ and the input matrix $\bs{X}$ which together define our model,
+that is $\bs{\hat{y}}=\bs{X}\bs{w}$. 
+
+Thereafter we found the parameters $\bs{w}$ by optimizing the means squared error via the so-called cost function
+
+$$\mathcal{C}(\bs{X},\bs{w}) =\frac{1}{n}\sum_{i=0}^{n-1}(y_i-\hat{y}_i)^2=\mathbb{E}\left[(\bs{y}-\bs{\hat{y}})^2\right].$$
+
+We can rewrite this as 
+$$\mathbb{E}\left[(\bs{y}-\bs{\hat{y}})^2\right]=\frac{1}{n}\sum_i(f_i-\mathbb{E}\left[\bs{\hat{y}}\right])^2+\frac{1}{n}\sum_i(\hat{y}_i-\mathbb{E}\left[\bs{\hat{y}}\right])^2+\sigma^2.$$
+
+The three terms represent the square of the bias of the learning
+method, which can be thought of as the error caused by the simplifying
+assumptions built into the method. The second term represents the
+variance of the chosen model and finally the last terms is variance of
+the error $\bs{\epsilon}$.
+
+For a derivation of this equation, we refer to the work of Mehta et. al \cite{Mehta2019}.
+The authors also provide a list of universal lessons to keep in mind, which we quote here:
 
 \begin{itemize}
 	\item Fitting is not predicting. Fitting existing data well is fundamentally
@@ -96,6 +131,17 @@ lessons to keep in mind, which we quote here:
 
 \end{itemize}
 
+% Derivation from lecture notes here.
+%to recall that the variance of $\bs{y}$ and $\bs{\epsilon}$ are both equal to $\sigma^2$. 
+%The mean value of $\bs{\epsilon}$ is by definition equal to zero. Furthermore, the function $f$ is not a stochastics variable, idem for $\bs{\hat{y}}$.
+%We use a more compact notation in terms of the expectation value
+%$$\mathbb{E}\left[(\bs{y}-\bs{\hat{y}})^2\right]=\mathbb{E}\left[(\bs{f}+\bs{\epsilon}-\bs{\hat{y}})^2\right],$$
+%and adding and subtracting $\mathbb{E}\left[\bs{\hat{y}}\right]$ we get
+%$$\mathbb{E}\left[(\bs{y}-\bs{\hat{y}})^2\right]=\mathbb{E}\left[(\bs{f}+\bs{\epsilon}-\bs{\hat{y}}+\mathbb{E}\left[\bs{\hat{y}}\right]-\mathbb{E}\left[\bs{\hat{y}}\right])^2\right],$$
+%which, using the abovementioned expectation values can be rewritten as
+%$$\mathbb{E}\left[(\bs{y}-\bs{\hat{y}})^2\right]=\mathbb{E}\left[(\bs{y}-\mathbb{E}\left[\bs{\hat{y}}\right])^2\right]+\mathrm{Var}\left[\bs{\hat{y}}\right]+\sigma^2,$$
+%that is the rewriting in terms of the so-called bias, 
+%the variance of the model $\bs{\hat{y}}$ and the variance of $\bs{\epsilon}$.
 
 \section{Regularization}\label{section:regularization}
 With the computing resources available today, increasing model complexity to deal 
@@ -118,7 +164,7 @@ this error.
 The cost function used in this project is called the \textbf{cross-entropy}, or the
 'negative log likelihood', and takes the form
 \begin{equation}\label{eq:cross-entropy}
-	\mathcal{C}(\boldsymbol{w})=-\sum_{i=1}^n  \left(y_i(w_0+w_1x_i) -\log{(1+\exp{(w_0+w_1x_i)})}\right)
+	\mathcal{C}(\bs{w})=-\sum_{i=1}^n  \left(y_i(w_0+w_1x_i) -\log{(1+\exp{(w_0+w_1x_i)})}\right)
 \end{equation}
 
 \section{Gradient Descent}\label{seq:gradient}
@@ -127,7 +173,7 @@ The gist of it is that to optimize the weights or coefficients,
 and biases to minimize the cost function, we can change their values to
 
 \begin{equation}\label{eq:delta-c}
-	\frac{\partial \mathcal{C}(\boldsymbol{w})}{\partial \boldsymbol{w}} = -\boldsymbol{X}^T\left(\hat{y}-\hat{p}\right)
+	\frac{\partial \mathcal{C}(\bs{w})}{\partial \bs{w}} = -\bs{X}^T\left(\hat{y}-\hat{p}\right)
 \end{equation}
 
 \subsection{Stochastic Gradient Descent}
@@ -140,19 +186,69 @@ that the cost function we want to minimize, almost always can be written as
 a sum over \(n\) data points. (cite?). Which gives
 
 \begin{equation}
-	C(\beta) = \sum\limits_{i=1}^n c_i (\mathbf{x}_i\beta)
+	C(w) = \sum\limits_{i=1}^n c_i (\mathbf{x}_iw)
 \end{equation} (cite?)
 
 This means that we also can find the gradient as a sum over i gradients
 as follows:
 
 \begin{equation}
-	\Delta_{\beta} C(\beta) = \sum\limits_{i}^n \Delta_{\beta}c_i (\mathbf{x}_i\beta)
+	\Delta_{w} C(w) = \sum\limits_{i}^n \Delta_{w}c_i (\mathbf{x}_iw)
 \end{equation} (cite?)
 
 Randomness is included by only taking the gradient on a subset of data.
 
 \section{Neural Networks}
+Artificial neural networks (ANN) are computational systems that can learn to
+perform tasks by considering examples, generally without being
+programmed with any task-specific rules. It is supposed to mimic a
+biological system, wherein neurons interact by sending signals in the
+form of mathematical functions between layers. All layers can contain
+an arbitrary number of neurons, and each connection is represented by
+a weight variable.
+
+In natural science, ANNs have already found numerous
+applications. In statistical physics, they have been applied to detect
+phase transitions in 2D Ising and Potts models, lattice gauge
+theories, and different phases of polymers, or solving the
+Navier-Stokes equation in weather forecasting.  Deep learning has also
+found interesting applications in quantum physics. Various quantum
+phase transitions can be detected and studied using ANNs,
+topological phases, and even non-equilibrium many-body
+localization. Representing quantum states as ANNs quantum state
+tomography are among some of the impressive achievements to reveal the
+potential of DNNs to facilitate the study of quantum systems.
+
+In quantum information theory, it has been shown that one can perform
+gate decompositions with the help of neural. 
+
+The applications are not limited to the natural sciences. There is a
+plethora of applications in essentially all disciplines, from the
+humanities to life science and medicine.
+
+\subsection{Artificial Neurons}
+The field of artificial neural networks has a long history of
+development, and is closely connected with the advancement of computer
+science and computers in general. A model of artificial neurons was
+first developed by McCulloch and Pitts in 1943 \cite{McCulloch1943} to study signal
+processing in the brain and has later been refined by others. The
+general idea is to mimic neural networks in the human brain, which is
+composed of billions of neurons that communicate with each other by
+sending electrical signals.  Each neuron accumulates its incoming
+signals, which must exceed an activation threshold to yield an
+output. If the threshold is not overcome, the neuron remains inactive,
+i.e. has zero output.
+
+This behaviour has inspired a simple mathematical model for an artificial neuron.
+
+\begin{equation}
+ y = f\left(\sum_{i=1}^n w_ix_i\right) = f(u)
+ label{artificialNeuron}
+\end{equation}
+!et
+Here, the output $y$ of the neuron is the value of its activation function, which have as input
+a weighted sum of signals $x_i, \dots ,x_n$ received by $n$ other neurons.
+
 \subsection{Perceptron}
 
 \subsubsection{Multilayer Perceptron}

@@ -206,6 +206,9 @@ biological system, wherein neurons interact by sending signals in the
 form of mathematical functions between layers. All layers can contain
 an arbitrary number of neurons, and each connection is represented by
 a weight variable.
+The field of artificial neural networks has a long history of
+development, and is closely connected with the advancement of computer
+science and computers in general.
 
 In natural sciences, ANNs have already found numerous applications.
 In statistical physics, they have been applied to detect
@@ -219,10 +222,8 @@ plethora of applications in essentially all disciplines, from the
 humanities to life science and medicine.
 
 \subsection{Artificial Neurons}
-The field of artificial neural networks has a long history of
-development, and is closely connected with the advancement of computer
-science and computers in general. A model of artificial neurons was
-first developed by McCulloch and Pitts in 1943 \cite{McCulloch1943} to study signal
+A model of artificial neurons was first developed by McCulloch and Pitts in 1943 
+\cite{McCulloch1943} to study signal
 processing in the brain and has later been refined by others. The
 general idea is to mimic neural networks in the human brain, which is
 composed of billions of neurons that communicate with each other by
@@ -242,12 +243,13 @@ which receives as input a weighted sum of signals $x_i, \dots ,x_n$ received by 
 Neurons are often referred to as "nodes" or "units" in machine learning literature,
 and we will use these interchangeably in the following sections.
 
-\textbf{Add figure for single layer FFNN / perceptron}
+\input{chapters/theory/figures/neural_network_example.tex}
 
-\subsection{The network model}
-The output $y$ is produced via the activation function $f(z)$ in the equation above(\ref{eq:artificial-neuron}
-This function receives $x_i$ as inputs and computes the activation 
-$z=(\sum_{i=1}^n w_ix_i+b_i)$. 
+\subsection{The neural network}
+A network of only one neuron such as the one described above is typically referred
+to as a \textit{perceptron} in literature. The simples network structure contains a
+single layer of N such nodes, and is most often called a \textit{single-layer perceptron}.
+
 In an FFNN of such nodes, the \textit{inputs} $x_i$ are the \textit{outputs} of
 the neurons in the preceding layer. Furthermore, an MLP is
 fully-connected, which means that each neuron receives a weighted sum
@@ -327,15 +329,15 @@ flexibility of a neural network.
 
 We will now introduce a more convenient notation for the activations in an ANN. 
 We can represent the biases and activations
-as layer-wise column vectors $\hat{b}_l$ and $\hat{y}_l$, so that the $i$-th element of each vector 
+as layer-wise column vectors $\bs{b}_l$ and $\bs{y}_l$, so that the $i$-th element of each vector 
 is the bias $b_i^l$ and activation $y_i^l$ of node $i$ in layer $l$ respectively. 
 
-We have that $\mathrm{W}_l$ is an $N_{l-1} \times N_l$ matrix, 
-while $\hat{b}_l$ and $\hat{y}_l$ are $N_l \times 1$ column vectors. 
+We have that $\bs{W}_l$ is an $N_{l-1} \times N_l$ matrix, 
+while $\bs{b}_l$ and $\bs{y}_l$ are $N_l \times 1$ column vectors. 
 With this notation, the sum becomes a matrix-vector multiplication, and we can write
 the equation for the activations of hidden layer 2 (assuming three nodes for simplicity) as
 \begin{equation}
- \hat{y}_2 = f_2(\mathrm{W}_2 \hat{y}_{1} + \hat{b}_{2}) = 
+ \bs{y}_2 = f_2(\bs{W}_2 \bs{y}_{1} + \bs{b}_{2}) = 
  f_2\left(\left[\begin{array}{ccc}
     w^2_{11} &w^2_{12} &w^2_{13} \\
     w^2_{21} &w^2_{22} &w^2_{23} \\
@@ -363,7 +365,7 @@ This is not just a convenient and compact notation, but also a useful
 and intuitive way to think about MLPs: The output is calculated by a
 series of matrix-vector multiplications and vector additions that are
 used as input to the activation functions. For each operation
-$\mathrm{W}_l \hat{y}_{l-1}$ we move forward one layer.
+$\mathrm{W}_l \bs{y}_{l-1}$ we move forward one layer.
 
 \subsection{Types of neural networks}
 

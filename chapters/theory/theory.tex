@@ -243,12 +243,14 @@ which receives as input a weighted sum of signals $x_i, \dots ,x_n$ received by 
 Neurons are often referred to as "nodes" or "units" in machine learning literature,
 and we will use these interchangeably in the following sections.
 
-\input{chapters/theory/figures/neural_network_example.tex}
-
 \subsection{The neural network}
 A network of only one neuron such as the one described above is typically referred
 to as a \textit{perceptron} in literature. The simples network structure contains a
 single layer of N such nodes, and is most often called a \textit{single-layer perceptron}.
+Adding an additional layer of nodes, a so-called \textit{hidden layer}, results in a
+type of feed-forward neural network (FFNN), typically referred to as a Multilayer Perceptron (MLP)
+(see figure \ref{fig:theory-mlp}).
+
 
 In an FFNN of such nodes, the \textit{inputs} $x_i$ are the \textit{outputs} of
 the neurons in the preceding layer. Furthermore, an MLP is
@@ -257,10 +259,10 @@ of the outputs of \textit{all} neurons in the previous layer.
 
 First, for each node $i$ in the first hidden layer, we calculate a weighted sum $z_i^1$ of the input coordinates $x_j$,
 
-
 \begin{equation} 
 	z_i^1 = \sum_{j=1}^{M} w_{ij}^1 x_j + b_i^1
 \end{equation}
+\input{chapters/theory/figures/neural_network_example.tex}
 
 Here $b_i$ is the so-called bias which is normally needed in
 case of zero activation weights or inputs. How to fix the biases and

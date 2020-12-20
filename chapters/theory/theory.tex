@@ -230,9 +230,7 @@ composed of billions of neurons that communicate with each other by
 sending electrical signals.  Each neuron accumulates its incoming
 signals, which must exceed an activation threshold to yield an
 output. If the threshold is not overcome, the neuron remains inactive,
-i.e. has zero output.
-
-This behaviour inspired a simple mathematical model for an artificial neuron.
+i.e. has zero output. This behaviour inspired a simple mathematical model for an artificial neuron.
 
 \begin{equation}\label{eq:artificial-neuron}
  y = f\left(\sum_{i=1}^n w_ix_i\right) = f(z)
@@ -245,26 +243,20 @@ and we will use these interchangeably in the following sections.
 
 \subsection{The neural network}
 A network of only one neuron such as the one described above is typically referred
-to as a \textit{perceptron} in literature. The simples network structure contains a
+to as a \textit{perceptron}. The simplest network structure contains a
 single layer of N such nodes, and is most often called a \textit{single-layer perceptron}.
-Adding an additional layer of nodes, a so-called \textit{hidden layer}, results in a
+Adding additional layers of nodes, so-called \textit{hidden layers}, results in a
 type of feed-forward neural network (FFNN), typically referred to as a Multilayer Perceptron (MLP)
-(see figure \ref{fig:theory-mlp}).
-
-
-In an FFNN of such nodes, the \textit{inputs} $x_i$ are the \textit{outputs} of
-the neurons in the preceding layer. Furthermore, an MLP is
-fully-connected, which means that each neuron receives a weighted sum
-of the outputs of \textit{all} neurons in the previous layer.
-
+(see figure \ref{fig:theory-mlp}). The example is also a fully connected network, as every
+node in a layer is connected to every node in the next. The name "feed-forward" stems from
+the fact that information flows in only one direction: forward through the layers.
+\input{chapters/theory/figures/neural_network_example.tex}
 First, for each node $i$ in the first hidden layer, we calculate a weighted sum $z_i^1$ of the input coordinates $x_j$,
 
 \begin{equation} 
 	z_i^1 = \sum_{j=1}^{M} w_{ij}^1 x_j + b_i^1
 \end{equation}
-\input{chapters/theory/figures/neural_network_example.tex}
-
-Here $b_i$ is the so-called bias which is normally needed in
+Here $b_i$ is the \textit{bias} which is needed in
 case of zero activation weights or inputs. How to fix the biases and
 the weights will be discussed below.  The value of $z_i^1$ is the
 argument to the activation function $f_i$ of each node $i$, The
@@ -274,7 +266,6 @@ first layer.  We define  the output $y_i^1$ of all neurons in layer 1 as
 \begin{equation}\label{eq:output-layer}
 	y_i^1 = f(z_i^1) = f\left(\sum_{j=1}^M w_{ij}^1 x_j  + b_i^1\right)
 \end{equation}
-
 where we assume that all nodes in the same layer have identical
 activation functions, hence the notation $f$. In general, we could assume in the more general case that different layers have different activation functions.
 In this case we would identify these functions with a superscript $l$ for the $l$-th layer,
@@ -282,7 +273,6 @@ In this case we would identify these functions with a superscript $l$ for the $l
 \begin{equation}\label{eq:general-layer}
 	y_i^l = f^l(u_i^l) = f^l\left(\sum_{j=1}^{N_{l-1}} w_{ij}^l y_j^{l-1} + b_i^l\right)
 \end{equation}
-
 where $N_l$ is the number of nodes in layer $l$. When the output of
 all the nodes in the first hidden layer are computed, the values of
 the subsequent layer can be calculated and so forth until the output
@@ -311,11 +301,10 @@ layers. The complete functional form is,
 
 which illustrates a basic property of MLPs: The only independent
 variables are the input values $x_n$.
-
 This confirms that an MLP, despite its quite convoluted
 mathematical form, is nothing more than an analytic function, specifically a
-mapping of real-valued vectors $\hat{x} \in \mathbb{R}^n \rightarrow
-\hat{y} \in \mathbb{R}^m$.
+mapping of real-valued vectors $\bs{x} \in \mathbb{R}^n \rightarrow
+\bs{y} \in \mathbb{R}^m$.
 
 Furthermore, the flexibility and universality of an MLP can be
 illustrated by realizing that the expression is essentially a nested
@@ -367,22 +356,9 @@ This is not just a convenient and compact notation, but also a useful
 and intuitive way to think about MLPs: The output is calculated by a
 series of matrix-vector multiplications and vector additions that are
 used as input to the activation functions. For each operation
-$\mathrm{W}_l \bs{y}_{l-1}$ we move forward one layer.
+$\bs{W}_l \bs{y}_{l-1}$ we move forward one layer.
 
 \subsection{Types of neural networks}
-
-\subsubsection*{Feed-forward Neural Network}
-
-The feed-forward neural network (FFNN) was the first and simplest type
-of ANNs that were devised. In this network, the information moves in
-only one direction: forward through the layers.
-
-Nodes are represented by circles, while the arrows display the
-connections between the nodes, including the direction of information
-flow. Additionally, each arrow corresponds to a weight variable
-(figure to come).  We observe that each node in a layer is connected
-to \textit{all} nodes in the subsequent layer, giving the network its
-name - \textit{fully-connected} FFNN.
 
 \subsubsection*{Convolutional Neural Network}
 
@@ -405,31 +381,7 @@ fully-connected layer at the end, which gathers all the local data and
 produces the outputs. They have wide applications in image and video
 recognition.
 
-\subsubsection*{Recurrent neural networks}
 
-So far we have only mentioned ANNs where information flows in one
-direction: forward. *Recurrent neural networks* on the other hand,
-have connections between nodes that form directed *cycles*. This
-creates a form of internal memory which are able to capture
-information on what has been calculated before; the output is
-dependent on the previous computations. Recurrent NNs make use of
-sequential information by performing the same task for every element
-in a sequence, where each element depends on previous elements. An
-example of such information is sentences, making recurrent NNs
-especially well-suited for handwriting and speech recognition.
-
-\subsubsection*{Other types of networks}
-
-There are many other kinds of ANNs that have been developed. One type
-that is specifically designed for interpolation in multidimensional
-space is the radial basis function (RBF) network. RBFs are typically
-made up of three layers: an input layer, a hidden layer with
-non-linear radial symmetric activation functions and a linear output
-layer (''linear'' here means that each node in the output layer has a
-linear activation function). The layers are normally fully-connected
-and there are no cycles, thus RBFs can be viewed as a type of
-fully-connected FFNN. They are however usually treated as a separate
-type of NN due the unusual activation functions.
 \subsection{Backpropagation}
 
 \section{Assessing the Performance of Models}

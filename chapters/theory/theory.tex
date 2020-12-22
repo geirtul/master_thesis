@@ -241,7 +241,7 @@ which receives as input a weighted sum of signals $x_i, \dots ,x_n$ received by 
 Neurons are often referred to as "nodes" or "units" in machine learning literature,
 and we will use these interchangeably in the following sections.
 
-\subsection{The neural network}
+\subsection{The Feed Forward Neural Network}
 A network of only one neuron such as the one described above is typically referred
 to as a \textit{perceptron}. The simplest network structure contains a
 single layer of N such nodes, and is most often called a \textit{single-layer perceptron}.
@@ -357,6 +357,61 @@ and intuitive way to think about MLPs: The output is calculated by a
 series of matrix-vector multiplications and vector additions that are
 used as input to the activation functions. For each operation
 $\bs{W}_l \bs{y}_{l-1}$ we move forward one layer.
+
+\subsection{Activation Functions}
+Other than its connectivity, the choice of which activation function(s) to employ 
+is one of the defining properties of a neural network. Not just any function will do,
+however, and there are several restrictions imposed on any applicable function.
+An activation function for an FFNN must be
+\begin{itemize}
+	\item Non-constant
+	\item Bounded
+	\item Monotonically-increasing
+	\item Continuous
+\end{itemize}
+
+\noindent As linear functions are not bounded, the second requirement exludes this entire family of functions.
+The output of a neural network with linear activation functions would be nothing more than a linear function
+of the inputs. We need to introduce some form of non-linearity to be able to fit non-linear functions.
+The most common examples of such functions are the logistic \textit{sigmoid}
+\begin{equation}\label{eq:sigmoid}
+	\sigma(x) = \frac{1}{1+e^{-x}}
+\end{equation}
+and the \textit{hyperbolic tangent}
+\begin{equation}\label{eq:hyp-tangent}
+	f(x) = tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}.
+\end{equation}
+
+\noindent In addition to meeting the requirements, these functions also have derivatives that are relatively cheap
+to compute. The sigmoid's derivative is
+\begin{equation}
+	\ddx{\sigma(x)} = \sigma(x)(1-\sigma(x)),
+\end{equation}
+and the hyperbolic tangents is
+\begin{equation}
+	\ddx{tanh(x)} = 1 - tanh^2(x)
+\end{equation}
+However, the sigmoid functions suffer from saturating gradients. This occurs when the functions value
+changes little to nothing with changes in the value of x. This has lead to a continuous search for
+alternatives, and one of the most popular activation functions to day is the \textit{Rectified Linear Unit} (ReLU).
+The function, made especially popular after the success of Krizhevsky et al. \cite{Krizhevsky2012},
+takes the following form
+\begin{equation}\label{eq:relu}
+	\text{ReLU} (x) = f(x) = \begin{cases}
+	x, & \text{if } x > 0 \\
+	0,  & \text{otherwise} .
+	\end{cases}
+\end{equation}
+
+\noindent This function is certainly monotonic, and we can approximate its derivative with the Heaviside
+step-function, denoted $H(x)$ on the following form
+\begin{equation}\label{eq:heaviside}
+	H(x) = f'(x) = 	\begin{cases}1, & \text{if } x > 0 \\
+		0,  & \text{otherwise}.
+	\end{cases}
+\end{equation}
+
+
 
 \subsection{Types of neural networks}
 

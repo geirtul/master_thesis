@@ -411,33 +411,177 @@ step-function, denoted $H(x)$ on the following form
 	\end{cases}
 \end{equation}
 
-
-
-\subsection{Types of neural networks}
-
-\subsubsection*{Convolutional Neural Network}
-
-A different variant of FFNNs are \textit{convolutional neural networks}
-(CNNs), which have a connectivity pattern inspired by the animal
-visual cortex. Individual neurons in the visual cortex only respond to
-stimuli from small sub-regions of the visual field, called a receptive
-field. This makes the neurons well-suited to exploit the strong
-spatially local correlation present in natural images. The response of
-each neuron can be approximated mathematically as a convolution
-operation.  (figure to come)
-
-Convolutional neural networks emulate the behaviour of neurons in the
-visual cortex by enforcing a *local* connectivity pattern between
-nodes of adjacent layers: Each node in a convolutional layer is
-connected only to a subset of the nodes in the previous layer, in
-contrast to the fully-connected FFNN.  Often, CNNs consist of several
-convolutional layers that learn local features of the input, with a
-fully-connected layer at the end, which gathers all the local data and
-produces the outputs. They have wide applications in image and video
-recognition.
-
-
 \subsection{Backpropagation}
+
+As we have seen now in a feed-forward network, we can express the final output of our 
+network in terms of basic matrix-vector multiplications. The unknown quantities are 
+our weights $w_{ij}$ and we need to find an algorithm for changing them so that our 
+errors are as small as possible. This leads us to the famous backpropagation algorithm
+\cite{Rumelhart1986}.
+
+The questions we want to ask are how do changes in the biases and the
+weights in our network change the cost function and how can we use the
+final output to modify the weights?
+To derive these equations let us start with a plain regression problem
+and define our cost function 
+
+$$\mathcal{C}(\bs{W})  =  \frac{1}{2}\sum_{i=1}^n\left(\hat{y_i} - y_i\right)^2,$$
+
+where the $y_i$'s are our $n$ targets (the values we want to
+reproduce), while the outputs of the network after having propagated
+all inputs $\hat{x}$ are given by $y_i$.  Below we will demonstrate
+how the basic equations arising from the backpropagation algorithm
+can be modified to study classification problems with $K$ classes.
+
+With our definition of the targets $\bs{y}$, the outputs of the
+network $\hat{\bs{y}}$ and the inputs $\bs{x}$ we
+define now the activation $z_j^l$ of node $j$ of the
+$l$-th layer as a function of the bias, the weights which add up from
+the previous layer $l-1$ and the outputs
+$\bs{a}^{l-1}$ from the previous layer as
+
+$$z_j^l = \sum_{i=1}^{M_{l-1}}w_{ij}^la_i^{l-1}+b_j^l,$$
+
+where $b_k^l$ are the biases from layer $l$.  Here $M_{l-1}$
+represents the total number of nodes of layer $l-1$. 
+We can rewrite this in a more compact form as the matrix-vector products 
+we discussed earlier,
+
+$$\bs{z}^l = \left(\bs{W}^l\right)^T\bs{a}^{l-1}+\bs{b}^l.$$
+
+With the activation values $\bs{z}^l$ we can in turn define the
+output of layer $l$ as $\bs{a}^l = f(\bs{z}^l)$ where $f$ is our
+activation function. In the examples here we will use the sigmoid
+function discussed in our logistic regression lectures. We will also use the same activation function $f$ for all layers
+and their nodes.  It means we have
+
+$$a_j^l = f(z_j^l) = \frac{1}{1+e^{-(z_j^l)}}.$$
+
+\noindent From the definition of the activation $z_j^l$ we have
+
+$$\frac{\partial z_j^l}{\partial w_{ij}^l} = a_i^{l-1},$$
+and
+$$\frac{\partial z_j^l}{\partial a_i^{l-1}} = w_{ji}^l.$$
+
+\noindent With our definition of the activation function we have that (note that this function depends only on $z_j^l$)
+
+$$\frac{\partial a_j^l}{\partial z_j^{l}} = a_j^l(1-a_j^l)=f(z_j^l)(1-f(z_j^l)).$$
+
+\noindent With these definitions we can now compute the derivative of the cost function in terms of the weights.
+Let us specialize to the output layer $l=L$. Our cost function is
+$$\mathcal{C}(\bs{W}^L)  =  \frac{1}{2}\sum_{i=1}^n\left(\hat{y}_i - y_i\right)^2=\frac{1}{2}\sum_{i=1}^n\left(a_i^L - y_i\right)^2,$$
+The derivative of this function with respect to the weights is
+$$\frac{\partial \mathcal{C}(\bs{W}^L)}{\partial w_{jk}^L}  =  \left(a_j^L - t_j\right)\frac{\partial a_j^L}{\partial w_{jk}^{L}},$$
+The last partial derivative can easily be computed and reads (by applying the chain rule)
+$$\frac{\partial a_j^L}{\partial w_{jk}^{L}} = \frac{\partial a_j^L}{\partial z_{j}^{L}}\frac{\partial z_j^L}{\partial w_{jk}^{L}}=a_j^L(1-a_j^L)a_k^{L-1},$$
+We have thus
+$$\frac{\partial \mathcal{C}(\bs{W}^L)}{\partial w_{jk}^L}  =  \left(a_j^L - t_j\right)a_j^L(1-a_j^L)a_k^{L-1},$$
+
+\noindent Defining
+
+$$\delta_j^L = a_j^L(1-a_j^L)\left(a_j^L - t_j\right) = f'(z_j^L)\frac{\partial {\cal C}}{\partial (a_j^L)},$$
+
+and using the Hadamard product of two vectors we can write this as
+
+\begin{equation}\label{eq:bprop-error}
+	\bs{\delta}^L = f'(\bs{z}^L)\circ\frac{\partial \mathcal{C}}{\partial (\bs{a}^L)}.
+\end{equation}
+
+\noindent This is an important expression. The second term on the right-hand side
+measures how fast the cost function is changing as a function of the $j$th
+output activation.  If, for example, the cost function doesn't depend
+much on a particular output node $j$, then $\delta_j^L$ will be small,
+which is what we would expect. The first term on the right measures
+how fast the activation function $f$ is changing at a given activation
+value $z_j^L$.
+
+\noindent Notice that everything in the above equations is easily computed.  In
+particular, we compute $z_j^L$ while computing the behaviour of the
+network, and it is only a small additional overhead to compute
+$f'(z^L_j)$.  The exact form of the derivative with respect to the
+output depends on the form of the cost function.
+However, provided the cost function is known there should be little
+trouble in calculating
+
+$$\frac{\partial \mathcal{C}}{\partial (a_j^L)}$$
+
+\noindent With the definition of $\delta_j^L$ we have a more compact definition of the derivative of the cost function in terms of the weights, namely
+\begin{equation}\label{eq:cost-derivative-compact}
+	\frac{\partial{\cal C}(\hat{W^L})}{\partial w_{jk}^L}  =  \delta_j^La_k^{L-1}.
+\end{equation}
+It is now possible to rewrite our previous equation for $\delta_j^L$ (\ref{eq:bprop-error}) as
+\begin{equation}
+	\delta_j^L =\frac{\partial \mathcal{C}}{\partial z_j^L}= \frac{\partial \mathcal{C}}{\partial a_j^L}\frac{\partial a_j^L}{\partial z_j^L},
+\end{equation}
+which can also be interpreted as the partial derivative of the cost function with respect to the biases $b_j^L$, namely
+
+$$\delta_j^L = \frac{\partial\mathcal{C}}{\partial b_j^L}\frac{\partial b_j^L}{\partial z_j^L}=\frac{\partial\mathcal{C}}{\partial b_j^L},$$
+That is, the error $\delta_j^L$ is exactly equal to the rate of change of the cost function as a function of the bias.
+
+We now have three equations that are essential for the computations of the derivatives of the cost function at the output layer.
+These equations are needed to start the algorithm and they are
+
+\begin{equation}
+\frac{\partial\mathcal{C}(\bs{W}^L)}{\partial w_{jk}^L}  =  \delta_j^La_k^{L-1},
+\end{equation}
+and
+\begin{equation}
+\delta_j^L = f'(z_j^L)\frac{\partial {\cal C}}{\partial a_j^L},
+\end{equation}
+and
+\begin{equation}
+\delta_j^L = \frac{\partial\mathcal{C}}{\partial b_j^L},
+\end{equation}
+
+\noindent An interesting consequence of the above equations is that when the
+activation $a_k^{L-1}$ is small, the gradient term, that is the
+derivative of the cost function with respect to the weights, will also
+tend to be small. From this we gather that the weight changes (or "learns") slowly when we
+minimize the weights via gradient descent. 
+
+Another feature is that when the activation function (in this case sigmoid),
+is rather flat when we move towards its limit values $0$ and $1$. In these
+cases, the derivatives of the activation function will also be close
+to zero, meaning again that the gradients will be small and the
+network learns slowly again.
+
+\noindent We need a fourth equation and we are set. We are going to propagate
+backwards to determine the weights and biases. To do so we need to represent
+the error in the layer before the final one $L-1$ in terms of the errors in the 
+final output layer. Replacing the final layer $L$ with a general layer $l$, we have
+$$\delta_j^l =\frac{\partial\mathcal{C}}{\partial z_j^l}.$$
+We want to express this in terms of the equations for layer $l+1$.
+Using the chain rule and summing over all $k$ entries we have
+
+$$\delta_j^l =\sum_k \frac{\partial\mathcal{C}}{\partial z_k^{l+1}}\frac{\partial z_k^{l+1}}{\partial z_j^{l}}=\sum_k \delta_k^{l+1}\frac{\partial z_k^{l+1}}{\partial z_j^{l}},$$
+and recalling that
+$$z_j^{l+1} = \sum_{i=1}^{M_{l}}w_{ij}^{l+1}a_i^{l}+b_j^{l+1},$$
+with $M_l$ being the number of nodes in layer $l$, we arrive at
+\begin{equation}\label{eq:backprop-general}
+	\delta_j^l =\sum_k \delta_k^{l+1}w_{kj}^{l+1}f'(z_j^l),
+\end{equation}
+The four equations provide us with a way of computing the gradient of the cost function.
+
+First, we set up the input data $\bs{x}$ and the activations
+$\bs{z}_1$ of the input layer and compute the activation function and
+the pertinent outputs $\bs{a}^1$.
+
+Secondly, we perform the feed-forward until we reach the output
+layer and compute all $\bs{z}_l$ of the input layer and compute the
+activation function and the pertinent outputs $\bs{a}^l$ for
+$l=2,3,\dots,L$.
+Next we compute the ouput error $\bs{\delta}^L$ by computing all
+$$\delta_j^L = f'(z_j^L)\frac{\partial\mathcal{C}}{\partial a_j^L}.$$
+Then we compute the back propagate error for each $l=L-1,L-2,\dots,2$ as
+$$\delta_j^l = \sum_k \delta_k^{l+1}w_{kj}^{l+1}f'(z_j^l).$$
+Finally, we update the weights and the biases using gradient descent for 
+each $l=L-1,L-2,\dots,2$ and update the weights and biases according to the rules
+$$w_{jk}^l\leftarrow  = w_{jk}^l- \eta \delta_j^la_k^{l-1},$$
+
+$$b_j^l \leftarrow b_j^l-\eta \frac{\partial {\cal C}}{\partial b_j^l}=b_j^l-\eta \delta_j^l,$$
+
+\noindent The parameter $\eta$ is the learning parameter discussed in connection with the 
+gradient descent methods.
 
 \section{Assessing the Performance of Models}
 If classification accuracy is not enough to gauge whether a model is

@@ -111,25 +111,6 @@ variance of the chosen model and finally the last terms is variance of
 the error $\bs{\epsilon}$.
 
 For a derivation of this equation, we refer to the work of Mehta et. al \cite{Mehta2019}.
-The authors also provide a list of universal lessons to keep in mind, which we quote here:
-
-\begin{itemize}
-	\item Fitting is not predicting. Fitting existing data well is fundamentally
-	different from making predictions about new data.
-	\item Using a complex model can result in overfitting. Increasing a model's
-	complexity  (i.e number of fitting parameters) will usually yield better results
-	on the training data. However when the training data size is small and the data
-	are noisy, this results in \textit{overfitting} and can substantially degrade the
-	predictive performance of the model.
-	\item For complex datasets and small training sets, simple models can be better
-	at prediction complex models due to the bias-variance tradeoff. It takes less
-	data to train a simple model than a complex one. Therefore, even though the 
-	correct model is guaranteed to have better predictive performance for an infinite
-	amount of training data (less bias), the training errors stemming from finite-size
-	sampling (variance) can cause simpler models to outperform the more complex model
-	when sampling is limited.
-
-\end{itemize}
 
 % Derivation from lecture notes here.
 %to recall that the variance of $\bs{y}$ and $\bs{\epsilon}$ are both equal to $\sigma^2$. 
@@ -167,10 +148,31 @@ The cost function used in this project is called the \textbf{cross-entropy}, or 
 	\mathcal{C}(\bs{w})=-\sum_{i=1}^n  \left(y_i(w_0+w_1x_i) -\log{(1+\exp{(w_0+w_1x_i)})}\right)
 \end{equation}
 
-\section{Gradient Descent}\label{seq:gradient}
-Minimizing the cost function is done using Gradient Descent.
-The gist of it is that to optimize the weights or coefficients,
-and biases to minimize the cost function, we can change their values to
+\section{Gradient Descent}\label{seq:gradient-descent}
+Finding the minima or maxima of a functions is a well-known process, perhaps especially
+so in physics. In machine learning most, if not all, cost optimization problems are
+cast as minimization problems, and we will do the same here.
+
+The basic idea of gradient descent is that a function $F(x)$, $x\equiv(x_1,\dots,x_n)$,
+decreases fastest if one goes from x in the direction of the negative gradient $-\nabla F(x)$.
+It can be shown that if
+$$x_{k+1} = x_k - \gamma_k \nabla F(x_k),$$
+with $\gamma_k > 0$, then for $\gamma_k$ small enough, $F(x_{k+1}) \leq F(x_k)$.
+This means that for a sufficiently small $\gamma_k$ we are always moving 
+towards smaller function values, i.e a minimum. The parameter $\gamma_k$ is often
+referred to as step length or \textit{learning rate}. We will be using the latter term
+in this thesis.
+
+
+
+Ideally the sequence ${\bs{x}_k}_{k=0}$ converges to a global minimum of the function 
+$F$. We do not generally know if the minimum we find is local or global,
+unless we have the special case where $F$ is a convex function. In this case all
+local minima are global minima, and gradient descent can converge to the global
+solution. 
+
+
+
 
 \begin{equation}\label{eq:delta-c}
 	\frac{\partial \mathcal{C}(\bs{w})}{\partial \bs{w}} = -\bs{X}^T\left(\hat{y}-\hat{p}\right)

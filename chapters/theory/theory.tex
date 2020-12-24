@@ -159,46 +159,58 @@ It can be shown that if
 $$x_{k+1} = x_k - \gamma_k \nabla F(x_k),$$
 with $\gamma_k > 0$, then for $\gamma_k$ small enough, $F(x_{k+1}) \leq F(x_k)$.
 This means that for a sufficiently small $\gamma_k$ we are always moving 
-towards smaller function values, i.e a minimum. The parameter $\gamma_k$ is often
-referred to as step length or \textit{learning rate}. We will be using the latter term
-in this thesis.
-
-
+towards smaller function values, i.e a minimum. The first point, $x_0$, is an
+initial guess for the minimum. It could be chosen at random, or you could exploit some
+prior knowledge if available. The parameter $\gamma_k$ is often
+referred to as step length or \textit{learning rate}. We will be using the latter 
+term in this thesis.
 
 Ideally the sequence ${\bs{x}_k}_{k=0}$ converges to a global minimum of the function 
 $F$. We do not generally know if the minimum we find is local or global,
 unless we have the special case where $F$ is a convex function. In this case all
 local minima are global minima, and gradient descent can converge to the global
-solution. 
-
-
-
-
-\begin{equation}\label{eq:delta-c}
-	\frac{\partial \mathcal{C}(\bs{w})}{\partial \bs{w}} = -\bs{X}^T\left(\hat{y}-\hat{p}\right)
-\end{equation}
+solution. However, gradient descent is sensitive to the choice of learning rate $\gamma_k$.
+As mentioned above $F(x_{k+1}) \leq F(x_k)$ is only guaranteed for sufficiently small
+$\gamma_k$. If the learning rate is too small the method will converge slowly. If it
+is too large we can experience erratic behaviour.
 
 \subsection{Stochastic Gradient Descent}
 The stochastic gradient descent method address some of the shortcomings
-of the normal gradient descent method. The gradient descent method is
-for instance sensitive to the choice of learning rate (cite?).
-
-The underlying idea of stochastic gradient descent comes from observing
-that the cost function we want to minimize, almost always can be written as
-a sum over \(n\) data points. (cite?). Which gives
-
+of the normal gradient descent method by introducing randomness.
+The cost function we wish to optimize can almost always be expressed as a sum
+over $n$ data points $\{x_i\}_{i=1}^n$.
 \begin{equation}
-	C(w) = \sum\limits_{i=1}^n c_i (\mathbf{x}_iw)
-\end{equation} (cite?)
-
-This means that we also can find the gradient as a sum over i gradients
-as follows:
-
+	\mathcal{C}(\bs{w}) = \sum\limits_{i=1}^n c_i (\bs{x}_i\bs{w})
+\end{equation}
+Which gives us the ability to find the gradient as a sum over $i$ gradients
 \begin{equation}
-	\Delta_{w} C(w) = \sum\limits_{i}^n \Delta_{w}c_i (\mathbf{x}_iw)
-\end{equation} (cite?)
+	\nabla_{\bs{w}} \mathcal{C}(\bs{w}) = \sum\limits_{i}^n \nabla_{\bs{w}}c_i (\bs{x}_i\bs{w})
+\end{equation}
+Stochasticity/randomness is included by only taking the gradient on a subset of data
+called \textit{minibatches}. Let the size of each minibatch be denoted $M$. Given a
+set of n datapoints, this gives us $n/M$ minibatches, which we will denote $B_k$,
+with $k = 1, \dots, n/M$.
 
-Randomness is included by only taking the gradient on a subset of data.
+Now, the procedure for calculating the gradient is now an approximation. Instead of
+summing over all data points, we sum over the data points in one minibatch, chosen
+at random each gradient step. This means that one gradient step is now given by
+\begin{equation}\label{eq:sgd}
+	w_{j+1} = w_j - \gamma_j \sum_{i\in B_k}^{n}\nabla_{\bs{w}}c_i(\bs{x}_i, w)
+\end{equation}
+where $k$ is chosen at random with equal probability from $[1, n/M]$.
+Iterating over the number of minibatches is commonly referred to as an \textit{epoch}.
+When training a model it is typical to choose the number of epochs and then iterate
+over the number of minibatches each epoch. There are two important gains from this 
+introduced stochasticity.
+\begin{itemize}
+	\item Decreased chance that our optimization scheme gets stuck in a local minima.
+	\item If the size of each minibatch is small relative to the number of datapoints,
+	the computation of the gradient is much cheaper.
+\end{itemize}
+
+\subsection{adam}
+\cite{Kingma2015}
+
 
 \section{Neural Networks}
 Artificial neural networks (ANN) are computational systems that can learn to

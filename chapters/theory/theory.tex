@@ -148,7 +148,7 @@ The cost function used in this project is called the \textbf{cross-entropy}, or 
 	\mathcal{C}(\bs{w})=-\sum_{i=1}^n  \left(y_i(w_0+w_1x_i) -\log{(1+\exp{(w_0+w_1x_i)})}\right)
 \end{equation}
 
-\section{Gradient Descent}\label{seq:gradient-descent}
+\section{Gradient Descent}\label{sec:gradient-descent}
 Finding the minima or maxima of a functions is a well-known process, perhaps especially
 so in physics. In machine learning most, if not all, cost optimization problems are
 cast as minimization problems, and we will do the same here.
@@ -174,8 +174,8 @@ As mentioned above $F(x_{k+1}) \leq F(x_k)$ is only guaranteed for sufficiently 
 $\gamma_k$. If the learning rate is too small the method will converge slowly. If it
 is too large we can experience erratic behaviour.
 
-\subsection{Stochastic Gradient Descent}
-The stochastic gradient descent method address some of the shortcomings
+\subsection{Stochastic Gradient Descent}\label{sec:SGD}
+The stochastic gradient descent (SGD) method address some of the shortcomings
 of the normal gradient descent method by introducing randomness.
 The cost function we wish to optimize can almost always be expressed as a sum
 over $n$ data points $\{x_i\}_{i=1}^n$.
@@ -209,7 +209,41 @@ introduced stochasticity.
 \end{itemize}
 
 \subsection{adam}
-\cite{Kingma2015}
+Optimization of the training process has been a focus in the machine learning
+community. Introduced by Kingma and Lei Ba \cite{Kingma2015}, \textit{adam} has
+become the default choice of optimizer for a large number of machine learning
+applications. The algorithm keeps track of two moving averages; the average of the
+gradient ($m_t$) and the squared gradient ($v_t$). Related to these two quantities
+are two hyperparameters, $\beta_1, \beta_2 \in [0,1)$, which control the exponential
+decay rates of these moving averages. The moments are described mathematically as
+\begin{equation}
+	m_t = \beta_1 m_{t-1} + (1 - \beta_1)g_t
+\end{equation}
+\begin{equation}
+	v_t = \beta_2 v_{t-1} + (1 - \beta:2)g_t^2
+\end{equation}
+where $g_t$ is the gradient w.r.t the objective function at timestep $t$.
+In the paper, the authors also describe a problem with the initializing the moving
+averages as vectors of 0's - it leads to moment estimates that are biased towards
+zero, especially during the initial timesteps, and with small decay rates ($\beta s$
+close to 1). They do, however, provide a simple countermeasure to this bias, leading
+to the bias-currected moment estimates given by
+\begin{equation}
+	\hat{m}_t = \frac{m_t}{1 - \beta_1^t}
+\end{equation}
+\begin{equation}
+	\hat{v}_t = \frac{v_t}{1 - \beta_2^t}
+\end{equation}
+where $\beta_i^t$ reads as $\beta_i$ to the power $t$.
+The final parameter update is given by
+\begin{equation}
+	x_{n+1} = x_n - \gamma\frac{\hat{m}_t}{\hat{v}_t + \epsilon}
+\end{equation}
+where $\gamma$ is the learning rate and $\epsilon$ is added to avoid divide by zero
+for small gradient values. The authors propose default settings for the hyperparameters, which are
+$\beta_1 = 0.9$, $\beta_2 = 0.999$, $\gamma_1 = 10^{-3}$, and $\epsilon = 10^{-8}$.
+These are the values used for every model trained in this thesis, unless otherwise
+is specifically indicated.
 
 
 \section{Neural Networks}

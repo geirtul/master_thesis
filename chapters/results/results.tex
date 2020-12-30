@@ -10,16 +10,16 @@ transferrable to experimental data.
 The simulated data contains two classes of events - a single electron and a double electron.
 
 \subsection{Simulated data}
-In table \ref{tab:classification-simulated-f1} the performance of each model 
+In table \ref{tab:classification-simulated-f1-auc} the performance of each model 
 trained is reported using the f1-score. The model architecture for each model is described in (ref appendix).
 As a benchmark, we are including a state of the art pretrained network (\cite{}VGG HERE) applied to the data 
 using the approach described in \ref{section:method-pretrained}.
-\input{chapters/results/figures/classification_simulated_f1.tex}
-To give a broader picture of the performance we also include the calculated confusion matrix values in
-table \ref{tab:classification-simulated-confmat}. Even if f1-scores are similar, there may still be differences
-in either of the confusion matrix values.
-\input{chapters/results/figures/classification_simulated_confmat.tex}
-\input{chapters/results/figures/dummyfig.tex}
+\input{chapters/results/figures/classification_simulated_f1_auc.tex}
+In figure \ref{tab:classification-simulated-pixelmod-f1-auc} we show the performance
+of the same architectures trained on data where specific pixels are set to 0 to mimic
+the experimental dataset.
+\input{chapters/results/figures/classification_simulated_pixelmod_f1_auc.tex}
+
 
 \subsection{Experimental data}
 
@@ -30,9 +30,13 @@ the positions aren't necessarily the locations of the highest-intensity pixels i
 \subsection{Simulated data}
 \subsubsection{Position - Single electron}
 \input{chapters/results/figures/regression_simulated_single_position_r2.tex}
+\input{chapters/results/figures/regression_simulated_single_position_pixelmod_r2.tex}
 \subsubsection{Energy - Single electron}
 \input{chapters/results/figures/regression_simulated_single_energy_r2.tex}
+\input{chapters/results/figures/regression_simulated_single_energy_pixelmod_r2.tex}
 \subsubsection{Position - Double electron}
 \input{chapters/results/figures/regression_simulated_double_position_r2.tex}
+\input{chapters/results/figures/regression_simulated_double_position_pixelmod_r2.tex}
 \subsubsection{Energy - Double electron}
 \input{chapters/results/figures/regression_simulated_double_energy_r2.tex}
+\input{chapters/results/figures/regression_simulated_double_energy_pixelmod_r2.tex}

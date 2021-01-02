@@ -1,0 +1,22 @@
+\begin{table}
+\centering
+\caption{
+Test set R2-scores for regresson of positions of origin on simulated data, with models trained on data with: 
+a) no modifications, b) specific pixels set to zero to mimic experimental data, and c) imbalanced dataset
+in addition to modifications in b) to further mimic experimental data. Error estimates are the standard deviation 
+in results from validation data in k-fold cross-validation with $K=5$ folds.
+}
+\label{tab:regression-simulated-all-positions-r2}
+\begin{tabular}{llllll}
+\toprule
+{} &                                              Linear &                                               Dense &                                       Convolutional &                                    Pretrained VGG16 &                                              Custom \\
+\midrule
+Single position (a) &  $\underset{\num{+- 3.664e-03 }  }{\num{ 0.8 } }$ &  $\underset{\num{+- 8.185e-04 }  }{\num{ 0.991 } }$ &  $\underset{\num{+- 2.401e-04 }  }{\num{ 0.997 } }$ &  $\underset{\num{+- 6.864e-03 }  }{\num{ 0.884 } }$ &  $\underset{\num{+- 2.335e-04 }  }{\num{ 0.999 } }$ \\
+Single position (b) &  $\underset{\num{+- 2.737e-03 }  }{\num{ 0.776 } }$ &  $\underset{\num{+- 6.798e-04 }  }{\num{ 0.987 } }$ &  $\underset{\num{+- 1.015e-03 }  }{\num{ 0.988 } }$ &  $\underset{\num{+- 1.723e-02 }  }{\num{ 0.873 } }$ &  $\underset{\num{+- 2.114e-04 }  }{\num{ 0.997 } }$ \\
+Single position (c) &  $\underset{\num{+- 2.737e-03 }  }{\num{ 0.776 } }$ &  $\underset{\num{+- 6.771e-04 }  }{\num{ 0.987 } }$ &  $\underset{\num{+- 1.016e-03 }  }{\num{ 0.988 } }$ &  $\underset{\num{+- 1.723e-02 }  }{\num{ 0.873 } }$ &  $\underset{\num{+- 4.791e-04 }  }{\num{ 0.998 } }$ \\
+Double position (a) &  $\underset{\num{+- 5.796e-03 }  }{\num{ 0.364 } }$ &  $\underset{\num{+- 1.809e-03 }  }{\num{ 0.471 } }$ &  $\underset{\num{+- 2.394e-03 }  }{\num{ 0.473 } }$ &  $\underset{\num{+- 1.079e-02 }  }{\num{ 0.37 } }$ &  $\underset{\num{+- 6.812e-04 }  }{\num{ 0.489 } }$ \\
+Double position (b) &  $\underset{\num{+- 6.804e-04 }  }{\num{ 0.365 } }$ &  $\underset{\num{+- 8.661e-04 }  }{\num{ 0.466 } }$ &  $\underset{\num{+- 1.841e-03 }  }{\num{ 0.363 } }$ &  $\underset{\num{+- 1.397e-02 }  }{\num{ 0.343 } }$ &  $\underset{\num{+- 2.694e-04 }  }{\num{ 0.488 } }$ \\
+Double position (c) &  $\underset{\num{+- 7.864e-03 }  }{\num{ 0.357 } }$ &  $\underset{\num{+- 1.133e-02 }  }{\num{ 0.451 } }$ &  $\underset{\num{+- 7.664e-03 }  }{\num{ 0.44 } }$ &  $\underset{\num{+- 1.506e-02 }  }{\num{ 0.333 } }$ &  $\underset{\num{+- 1.781e-01 }  }{\num{ 0.224 } }$ \\
+\bottomrule
+\end{tabular}
+\end{table}

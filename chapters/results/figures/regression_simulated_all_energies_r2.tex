@@ -1,0 +1,22 @@
+\begin{table}
+\centering
+\caption{
+Test set R2-scores for regresson of energies on simulated data, with models trained on data with: 
+a) no modifications, b) specific pixels set to zero to mimic experimental data, and c) imbalanced dataset
+in addition to modifications in b) to further mimic experimental data. Error estimates are the standard deviation 
+in results from validation data in k-fold cross-validation with $K=5$ folds.
+}
+\label{tab:regression-simulated-all-energies-r2}
+\begin{tabular}{llllll}
+\toprule
+{} &                                              Linear &                                               Dense &                                        Convolutional &                                    Pretrained VGG16 &                                              Custom \\
+\midrule
+Single energies (a) &  $\underset{\num{+- 3.691e-02 }  }{\num{ 0.936 } }$ &  $\underset{\num{+- 3.364e-02 }  }{\num{ 0.938 } }$ &  $\underset{\num{+- 3.282e-02 }  }{\num{ 0.937 } }$ &  $\underset{\num{+- 1.945e-02 }  }{\num{ 0.893 } }$ &  $\underset{\num{+- 3.103e-02 }  }{\num{ 0.944 } }$ \\
+Single energies (b) &  $\underset{\num{+- 2.459e-02 }  }{\num{ 0.739 } }$ &  $\underset{\num{+- 2.261e-02 }  }{\num{ 0.754 } }$ &  $\underset{\num{+- 2.405e-02 }  }{\num{ -0.128 } }$ &  $\underset{\num{+- 1.418e-02 }  }{\num{ 0.728 } }$ &  $\underset{\num{+- 2.865e-02 }  }{\num{ 0.733 } }$ \\
+Single energies (c) &  $\underset{\num{+- 2.459e-02 }  }{\num{ 0.739 } }$ &  $\underset{\num{+- 2.244e-02 }  }{\num{ 0.753 } }$ &  $\underset{\num{+- 2.527e-02 }  }{\num{ -0.146 } }$ &  $\underset{\num{+- 1.418e-02 }  }{\num{ 0.728 } }$ &  $\underset{\num{+- 2.866e-02 }  }{\num{ 0.723 } }$ \\
+Double energies (a) &  $\underset{\num{+- 6.501e-02 }  }{\num{ 0.429 } }$ &  $\underset{\num{+- 6.632e-02 }  }{\num{ 0.43 } }$ &  $\underset{\num{+- 5.027e-02 }  }{\num{ 0.433 } }$ &  $\underset{\num{+- 5.308e-02 }  }{\num{ 0.425 } }$ &  $\underset{\num{+- 3.226e-02 }  }{\num{ 0.491 } }$ \\
+Double energies (b) &  $\underset{\num{+- 3.155e-03 }  }{\num{ 0.487 } }$ &  $\underset{\num{+- 2.571e-03 }  }{\num{ 0.49 } }$ &  $\underset{\num{+- 3.120e-03 }  }{\num{ 0.282 } }$ &  $\underset{\num{+- 1.032e-02 }  }{\num{ 0.455 } }$ &  $\underset{\num{+- 2.746e-03 }  }{\num{ 0.466 } }$ \\
+Double energies (c) &  $\underset{\num{+- 4.608e-02 }  }{\num{ 0.411 } }$ &  $\underset{\num{+- 4.589e-02 }  }{\num{ 0.432 } }$ &  $\underset{\num{+- 4.614e-02 }  }{\num{ 0.119 } }$ &  $\underset{\num{+- 3.052e-02 }  }{\num{ 0.398 } }$ &  $\underset{\num{+- 5.950e-02 }  }{\num{ 0.258 } }$ \\
+\bottomrule
+\end{tabular}
+\end{table}

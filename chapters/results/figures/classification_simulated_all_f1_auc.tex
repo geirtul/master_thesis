@@ -1,0 +1,22 @@
+\begin{table}
+\centering
+\caption{
+Test set F1-scores and roc-AUC scores for classification of simulated datausing multiple models.
+Models are trained on a) unmodified data, b) data where specific pixels are set to zero to mimic
+'dead' pixels in experimental data, and c) same as b) and imbalanced to mimic experimental data. 
+Error estimates are the standard deviation in results from k-fold cross-validation with $K=5$ folds.
+}
+\label{tab:classification-simulated-all-f1-auc}
+\begin{tabular}{llllll}
+\toprule
+{} &                                            Logistic &                                               Dense &                                       Convolutional &                                    Pretrained VGG16 &                                              Custom \\
+\midrule
+F1-score (a) &  $\underset{\num{+- 7.727e-03 }  }{\num{ 0.738 } }$ &  $\underset{\num{+- 1.329e-02 }  }{\num{ 0.91 } }$ &  $\underset{\num{+- 6.286e-03 }  }{\num{ 0.964 } }$ &  $\underset{\num{+- 1.591e-02 }  }{\num{ 0.911 } }$ &  $\underset{\num{+- 2.260e-02 }  }{\num{ 0.957 } }$ \\
+F1-score (b) &  $\underset{\num{+- 2.273e-03 }  }{\num{ 0.732 } }$ &  $\underset{\num{+- 8.276e-03 }  }{\num{ 0.916 } }$ &  $\underset{\num{+- 3.640e-02 }  }{\num{ 0.758 } }$ &  $\underset{\num{+- 1.926e-02 }  }{\num{ 0.897 } }$ &  $\underset{\num{+- 7.601e-03 }  }{\num{ 0.938 } }$ \\
+F1-score (c) &  $\underset{\num{+- 8.483e-02 }  }{\num{ 0.292 } }$ &  $\underset{\num{+- 1.233e-01 }  }{\num{ 0.52 } }$ &  $\underset{\num{+- 9.458e-02 }  }{\num{ 0.9 } }$ &  $\underset{\num{+- 3.606e-02 }  }{\num{ 0.823 } }$ &  $\underset{\num{+- 1.047e-01 }  }{\num{ 0.97 } }$ \\
+AUC (a)      &  $\underset{\num{+- 6.515e-04 }  }{\num{ 0.832 } }$ &  $\underset{\num{+- 1.774e-02 }  }{\num{ 0.956 } }$ &  $\underset{\num{+- 2.185e-03 }  }{\num{ 0.988 } }$ &  $\underset{\num{+- 8.505e-03 }  }{\num{ 0.956 } }$ &  $\underset{\num{+- 2.218e-02 }  }{\num{ 0.979 } }$ \\
+AUC (b)      &  $\underset{\num{+- 9.779e-04 }  }{\num{ 0.832 } }$ &  $\underset{\num{+- 2.604e-03 }  }{\num{ 0.956 } }$ &  $\underset{\num{+- 9.848e-03 }  }{\num{ 0.977 } }$ &  $\underset{\num{+- 9.530e-03 }  }{\num{ 0.949 } }$ &  $\underset{\num{+- 1.763e-03 }  }{\num{ 0.99 } }$ \\
+AUC (c)      &  $\underset{\num{+- 1.601e-03 }  }{\num{ 0.832 } }$ &  $\underset{\num{+- 2.750e-03 }  }{\num{ 0.83 } }$ &  $\underset{\num{+- 8.035e-03 }  }{\num{ 0.944 } }$ &  $\underset{\num{+- 4.376e-03 }  }{\num{ 0.92 } }$ &  $\underset{\num{+- 5.312e-04 }  }{\num{ 0.986 } }$ \\
+\bottomrule
+\end{tabular}
+\end{table}

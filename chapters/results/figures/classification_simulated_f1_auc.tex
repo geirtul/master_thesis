@@ -1,17 +1,17 @@
 \begin{table}
 \centering
 \caption{
-Mean F1-scores and roc-auc scores for classification of simulated data using multiple models. 
+Test set F1-scores and roc-auc scores for classification of simulated data using multiple models. 
 Error estimates are the standard deviation in results from k-fold cross-validation 
 with $K=5$ folds.
 }
 \label{tab:classification-simulated-f1-auc}
-\begin{tabular}{lllll}
+\begin{tabular}{llllll}
 \toprule
-{} &                                            Logistic &                                               Dense &                                       Convolutional &                                    Pretrained VGG16 \\
+{} &                                            Logistic &                                               Dense &                                       Convolutional &                                    Pretrained VGG16 &                                              Custom \\
 \midrule
-F1-score &  $\underset{\num{+- 7.727e-03 }  }{\num{ 0.734 } }$ &  $\underset{\num{+- 1.329e-02 }  }{\num{ 0.907 } }$ &  $\underset{\num{+- 6.286e-03 }  }{\num{ 0.959 } }$ &  $\underset{\num{+- 1.591e-02 }  }{\num{ 0.894 } }$ \\
-AUC      &  $\underset{\num{+- 6.515e-04 }  }{\num{ 0.833 } }$ &  $\underset{\num{+- 1.774e-02 }  }{\num{ 0.951 } }$ &  $\underset{\num{+- 2.185e-03 }  }{\num{ 0.986 } }$ &  $\underset{\num{+- 8.505e-03 }  }{\num{ 0.947 } }$ \\
+F1-score &  $\underset{\num{+- 7.727e-03 }  }{\num{ 0.738 } }$ &  $\underset{\num{+- 1.329e-02 }  }{\num{ 0.91 } }$ &  $\underset{\num{+- 6.286e-03 }  }{\num{ 0.964 } }$ &  $\underset{\num{+- 1.591e-02 }  }{\num{ 0.911 } }$ &  $\underset{\num{+- 2.260e-02 }  }{\num{ 0.957 } }$ \\
+AUC      &  $\underset{\num{+- 6.515e-04 }  }{\num{ 0.832 } }$ &  $\underset{\num{+- 1.774e-02 }  }{\num{ 0.956 } }$ &  $\underset{\num{+- 2.185e-03 }  }{\num{ 0.988 } }$ &  $\underset{\num{+- 8.505e-03 }  }{\num{ 0.956 } }$ &  $\underset{\num{+- 2.218e-02 }  }{\num{ 0.979 } }$ \\
 \bottomrule
 \end{tabular}
 \end{table}

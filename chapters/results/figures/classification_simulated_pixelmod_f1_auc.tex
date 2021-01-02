@@ -2,16 +2,16 @@
 \centering
 \caption{
 Mean F1-scores and roc-auc scores for classification of simulated data with specific pixels
-modified, using multiple models. Error estimates are the standard deviation in results from 
-k-fold cross-validation with $K=5$ folds.
+modified, using multiple models trained on an imbalanced dataset. Error estimates are the 
+standard deviation in results from k-fold cross-validation with $K=5$ folds.
 }
 \label{tab:classification-simulated-pixelmod-f1-auc}
-\begin{tabular}{lllll}
+\begin{tabular}{llllll}
 \toprule
-{} &                                            Logistic &                                               Dense &                                       Convolutional &                                    Pretrained VGG16 \\
+{} &                                            Logistic &                                              Dense &                                       Convolutional &                                    Pretrained VGG16 &                                              Custom \\
 \midrule
-F1-score &  $\underset{\num{+- 2.273e-03 }  }{\num{ 0.735 } }$ &  $\underset{\num{+- 8.276e-03 }  }{\num{ 0.904 } }$ &  $\underset{\num{+- 3.640e-02 }  }{\num{ 0.942 } }$ &  $\underset{\num{+- 1.926e-02 }  }{\num{ 0.908 } }$ \\
-AUC      &  $\underset{\num{+- 9.779e-04 }  }{\num{ 0.832 } }$ &  $\underset{\num{+- 2.604e-03 }  }{\num{ 0.952 } }$ &  $\underset{\num{+- 9.848e-03 }  }{\num{ 0.98 } }$ &  $\underset{\num{+- 9.530e-03 }  }{\num{ 0.953 } }$ \\
+F1-score &  $\underset{\num{+- 2.273e-03 }  }{\num{ 0.292 } }$ &  $\underset{\num{+- 8.276e-03 }  }{\num{ 0.52 } }$ &  $\underset{\num{+- 3.640e-02 }  }{\num{ 0.9 } }$ &  $\underset{\num{+- 1.926e-02 }  }{\num{ 0.823 } }$ &  $\underset{\num{+- 7.601e-03 }  }{\num{ 0.97 } }$ \\
+AUC      &  $\underset{\num{+- 9.779e-04 }  }{\num{ 0.832 } }$ &  $\underset{\num{+- 2.604e-03 }  }{\num{ 0.83 } }$ &  $\underset{\num{+- 9.848e-03 }  }{\num{ 0.944 } }$ &  $\underset{\num{+- 9.530e-03 }  }{\num{ 0.92 } }$ &  $\underset{\num{+- 1.763e-03 }  }{\num{ 0.986 } }$ \\
 \bottomrule
 \end{tabular}
 \end{table}

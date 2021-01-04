@@ -1,5 +1,5 @@
 \section{Classification}
-For the goal of classifying simulated data, we have used five different model types,
+For classification of simulated data, we have used five different model types,
 spanning a range of complexities, architectures, and parameters.
 The reason for multiple models is the fundamental difference between the
 simulated and experimental datasets; labels. Without ground truth labels
@@ -7,26 +7,30 @@ for the experimental data, we need other ways to assess how a model performs in
 its task. We attempt to gain some insight by comparing the models' performance on
 simulated data with their outputs when applied to experimental data.
 
-We train the models on three sets of simulated data.
+\noindent We train the models on three sets of simulated data.
 The first (a) is the simulated data as-is, with no changes apart from normalization
 and pre-processing. The second (b) is the same dataset, but with specific pixels in
 the 'detector images' set to zero. These pixels are effectively "dead" in the
-experimental dataset, and mimicking this in the simulated data may allow us to monitor
-what effect this has on model performance.
+experimental dataset, and we wish to monitor the effect this has on model performance.
+The last dataset (c) has been intentionally imbalanced to further mimick experimental data,
+wherein we expect the majority of events to be 'single' events, rather than 'double'
+events, as outlined in section \ref{sec:experimental-background}.
 
-\subsection{Simulated data}
-In table \ref{tab:classification-simulated-all-f1-auc} the performance of each model 
-trained is reported using the f1-score and auc-score. The model architecture for each 
-model is described in (ref appendix).
-As a benchmark, we are including a state of the art pretrained 
-network (\cite{}VGG HERE) applied to the data using the approach described 
-in \ref{section:method-pretrained}.
+\noindent The variability in results is estimated using a K-fold cross-validation approach, with
+$K = 5$ \cite{Stone1974}.
+
+\subsection{Classification on simulated data}
+
+In table \ref{tab:classification-simulated-all-f1-auc} the performance of each model
+is reported through the estimated $F1$-score, for each of the datasets.
 \input{chapters/results/figures/classification_simulated_all_f1_auc.tex}
-in figure \ref{fig:confmat-simulated}
+As a benchmark, we are including a model based on a state of the art pretrained 
+network\cite{Simonyan2015}. In in figure \ref{fig:confmat-simulated},
+we show the confusion matrix for prediction on test set data for all the models,
+including normalized values for each event type.
 \input{chapters/results/figures/confmat-simulated.tex}
-\subsection{Experimental data}
-
-\section{Regression}
+ 
+\subsection{Regression on simulated data}
 On data already classified, we attempt to predict the energy of the events and the position of origin for
 the electrons. Because there is a travel distance between the ejection site and the scintillator array,
 the positions aren't necessarily the locations of the highest-intensity pixels in the detector images.
@@ -35,3 +39,6 @@ the positions aren't necessarily the locations of the highest-intensity pixels i
 \input{chapters/results/figures/regression_simulated_all_positions_r2.tex}
 \subsubsection{Energy}
 \input{chapters/results/figures/regression_simulated_all_energies_r2.tex}
+
+\subsection{Experimental data}
+

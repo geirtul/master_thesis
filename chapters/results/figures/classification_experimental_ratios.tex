@@ -1,0 +1,20 @@
+\begin{table}
+\centering
+\caption{
+Decay event classification on experimental data, with models trained on:
+a) unmodified data, b) data where specific pixels are set to zero to mimic
+'dead' pixels in experimental data, and c) same as b) and imbalanced to mimic experimental data.
+}
+\label{tab:classification-experimental-ratios}
+\begin{tabular}{llll}
+\toprule
+{} &                                                                    Ratio single, double (a) &         Ratio single, double (b) &          Ratio single, double (c) \\
+\midrule
+Logistic   &  $\underset{\num{ 198210 }  }{\num{ 0.762 } }, \underset{\num{ 61937 }  }{\num{ 0.238 } }$ &  $\num{ 0.778 }, \num{ 0.222 }$ &  $\num{ 1 }, \num{ 7.69e-06 }$ \\
+Dense      &  $\underset{\num{ 97487 }  }{\num{ 0.375 } }, \underset{\num{ 162660 }  }{\num{ 0.625 } }$ &  $\num{ 0.387 }, \num{ 0.613 }$ &  $\num{ 1 }, \num{ 9.61e-05 }$ \\
+CNN        &  $\underset{\num{ 63051 }  }{\num{ 0.242 } }, \underset{\num{ 197096 }  }{\num{ 0.758 } }$ &  $\num{ 0.257 }, \num{ 0.743 }$ &  $\num{ 0.379 }, \num{ 0.621 }$ \\
+Pretrained &  $\underset{\num{ 138614 }  }{\num{ 0.533 } }, \underset{\num{ 121533 }  }{\num{ 0.467 } }$ &  $\num{ 0.53 }, \num{ 0.47 }$ &  $\num{ 0.997 }, \num{ 0.00269 }$ \\
+Custom     &  $\underset{\num{ 26277 }  }{\num{ 0.101 } }, \underset{\num{ 233870 }  }{\num{ 0.899 } }$ &  $\num{ 0.0951 }, \num{ 0.905 }$ &  $\num{ 0.204 }, \num{ 0.796 }$ \\
+\bottomrule
+\end{tabular}
+\end{table}

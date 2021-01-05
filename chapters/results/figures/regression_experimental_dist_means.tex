@@ -1,0 +1,30 @@
+\begin{table}
+\centering
+\caption{
+Mean distances of predicted position of origin on experimental data, to center of highest intensity pixel (HIP).Models 
+trained on data with: a) no modifications, b) specific pixels set to zero to mimic experimental data, and c) imbalanced dataset
+in addition to modifications in b) to further mimic experimental data.
+}
+\label{tab:regression-experimental-dist-means}
+\begin{tabular}{ll}
+\toprule
+{} & Mean distance [mm] \\
+\midrule
+LinReg (a)     &  $\num{ 19.19 }$ \\
+Dense (a)      &  $\num{ 63.27 }$ \\
+CNN (a)        &  $\num{ 10.72 }$ \\
+Pretrained (a) &  $\num{ 17.52 }$ \\
+Custom (a)     &  $\num{ 13.23 }$ \\
+LinReg (b)     &  $\num{ 19.97 }$ \\
+Dense (b)      &  $\num{ 32.06 }$ \\
+CNN (b)        &  $\num{ 11.92 }$ \\
+Pretrained (b) &  $\num{ 16.43 }$ \\
+Custom (b)     &  $\num{ 4.39 }$ \\
+LinReg (c)     &  $\num{ 19.97 }$ \\
+Dense (c)      &  $\num{ 32.04 }$ \\
+CNN (c)        &  $\num{ 11.85 }$ \\
+Pretrained (c) &  $\num{ 16.43 }$ \\
+Custom (c)     &  $\num{ 7.08 }$ \\
+\bottomrule
+\end{tabular}
+\end{table}

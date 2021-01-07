@@ -825,6 +825,134 @@ This is written as \ce{^{A}_{Z}Y_{N}}. For a given nucleus there may be several
 %	\end{itemize}
 \end{itemize}
 
+\subsection{Experiment}
+\begin{itemize}
+	\item Decay spectroscopy
+	\item All information in the detector is timestamped sub nanoseconds.
+	\item Total energy deposited in detector is recorded
+\end{itemize}
+
+\subsection{Decay Spectroscopy}
+There are several types of decays that can occur within nuclei. Among them
+we find
+\begin{itemize}
+	\item Beta decay - $\beta$
+	\item Photon decay - $\gamma$
+	\item Alpha decay - $\alpha$ (\ce{^4He})
+	\item Proton/Neutron decay
+	\item Gamma ray
+	\item Internal conversion electron
+\end{itemize}
+of which this experiment focuses on Beta decay, photon decay and Internal
+conversion. Decays can also occur as chains of decays before a nucleus
+reaches a stable state. When measuring decay spectroscopy, there are three
+primary pieces of information that we are interested in:
+\begin{itemize}
+	\item energy - gives an idea of the energy difference between the initial
+	and final state for decays with characteristic energies.
+	\item half-lives - what is the time between when a state was populated
+	and when it was depopulated?
+	\item branching ratios - when there is a choice of final states, we want
+	to know which states are preferentially populated.
+\end{itemize}
+For these experiments the focus is neutron-rich nuclei. Some conventions and units
+used in the experiments are
+\begin{itemize}
+	\item Time - can range between picoseconds ($10^{-12}s$) to years.
+	\begin{itemize}
+		\item $t_{1/2}$ - half-life
+		\item $\lambda$ - decay constants
+		\item $\tau$ - lifetime
+	\end{itemize}
+	\item Energy - electron Vol (eV) - the energy needed to move an electron
+	across a potential difference of one volt.
+	\item Branching ratios - given as the percentage chance of the state reaching
+	each of the possible final states.
+\end{itemize}
+\subsubsection{Beta Decay}
+The majority of nuclei decay through beta decay. There are three types:
+\begin{align}
+	\beta^-: \ce{^{A}_{Z}Z_{N}} \rightarrow \ce{^{A}_{Z+1}Y_{N-1}} + e^- + \nu + Q_{\beta} \\
+	\beta^+: \ce{^{A}_{Z}Z_{N}} \rightarrow \ce{^{A}_{Z-1}Y_{N+1}} + e^+ + \nu + Q_{\beta} \\
+	EC: \ce{^{A}_{Z}Z_{N}} + e^- \rightarrow \ce{^{A}_{Z-1}Y_{N+1}} + \bar{\nu} + Q_{\beta}
+\end{align}
+where EC is Electron Capture. These three decays either turn protons into neutrons, or
+vice versa. In every case there are neutrinos ($\nu$) being emitted.
+\begin{itemize}
+	\item Q values
+	\item energies on the order of keV - 10's of MeV
+	\item Beta-decay spectrum (three body process), energy observed is not characteristic,
+	energy loss is observed in detectors (tyically don't have enough material to completely
+	stop the beta decay electron)
+	\item Selection rules - allowed and forbidden decays
+	\item $\log ft$ - used to classify decays
+\end{itemize}
+
+\subsubsection{Gamma-ray decay}
+Decay by photon emission, where a nucleus in some excited state $J_i^{\pi}$ with energy
+$E_i$ decays to a lower energy state $J_f^{\pi}$ with energy $E_f$, through the emission
+of a photon with energy $E_{\gamma}$. Each state $J$ is characterized by a specific spin
+and parity. Gamma-rays must carry away at least one unit of angular momentum, $L$, to
+accomplish such a transition. The amount of angular momentum able to be carried away is
+bounded according to
+\begin{equation}
+	|J_i - J_f| \leq L \leq J_i + J_f
+\end{equation}
+Tyically the lowest possible $L$ dominates. We can also characterize these transitions
+in terms of their electric or magnetic character, given by
+\begin{align}
+	\Delta\pi(EL) &= (-1)^L \\
+	\Delta\pi(ML) &= (-1)^{L+1}
+\end{align}
+
+\subsubsection{Internal Conversion}
+The internal conversion process competes with gamma decay. Electromagnetic interactions
+between the nucleus and an atomic electron leads to the atomic electron being ejected
+from the atom. This happens without the emission of gamma rays. The energy of the
+emitted electron can be calculated, and is given by
+\begin{equation}
+	E_{IC} = E_{\text{transition}} - E_{\text{electron binding energy}}
+\end{equation}
+This will give a set of possible energies, as the emitted electron can come from
+different shells in the atom.
+
+Gamma ray decay leads to a characteristic energy representative of the difference
+between the initial and final state. We want to measure transition rates.
+States always have the potential to decay either through photon or electron emission.
+Electron emission dominates at higher $Z$s and lower energies, but is in principle
+always a possibility. 
+
+\subsection{Experiment}
+Small, inorganic $CeBr_3$ (Cerium Bromide) scintillator. The detector itself is abobut 3mm
+thick and a few cm in dimension perpendicular to the beam. Accellerated ions are stopped
+in the scintillator. The central detector observes ions and decays, of which decays can
+be any one of gamma rays, beta decay electrons, or internal conversion electrons.
+\begin{itemize}
+	\item The detector is constructed as a 16x16 grid of what we will refer to as
+	\textit{pixels}. Note that the scintillator itself is not pixellated, but the
+	Position-Sensitive Photomultiplier Tube (PSPMT) is.
+	\item Ions identified event-by-event are implanted in the detector.
+	Position (which pixel) and arrival time are recorded for all implanted ions.
+	\item Some characteristic time later a decay is detected. Position and time of decay
+	are recorded.
+	\item Decays are correlated to ions using spatial and temporal information
+	\item Time scales
+	\begin{itemize}
+		\item Beta decay: ~$10^{-3}s$
+		\item Gamma decay: ~$10^{-15}$ to $10^{-3}s$
+	\end{itemize}
+	\item Gamma rays coincident with decays are then associated with the decay of a
+	particular ion
+\end{itemize}
+The ability to correlate decays to specific ions is dependent on the rate of ions implanted.
+Low-energy photons will be trapped in the detector, while high-energy photons will mostly
+escape. This cutoff happens around 100keV. Electrons are typicly on the order of a few
+MeV. Because you need a fairly large amount of material to completely stop an electron with
+energies of 5-10MeV, what is actually detected is the energy left in the detector by the
+electron as it passes through.
+
+
 \subsection{Data}
+Gaps in distribution experimentally due to pixels not responding.
 
 

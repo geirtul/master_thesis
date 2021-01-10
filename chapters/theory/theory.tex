@@ -1,3 +1,12 @@
+In this thesis we explore the use of supervised learning on simulated and experimental
+nuclear physics data. To build a foundation for the following discussion, we introduce
+the fundamental concepts underpinning the advanced machine learning techniques of
+today.
+
+We note that the following chapter follows closely the work of 
+Morten Hjorth-Jensen\cite{mhjensen-fys4155-notes}, Mehta et. al\cite{Mehta2019},
+Goodfellow et. al\cite{Goodfellow-et-al-2016}, and the University of Stanfords
+course CS231n\cite{cs231n}.
 \section{Linear Regression}\label{sec:linreg}
 Suppose you have a data set $\mathcal{L}$ consisting of the data
 $\mathbf{X}_\mathcal{L}=\{(y_i, x_i), i=0\ldots n-1\}$. Each point is associated
@@ -846,25 +855,46 @@ are consistent with the labels in the training set for each image.
 \noindent For a more in-depth breakdown of convolutional neural networks,
 we refer to Stanford's excellent course CS231n, and their text on CNNs \cite{cs231n}.
 
+\section{Performance metrics}
+To go further into the backround for the chosen metrics, we need to establish four 
+quantities that appear in most, if not all discussion of the topic. These are
+\begin{itemize}
+	\item True positive (TP) - Double event classified as double event
+	\item True negative (TN) - Single event classified as single event
+	\item False positive (FP) - Single event classified as double event
+	\item False negative (FN) - Double event classified as single event
+\end{itemize}
+\noindent Which type of event is "positive" and "negative" is an arbitrary choice.
+From these terms we can define some properties of a classifier.
+\textbf{Sensitivity} (or \textbf{True positive rate} (TPR), or \textbf{recall})
+measures the fraction of positive samples in the data that are correctly classified 
+as positive.
 
+$$\text{sensitivity} = \frac{\text{number of true positives}}{\text{number of true positives} + \text{number of false negatives}} = \frac{TP}{TP + FN}$$
 
-\section{Assessing the Performance of Models}
-If classification accuracy is not enough to gauge whether a model is
-performing well, or well in the desired way, alternative way to measure
-performance must be explored. For cases of imbalanced data there are a few
-widely used methods that reveal information about the model that the simple
-accuracy metric can't.
+\noindent \textbf{Specificity} (or \textbf{True negative rate} (TNR)) measures the fraction 
+of negative samples in the data that are correctly classified as negative.
 
-\subsection{Imbalanced Data in Classification}
-The physical world is rarely balanced.
+$$\text{specificity} = \frac{\text{number of true negatives}}{\text{number of true negatives} + \text{number of false positives}} = \frac{TN}{TN + FP}$$
 
-A common challenge in classification is imbalanced data, in which a large
+\noindent \textbf{Precision} (or \textbf{Positive preditive value} (PPV)) measures the fraction
+of samples classified as positive that are correctly classified.
+
+$$\text{precision} = \frac{\text{number of true positives}}{\text{number of true positives} + \text{number of false positives}} = \frac{TP}{TP + FP}$$
+
+\subsection{Accuracy}
+The accuracy is a well known measure of performance, but not always a good one. 
+It's simply the fraction of all samples that were correctly classified. Using the 
+terms above we have
+$$\text{accuracy} = \frac{TP + TN}{TP + TN + FP + FN}.$$
+
+\noindent A common challenge in classification is imbalanced data, in which a large
 amount of the labeled data belongs to just one or a few of the classes.
 For binary classification, if 90\% of the data belongs to one of the classes,
 then the classifier is likely to end up placing every single
 input in that class, as it will bring its accuracy to 90\%. Technically, this
 accuracy is correct, but it's not very useful since the decision isn't at all
-affected by the features of the input. Accuracy alone isn't a good enough
+affected by the features in the input. Accuracy alone isn't a good enough
 measure of performance to reveal this.
 
 \subsection{Confusion Matrix}
@@ -896,18 +926,27 @@ later, but false negatives may have severe consequences. An example of this
 could be detection of cancer, in which a false positive can be ruled out
 from further testing, while a false negative may lead to a patient being sent
 home when actually needing help. For a more in-depth look at confusion matrices
-see \cite{Fawcett2006}.
+we recommend Fawcett\cite{Fawcett2006}.
 
-\subsection{Receiver Operating Characteristic}
-The Receiver Operating Characteristic (ROC) is a widely used measure of a
-classifiers performance . The performance is measured as the effect
-of the true positive rate (TPR) and the false positive rate (FPR) as a function
-of thresholding the positive class. To evaluate the ROC curve for a model,
-traditionally the Area Under the Curve (AUC) is used, which ranges from 0
-(an ideal "opposite" classifier) to 1.0 (an ideal classifier) with 0.5
-indicating a random choice classifier.
-For a thorough explanation of ROC curves and the underlying concepts,
-see \cite{Fawcett2006}.
+\subsection{F1-Score}
+The F1 score is a also a measure of accuracy of the model, but it accounts for more 
+than regular accuracy. It is defined as
+
+$$F_1 = 2 \cdot \frac{\text{precision} \cdot \text{recall}}{\text{precision} + \text{recall}} = \frac{TP}{TP + \tfrac{1}{2}(FP + FN)},$$
+which is the harmonic mean of precision and recall. Why is this better than accuracy? 
+By including both precision and recall, you are combining two metrics that both tell 
+you something about how good the model is at classifying your "positive" class.
+
+%\subsection{Receiver Operating Characteristic}
+%The Receiver Operating Characteristic (ROC) is a widely used measure of a
+%classifiers performance . The performance is measured as the effect
+%of the true positive rate (TPR) and the false positive rate (FPR) as a function
+%of thresholding the positive class. To evaluate the ROC curve for a model,
+%traditionally the Area Under the Curve (AUC) is used, which ranges from 0
+%(an ideal "opposite" classifier) to 1.0 (an ideal classifier) with 0.5
+%indicating a random choice classifier.
+%For a thorough explanation of ROC curves and the underlying concepts,
+%see \cite{Fawcett2006}.
 
 \section{Experimental Background}
 %* Low-energy nuclear physics
@@ -924,18 +963,18 @@ and have applications in medicine and industry. Summarized, a few key goals nucl
 physics aims to achieve are
 \begin{itemize}
 	\item Comprehensive and predictive model of atomic nuclei
-%	\begin{itemize}
-%		\item Evolving structure of atomic nuclei as a function of protons and neutrons from first principles
-%	\end{itemize}
+	\begin{itemize}
+		\item Evolving structure of atomic nuclei as a function of protons and neutrons from first principles
+	\end{itemize}
 	\item Understanding the origin of the elements
-%	\begin{itemize}
-%		\item Explosive nucleosynthesis
-%	\end{itemize}
+	\begin{itemize}
+		\item Explosive nucleosynthesis
+	\end{itemize}
 	\item Use of atomic nuclei to test fundamental symmetries
 	\item Search for new applications of isotopes and solutions to societal problems
 \end{itemize}
 
-\noindent Before we delve deeper into the experiment, we briefly outline the nomenclature
+\noindent Before we delve deeper into the experiment, we outline the nomenclature
 and terms used. A nucleus $Y$ has $Z$ protons and $N$ neutrons with a mass of $A = Z + N$.
 This is written as \ce{^{A}_{Z}Y_{N}}. For a given nucleus there may be several
 \begin{itemize}
@@ -1092,7 +1131,6 @@ from the simulated data in some ways:
 	pixel exhibits erratic behaviour. For some specific pixels this is true for the
 	entire dataset. These pixels are the entire rows 0 and 15, plus pixel (13,3).
 \end{itemize}
-
 
 \begin{itemize}
 	\item Q values

@@ -1,5 +1,10 @@
+The machine learning experiments conducted in this thesis were performed
+using the AI-Hub computational cluster at the University of Oslo. This resource 
+consists of three machines with four RTX 2080 Nvidia GPU’s (graphics
+processing unit) each. These cards have ~10GB of memory available for the
+allocation of models.
 \section{Classification}
-For classification of simulated data, we have used five different model types,
+For classification we have used five different model types,
 spanning a range of complexities, architectures, and parameters.
 The reason for multiple models is the fundamental difference between the
 simulated and experimental datasets; labels. Without ground truth labels
@@ -9,7 +14,7 @@ simulated data with their outputs when applied to experimental data.
 
 \noindent We train the models on three sets of simulated data.
 The first (a) is the simulated data as-is, with no changes apart from normalization
-and pre-processing. The second (b) is the same dataset, but with specific pixels in
+and pre-processing. The second (b) is the same data as (a), but with specific pixels in
 the 'detector images' set to zero. These pixels are effectively "dead" in the
 experimental dataset, and we wish to monitor the effect this has on model performance.
 The last dataset (c) has been intentionally imbalanced to further mimick experimental data,
@@ -20,15 +25,17 @@ events, as outlined in section \ref{sec:experimental-background}.
 $K = 5$ \cite{Stone1974}.
 
 \subsection{Classification on simulated data}
-
+As the data consists of detector \textit{images} we expect convolutional
+neural networks to be particularly well-suited for the classification task.
 In table \ref{tab:classification-simulated-all-f1-auc} the performance of each model
-is reported through the estimated $F1$-score, for each of the datasets.
+is reported through the estimated $F1$-score, for each of the datasets. 
 \input{chapters/results/figures/classification_simulated_all_f1_auc.tex}
 As a benchmark, we are including a model based on a state of the art pretrained 
-network\cite{Simonyan2015}. In in figure \ref{fig:confmat-simulated},
-we show the confusion matrix for prediction on test set data for all the models,
-including normalized values for each event type.
-\input{chapters/results/figures/confmat-simulated.tex}
+network\cite{Simonyan2015}, as outlined in section \ref{sec:method-pretrained}. 
+In in figure \ref{fig:confmat-simulated}, we show the confusion matrix for prediction
+on test set data for all the models, including normalized values for each event type.
+\input{chapters/results/figures/confmat-simulated.tex} 
+
  
 \subsection{Regression on simulated data}
 On data already classified, we attempt to predict the energy of the events and the position of origin for

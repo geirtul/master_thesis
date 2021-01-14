@@ -34,20 +34,57 @@ As a benchmark, we are including a model based on a state of the art pretrained
 network\cite{Simonyan2015}, as outlined in section \ref{sec:method-pretrained}. 
 In in figure \ref{fig:confmat-simulated}, we show the confusion matrix for prediction
 on test set data for all the models, including normalized values for each event type.
-\input{chapters/results/figures/confmat-simulated.tex} 
-
+\input{chapters/results/figures/confmat-simulated.tex}. The F1-scores show decreasing
+performance for most models when applying modifications to the original simulated dataset.
+For the CNN the effect is more severe. When training on an intentionally imbalanced
+dataset the models without CNN architechtures show a significant decrease in performance.
+Considering the confusion matrix we see that the logistic regressor and dense network
+suffer from predicting mostly every sample to be single events. Looking back to the
+$F1$-scores again, there is not a significant increase in performance between the
+CNN and the Custom model on unmodified data, but the custom model performs strongly
+across all datasets, with a low amount of misclassified events relative to the other
+models.
  
 \subsection{Regression on simulated data}
-On data already classified, we attempt to predict the energy of the events and the position of origin for
-the electrons. Because there is a travel distance between the ejection site and the scintillator array,
-the positions aren't necessarily the locations of the highest-intensity pixels in the detector images.
-\subsection{Simulated data}
+On data already classified, we attempt to predict the energy of the events and the 
+position of origin for the electrons. Because there is a travel distance between the 
+ejection site and the point the energy is deposited, the positions aren't necessarily
+the locations of the highest-intensity pixels in the detector images.
+Note that for regression the models are trained on single or double events exclusively.
+This means that for dataset $(c)$, which is imbalanced, the set of single events is
+identical to that of set $(b)$, causing near-identical results between these two sets.
 \subsubsection{Position of origin}
+In table \ref{tab:regression-simulated-all-positions-r2} the R2-scores for all models
+trained on simulated data are presented. A similar trend as was seen for classification
+can be observed for single events, where models are trained on unmodified data. Even
+a linear regressor is able to predict positions of origin fairly well, but it is clear
+that the neural networks perform at a much higher level in this case. They have strong
+R2-scores of 0.99 and higher, and very little degradation in performance with added 
+modifications to the training data. Again, as with classification, the custom model
+performs strongly across all datasets for single events.
+In the case of regression on double events, none of the models are able to accurately
+predict positions of origins for both events.
 \input{chapters/results/figures/regression_simulated_all_positions_r2.tex}
 \subsubsection{Energy}
+In table \ref{tab:regression-simulated-all-energies-r2} the R2-scores for all models
+trained on simulated data are presented.
+Performance when predicting single energies is across the board lower when compared with
+R2-scores for positions. On unmodified data the models are to a large degree able to
+predict energies, with R2-score of 0.93 and above. For the modified datasets the CNN
+suffers greatly and isn't able to predict energies at all. Other models see a less
+severe effect, but still a clear reduction in performance.
+As was the case with prediction of positions, no models are able to predict energies
+of double events with any useful degree of accuracy.
 \input{chapters/results/figures/regression_simulated_all_energies_r2.tex}
 
 \subsection{Classification on experimental data}
+Classification on experimental data poses a different set of challenges when it comes
+to evaluating our results. We only have a handful or events that are hand-labeled as
+double events, which can be used as a form of verification. As mentioned in section
+\ref{sec:experimental-background}, we expect the number of double events in the experimental
+data to be much lower than single events. Inspecting the ratio of predicted singles to predicted
+doubles can then be an initial indication of how a model is performing. It is, however,
+not conclusive.
 \input{chapters/results/figures/classification_experimental_ratios.tex}
 \input{chapters/results/figures/classification_experimental_labeled_doubles.tex}
 \subsection{Regression on experimental data}

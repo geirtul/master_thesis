@@ -1,3 +1,12 @@
+In this thesis we explore the use of supervised learning on simulated and experimental
+nuclear physics data. To build a foundation for the following discussion, we introduce
+the fundamental concepts underpinning the advanced machine learning techniques of
+today.
+
+We note that the following chapter follows closely the work of 
+Morten Hjorth-Jensen\cite{mhjensen-fys4155-notes}, Mehta et. al\cite{Mehta2019},
+Goodfellow et. al\cite{Goodfellow-et-al-2016}, and the University of Stanfords
+course CS231n\cite{cs231n}.
 \section{Linear Regression}\label{sec:linreg}
 Suppose you have a data set $\mathcal{L}$ consisting of the data
 $\mathbf{X}_\mathcal{L}=\{(y_i, x_i), i=0\ldots n-1\}$. Each point is associated
@@ -34,7 +43,7 @@ quantity to optimize - a \textbf{cost function}, $\mathcal{C}$ (also referred to
 \end{equation}
 From this we define the cost function
 \begin{equation}
-	\mathcal{C} = || \bs{\hat{y}} - \bs{y} ||_2 ^2.
+	\mathcal{C} = || \bs{\hat{y}} - \bs{y} ||_2 ^2. \label{eq:cost-mse}
 \end{equation}
 In machine learning, it is most common to cast the optimization as a minimization problem
 ("minimize the cost"). Our task is then to find an approximation
@@ -110,7 +119,7 @@ assumptions built into the method. The second term represents the
 variance of the chosen model and finally the last terms is variance of
 the error $\bs{\epsilon}$.
 
-For a derivation of this equation, we refer to the work of Mehta et. al \cite{Mehta2019}.
+For the derivation of this equation, we refer to the work of Mehta et. al \cite{Mehta2019}.
 
 % Derivation from lecture notes here.
 %to recall that the variance of $\bs{y}$ and $\bs{\epsilon}$ are both equal to $\sigma^2$. 
@@ -127,26 +136,162 @@ For a derivation of this equation, we refer to the work of Mehta et. al \cite{Me
 \section{Regularization}\label{section:regularization}
 With the computing resources available today, increasing model complexity to deal 
 with underfitting is usually a simple task. However, this computational freedom 
-has led to overfitting being the common challenge to overcome.
+has led to overfitting being the common challenge to overcome. 
+The \textbf{no free lunch theorem} for machine learning \cite{Wolpert1997} states
+that, averaged over all possible data-generating distributions, every classification
+algorithm has the same error rate when classifying previously unobserved points.
+In other words,in some sense, no machine learning algorithm is universally any better 
+than anyother. The most sophisticated algorithm we can design has the same average
+performance (over all possible tasks) as merely predicting that every point belongs
+to the same class. Fortunately, this holds only when we average over \textit{all}
+possible data-generating distributions\cite{Goodfellow-et-al-2016}. 
+This means that we do not seek a universally optimal classifier for all problems.
+Rather, for each learning problem we face, we can use knowledge of the problem to 
+build a set of preferences into the learning algorithm, such that the algorithm 
+becomes better suited to the specific problem.
+
+As an example, we can modify the cost function for linear regression with the
+inclusion of \textbf{weight decay}. Instead of minimizing only the mean squared
+error, as defined in equation \ref{eq:cost-mse}, we minimize a sum of the MSE and
+a criterion that expresses a preference for the weights to have smaller squared
+$L_2$ norm. This takes the form
+\begin{equation}
+	\mathcal{C}(\bs{w}) = MSE + \lambda \bs{w}^T \bs{w},
+\end{equation}
+where $\lambda$ is a value that controls the strength of our preference for smaller
+weights, chosen ahead of training. $\lambda$ is often referred to as a 
+\textit{hyperparameter}. When $\lambda = 0$, there is no preference, and
+the cost function becomes the regular MSE. As $\lambda$ increases it forces the
+weights to become smaller. Minimization of the cost function when $\lambda > 0$
+results in weights that make a tradeoff between fitting the training data and being
+small\cite{Goodfellow-et-al-2016}. We will come back to the concept of regularization
+in the context of deep learning later in the chapter.
 
 \section{Logistic Regression}\label{seq:logistic}
-Differently to linear regression, classification problems
-are concerned with outcomes taking the form of discrete variables.
-For a specific physical problem, we'd like to identify its state, say whether
-it is an ordered of disordered system. (cite?) One of the most basic examples
-of a classifier algorithm is logistic regression.
+Differently to the task in linear regression, or regression problems as a whole, 
+classification problems are concerned with outcomes taking the form of discrete 
+variables. The descrete variable could be a category, and the task at hand might be
+to determine whether an images is of a dog or a cat. In this case the category can
+take one of two value - we have a binary outcome. One of the most basic examples
+of a classifier algorithm is logistic regression, and it serves as a stepping stone
+towards neural networks and deep learning. Taking its name from the task itself, the
+categories are typically called \textit{classes}, which we will use going forward.
 
-For a logistic regressor to improve it needs a way to
-track its performance. This is the purpose of a cost function. Essentially,
-the cost function says something about how wrong the model is in classifying the
-input. The objective in machine learning, and logistic regression, is then to minimize
-this error.
+We consider the case where the dependent variables, also called the
+responses or the outcomes, $y_i$ are discrete and only take values
+from $k=0,\dots,K-1$ ($K$ classes).
 
-The cost function used in this project is called the \textbf{cross-entropy}, or the
-'negative log likelihood', and takes the form
-\begin{equation}\label{eq:cross-entropy}
-	\mathcal{C}(\bs{w})=-\sum_{i=1}^n  \left(y_i(w_0+w_1x_i) -\log{(1+\exp{(w_0+w_1x_i)})}\right)
+The goal is to predict the output classes from the inputs 
+$\bs{X}\in\mathbb{R}^{n\times p}$ made of $n$ samples, each of which carries $p$ 
+features or predictors. The primary goal is to identify the classes to which new 
+unseen samples belong.
+ 
+Let us specialize to the case of two classes only, with outputs
+$y_i=0$ and $y_i=1$. Our outcomes could represent the status of a
+credit card user that could default or not on her/his credit card
+debt. That is
+\begin{equation}
+	y_i = \begin{bmatrix} 0 & \mathrm{no}\\  1 & \mathrm{yes} \end{bmatrix}.
 \end{equation}
+
+The perceptron is an example of a "hard classification" model. 
+We will encounter this model when we discuss neural networks as
+well. Each datapoint is deterministically assigned to a category (i.e
+$y_i=0$ or $y_i=1$). In many cases, it is favorable to have a "soft"
+classifier that outputs the probability of a given category rather
+than a single value. For example, given $x_i$, the classifier
+outputs the probability of being in a category $k$.  Logistic regression
+is the most common example of a soft classifier. In logistic regression, the 
+probability that a data point $x_i$ belongs to a category $y_i=\{0,1\}$ is given 
+by the logit function (or Sigmoid) which is meant to represent the likelihood of 
+a given event,
+\begin{equation}\label{eq:sigmoid}
+	\sigma(x) = \frac{1}{1+e^{-x}}=\frac{e^{x}}{1+e^{x}}.
+\end{equation}
+Note that $1-\sigma(x) = \sigma(-x)$.
+
+\noindent We assume now that we have two classes with $y_i$ either $0$ or $1$. 
+Furthermore we assume also that we have only two parameters $w$ in our fitting 
+of the Sigmoid function, that is we define probabilities 
+\begin{align*}
+\sigma(y_i=1|x_i,\bs{w}) &= \frac{\exp(w_0 + w_1x_i)}{1+\exp(w_0+w_1x_i)},\nonumber\\
+\sigma(y_i=0|x_i,\bs{w}) &= 1 - \sigma(y_i=1|x_i,\bs{w}),
+\end{align*}
+where $\bs{w}$ are the weights we wish to extract from data, in our case $w_0$ and $w_1$. 
+
+\noindent Note that we used
+\begin{equation}
+	\sigma(y_i=0\vert x_i, \bs{w}) = 1-\sigma(y_i=1\vert x_i, \bs{w}).
+\end{equation}
+
+In order to define the total likelihood for all possible outcomes from a  
+dataset $\mathcal{D}=\{(y_i,x_i)\}$, with the binary labels
+$y_i\in\{0,1\}$ and where the data points are drawn independently, we use
+what is commonly referred to as the "Maximum Likelihood Estimation".
+We aim thus at maximizing the probability of seeing the observed data. 
+We can then approximate the likelihood in terms of the product of the individual
+probabilities of a specific outcome $y_i$. That is 
+\begin{align*}
+P(\mathcal{D}|\bs{w})& = \prod_{i=1}^n \left[\sigma(y_i=1|x_i,\bs{w})\right]^{y_i}\left[1-\sigma(y_i=1|x_i,\bs{w}))\right]^{1-y_i}\nonumber \\
+\end{align*}
+from which we obtain the log-likelihood and our cost function.
+\begin{equation}
+	\mathcal{C}(\bs{w}) = \sum_{i=1}^n \left( y_i\log{\sigma(y_i=1|x_i,\bs{w})} + (1-y_i)\log\left[1-\sigma(y_i=1|x_i,\bs{w}))\right]\right).
+\end{equation}
+
+\noindent Reordering the logarithms, we can rewrite the cost function as
+\begin{equation}
+	\mathcal{C}(\bs{w}) = \sum_{i=1}^n  \left(y_i(w_0+w_1x_i) -\log(1+\exp(w_0+w_1x_i))\right).
+\end{equation}
+
+\noindent The maximum likelihood estimator is defined as the set of parameters 
+that maximize the log-likelihood where we maximize with respect to $\bs{w}$.
+Since the cost (error) function is just the negative log-likelihood, for logistic 
+regression we have that
+\begin{equation}\label{eq:cross-entropy}
+	\mathcal{C}(\bs{w})=-\sum_{i=1}^n  \left(y_i(w_0+w_1x_i) -\log(1+\exp(w_0+w_1x_i))\right).
+\end{equation}
+This equation is known in statistics as the \textbf{cross entropy}.
+Finally, we note that just as in the example of linear regression,
+we often supplement the cross-entropy with additional regularization terms, 
+usually $L_1$ and $L_2$ regularization.
+
+The cross entropy is a convex function of the weights $\bs{w}$, therefore any
+local minimizer is a global minimizer. Minimizing this cost function with respect 
+to the two parameters $w_0$ and $w_1$ we obtain
+\begin{equation}
+	\frac{\partial \mathcal{C}(\bs{w})}{\partial w_0} = -\sum_{i=1}^n  \left(y_i -\frac{\exp(w_0+w_1x_i)}{1+\exp(w_0+w_1x_i)}\right),
+\end{equation}
+and 
+\begin{equation}
+	\frac{\partial \mathcal{C}(\bs{w})}{\partial w_1} = -\sum_{i=1}^n  \left(y_ix_i -x_i\frac{\exp(w_0+w_1x_i)}{1+\exp(w_0+w_1x_i)}\right).
+\end{equation}
+Let us now define a vector $\bs{y}$ with $n$ elements $y_i$, an
+$n\times p$ matrix $\bs{X}$ which contains the $x_i$ values and a
+vector $\bs{\sigma}$ of fitted probabilities $\sigma(y_i\vert x_i,\bs{w})$.
+We can rewrite the first derivative of the cost function in a more compact form
+\begin{equation}
+	\frac{\partial \mathcal{C}(\bs{w})}{\partial \bs{w}} = -\bs{X}^T\left(\bs{y}-\bs{\sigma}\right). 
+\end{equation}
+
+\noindent If we in addition define a diagonal matrix $\bs{W}$ with elements\\
+$\sigma(y_i\vert x_i,\bs{w})(1-\sigma(y_i\vert x_i,\bs{w})$, we can obtain a 
+compact expression of the second derivative as
+\begin{equation}
+	\frac{\partial^2 \mathcal{C}(\bs{w})}{\partial \bs{w}\partial \bs{w}^T} = \bs{X}^T\bs{W}\bs{X}.
+\end{equation}
+Within a binary classification problem, we can easily expand our model to include 
+multiple predictors. Our ratio between likelihoods is then with $p$ predictors
+\begin{equation}
+	\log( \frac{\sigma(\bs{w}\bs{x})}{1-\sigma(\bs{w}\bs{x})}) = w_0+w_1x_1+w_2x_2+\dots+w_px_p.
+\end{equation}
+Here we defined $\bs{x}=[1,x_1,x_2,\dots,x_p]$ and $\bs{w}=[w_0, w_1, \dots, w_p]$
+leading to
+\begin{equation}
+	\sigma(\bs{w}\bs{x})=\frac{ \exp(w_0+w_1x_1+w_2x_2+\dots+w_px_p)}{1+\exp(w_0+w_1x_1+w_2x_2+\dots+w_px_p)}.
+\end{equation}
+
+\noindent Next we look at methods for minimizing these functions.
 
 \section{Gradient Descent}\label{sec:gradient-descent}
 Finding the minima or maxima of a functions is a well-known process, perhaps especially
@@ -420,11 +565,8 @@ An activation function for an FFNN must be
 \noindent As linear functions are not bounded, the second requirement exludes this entire family of functions.
 The output of a neural network with linear activation functions would be nothing more than a linear function
 of the inputs. We need to introduce some form of non-linearity to be able to fit non-linear functions.
-The most common examples of such functions are the logistic \textit{sigmoid}
-\begin{equation}\label{eq:sigmoid}
-	\sigma(x) = \frac{1}{1+e^{-x}}
-\end{equation}
-and the \textit{hyperbolic tangent}
+The most common examples of such functions are the logistic \textit{sigmoid} as seen
+previously in equation \ref{eq:sigmoid}, and the \textit{hyperbolic tangent}
 \begin{equation}\label{eq:hyp-tangent}
 	f(x) = tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}.
 \end{equation}
@@ -713,25 +855,46 @@ are consistent with the labels in the training set for each image.
 \noindent For a more in-depth breakdown of convolutional neural networks,
 we refer to Stanford's excellent course CS231n, and their text on CNNs \cite{cs231n}.
 
+\section{Performance metrics}
+To go further into the backround for the chosen metrics, we need to establish four 
+quantities that appear in most, if not all discussion of the topic. These are
+\begin{itemize}
+	\item True positive (TP) - Double event classified as double event
+	\item True negative (TN) - Single event classified as single event
+	\item False positive (FP) - Single event classified as double event
+	\item False negative (FN) - Double event classified as single event
+\end{itemize}
+\noindent Which type of event is "positive" and "negative" is an arbitrary choice.
+From these terms we can define some properties of a classifier.
+\textbf{Sensitivity} (or \textbf{True positive rate} (TPR), or \textbf{recall})
+measures the fraction of positive samples in the data that are correctly classified 
+as positive.
 
+$$\text{sensitivity} = \frac{\text{number of true positives}}{\text{number of true positives} + \text{number of false negatives}} = \frac{TP}{TP + FN}$$
 
-\section{Assessing the Performance of Models}
-If classification accuracy is not enough to gauge whether a model is
-performing well, or well in the desired way, alternative way to measure
-performance must be explored. For cases of imbalanced data there are a few
-widely used methods that reveal information about the model that the simple
-accuracy metric can't.
+\noindent \textbf{Specificity} (or \textbf{True negative rate} (TNR)) measures the fraction 
+of negative samples in the data that are correctly classified as negative.
 
-\subsection{Imbalanced Data in Classification}
-The physical world is rarely balanced.
+$$\text{specificity} = \frac{\text{number of true negatives}}{\text{number of true negatives} + \text{number of false positives}} = \frac{TN}{TN + FP}$$
 
-A common challenge in classification is imbalanced data, in which a large
+\noindent \textbf{Precision} (or \textbf{Positive preditive value} (PPV)) measures the fraction
+of samples classified as positive that are correctly classified.
+
+$$\text{precision} = \frac{\text{number of true positives}}{\text{number of true positives} + \text{number of false positives}} = \frac{TP}{TP + FP}$$
+
+\subsection{Accuracy}
+The accuracy is a well known measure of performance, but not always a good one. 
+It's simply the fraction of all samples that were correctly classified. Using the 
+terms above we have
+$$\text{accuracy} = \frac{TP + TN}{TP + TN + FP + FN}.$$
+
+\noindent A common challenge in classification is imbalanced data, in which a large
 amount of the labeled data belongs to just one or a few of the classes.
 For binary classification, if 90\% of the data belongs to one of the classes,
 then the classifier is likely to end up placing every single
 input in that class, as it will bring its accuracy to 90\%. Technically, this
 accuracy is correct, but it's not very useful since the decision isn't at all
-affected by the features of the input. Accuracy alone isn't a good enough
+affected by the features in the input. Accuracy alone isn't a good enough
 measure of performance to reveal this.
 
 \subsection{Confusion Matrix}
@@ -741,13 +904,13 @@ An example of such a matrix could be the following table:
 \begin{table}[h]
     \centering
     \begin{tabular}{c|c|c|c}
-     & True Cat & True Dog & True Rabbit \\
+     & Predicted Cat & Predicted Dog & Predicted Rabbit \\
     \hline
-    Predicted Cat & \textbf{5} & 2 & 0 \\
+    True Cat & \textbf{5} & 3 & 0 \\
     \hline
-    Predicted Dog & 3 & \textbf{3} & 2 \\
+    True Dog & 2 & \textbf{3} & 1 \\
     \hline
-    Predicted Rabbit & 0 & 1 & \textbf{11} \\
+    True Rabbit & 0 & 2 & \textbf{11} \\
 \end{tabular}
 \caption{Confusion matrix for an example classification where the classes
          are Cat, Dog and Rabbit. Correct classifications in bold.}
@@ -755,60 +918,64 @@ An example of such a matrix could be the following table:
 \end{table}
 In the table above (\ref{tab:confmat-example}), the diagonal elements
 $i = j$ are the correct classifications, while the other elements correspond
-to cases where the model predicted class $i$ but should've predicted class $j$.
+to cases where the model predicted class $j$ but should've predicted class $i$.
 The confusion matrix thus gives information about false positives and false
 negatives, in addition to classification accuracy. This is very useful
-in cases where for example false positives can be readily ignored or filtere
+in cases where for example false positives can be readily ignored or filtered
 later, but false negatives may have severe consequences. An example of this
 could be detection of cancer, in which a false positive can be ruled out
 from further testing, while a false negative may lead to a patient being sent
 home when actually needing help. For a more in-depth look at confusion matrices
-see \cite{Fawcett2006}.
+we recommend Fawcett\cite{Fawcett2006}.
 
-\subsection{Receiver Operating Characteristic}
-The Receiver Operating Characteristic (ROC) is a widely used measure of a
-classifiers performance . The performance is measured as the effect
-of the true positive rate (TPR) and the false positive rate (FPR) as a function
-of thresholding the positive class. To evaluate the ROC curve for a model,
-traditionally the Area Under the Curve (AUC) is used, which ranges from 0
-(an ideal "opposite" classifier) to 1.0 (an ideal classifier) with 0.5
-indicating a random choice classifier,
-For a thorough explanation of ROC curves and the underlying concepts, see \cite{Fawcett2006}.
+\subsection{F1-Score}
+The F1 score is a also a measure of accuracy of the model, but it accounts for more 
+than regular accuracy. It is defined as
 
-\section{Experimental Background}
+$$F_1 = 2 \cdot \frac{\text{precision} \cdot \text{recall}}{\text{precision} + \text{recall}} = \frac{TP}{TP + \tfrac{1}{2}(FP + FN)},$$
+which is the harmonic mean of precision and recall. Why is this better than accuracy? 
+By including both precision and recall, you are combining two metrics that both tell 
+you something about how good the model is at classifying your "positive" class.
+
+%\subsection{Receiver Operating Characteristic}
+%The Receiver Operating Characteristic (ROC) is a widely used measure of a
+%classifiers performance . The performance is measured as the effect
+%of the true positive rate (TPR) and the false positive rate (FPR) as a function
+%of thresholding the positive class. To evaluate the ROC curve for a model,
+%traditionally the Area Under the Curve (AUC) is used, which ranges from 0
+%(an ideal "opposite" classifier) to 1.0 (an ideal classifier) with 0.5
+%indicating a random choice classifier.
+%For a thorough explanation of ROC curves and the underlying concepts,
+%see \cite{Fawcett2006}.
+
+\section{Experimental Background}\label{sec:experimental-background}
+%* Low-energy nuclear physics
+%* Scintillator
+%* Challenges with the data
+%* Current methods for fitting
 The experiment, which is the topic of analysis in this thesis, was conducted at
 the facility for rare isotope beams (FRIB) located on the Michigan State Uni-
 versity (MSU) campus. As the name implies, the FRIB offers researchers the
 ability to study isotopes far from stability. These isotopes are short-lived, and
 not normally occurring. Applications of the studies conducted at the FRIB in-
 clude furthering the understanding of nuclear structure, nuclear astrophysics,
-and have applications in medicine and industry.
-
-\begin{itemize}
-	\item Low-energy nuclear physics
-	\item Scintillator
-	\item Challenges with the data
-	\item Current methods for fitting
-	\item 
-\end{itemize}
-The experiment produces data on the order of TerraBytes. 
-
-
-Very summarized goals of nuclear physics.
+and have applications in medicine and industry. Summarized, a few key goals nuclear 
+physics aims to achieve are
 \begin{itemize}
 	\item Comprehensive and predictive model of atomic nuclei
-%	\begin{itemize}
-%		\item Evolving structure of atomic nuclei as a function of protons and neutrons from first principles
-%	\end{itemize}
+	\begin{itemize}
+		\item Evolving structure of atomic nuclei as a function of protons and neutrons from first principles
+	\end{itemize}
 	\item Understanding the origin of the elements
-%	\begin{itemize}
-%		\item Explosive nucleosynthesis
-%	\end{itemize}
+	\begin{itemize}
+		\item Explosive nucleosynthesis
+	\end{itemize}
 	\item Use of atomic nuclei to test fundamental symmetries
 	\item Search for new applications of isotopes and solutions to societal problems
 \end{itemize}
 
-A nucleus $Y$ has $Z$ protons and $N$ neutrons with a mass of $A = Z + N$.
+\noindent Before we delve deeper into the experiment, we outline the nomenclature
+and terms used. A nucleus $Y$ has $Z$ protons and $N$ neutrons with a mass of $A = Z + N$.
 This is written as \ce{^{A}_{Z}Y_{N}}. For a given nucleus there may be several
 \begin{itemize}
 	\item Isotopes - nuclei with the same number of protons, but varying number of neutrons
@@ -824,17 +991,8 @@ This is written as \ce{^{A}_{Z}Y_{N}}. For a given nucleus there may be several
 %		\item \ce{^{68}Fe}, \ce{^{68}Co}, \ce{^{68}Ni}, \ce{^{68}Cu}, \ce{^{68}Zn}
 %	\end{itemize}
 \end{itemize}
-
-\subsection{Experiment}
-\begin{itemize}
-	\item Decay spectroscopy
-	\item All information in the detector is timestamped sub nanoseconds.
-	\item Total energy deposited in detector is recorded
-\end{itemize}
-
-\subsection{Decay Spectroscopy}
 There are several types of decays that can occur within nuclei. Among them
-we find
+we find:
 \begin{itemize}
 	\item Beta decay - $\beta$
 	\item Photon decay - $\gamma$
@@ -843,7 +1001,7 @@ we find
 	\item Gamma ray
 	\item Internal conversion electron
 \end{itemize}
-of which this experiment focuses on Beta decay, photon decay and Internal
+This experiment focuses on beta decay, photon decay and internal
 conversion. Decays can also occur as chains of decays before a nucleus
 reaches a stable state. When measuring decay spectroscopy, there are three
 primary pieces of information that we are interested in:
@@ -878,15 +1036,6 @@ The majority of nuclei decay through beta decay. There are three types:
 \end{align}
 where EC is Electron Capture. These three decays either turn protons into neutrons, or
 vice versa. In every case there are neutrinos ($\nu$) being emitted.
-\begin{itemize}
-	\item Q values
-	\item energies on the order of keV - 10's of MeV
-	\item Beta-decay spectrum (three body process), energy observed is not characteristic,
-	energy loss is observed in detectors (tyically don't have enough material to completely
-	stop the beta decay electron)
-	\item Selection rules - allowed and forbidden decays
-	\item $\log ft$ - used to classify decays
-\end{itemize}
 
 \subsubsection{Gamma-ray decay}
 Decay by photon emission, where a nucleus in some excited state $J_i^{\pi}$ with energy
@@ -905,6 +1054,12 @@ in terms of their electric or magnetic character, given by
 	\Delta\pi(ML) &= (-1)^{L+1}
 \end{align}
 
+\noindent Gamma ray decay leads to a characteristic energy representative of the difference
+between the initial and final state. We want to measure transition rates.
+States always have the potential to decay either through photon or electron emission.
+Electron emission dominates at higher $Z$s and lower energies, but is in principle
+always a possibility. 
+
 \subsubsection{Internal Conversion}
 The internal conversion process competes with gamma decay. Electromagnetic interactions
 between the nucleus and an atomic electron leads to the atomic electron being ejected
@@ -913,19 +1068,13 @@ emitted electron can be calculated, and is given by
 \begin{equation}
 	E_{IC} = E_{\text{transition}} - E_{\text{electron binding energy}}
 \end{equation}
-This will give a set of possible energies, as the emitted electron can come from
-different shells in the atom.
-
-Gamma ray decay leads to a characteristic energy representative of the difference
-between the initial and final state. We want to measure transition rates.
-States always have the potential to decay either through photon or electron emission.
-Electron emission dominates at higher $Z$s and lower energies, but is in principle
-always a possibility. 
+This will give a quantized set of possible energies, as the emitted electron can come 
+from different shells in the atom.
 
 \subsection{Experiment}
 Small, inorganic $CeBr_3$ (Cerium Bromide) scintillator. The detector itself is abobut 3mm
 thick and a few cm in dimension perpendicular to the beam. Accellerated ions are stopped
-in the scintillator. The central detector observes ions and decays, of which decays can
+in the scintillator (implanted). The central detector observes ions and decays, of which decays can
 be any one of gamma rays, beta decay electrons, or internal conversion electrons.
 \begin{itemize}
 	\item The detector is constructed as a 16x16 grid of what we will refer to as
@@ -933,7 +1082,7 @@ be any one of gamma rays, beta decay electrons, or internal conversion electrons
 	Position-Sensitive Photomultiplier Tube (PSPMT) is.
 	\item Ions identified event-by-event are implanted in the detector.
 	Position (which pixel) and arrival time are recorded for all implanted ions.
-	\item Some characteristic time later a decay is detected. Position and time of decay
+	\item Some characteristic time later a decay is detected. Position and time of decays
 	are recorded.
 	\item Decays are correlated to ions using spatial and temporal information
 	\item Time scales
@@ -944,14 +1093,52 @@ be any one of gamma rays, beta decay electrons, or internal conversion electrons
 	\item Gamma rays coincident with decays are then associated with the decay of a
 	particular ion
 \end{itemize}
-The ability to correlate decays to specific ions is dependent on the rate of ions implanted.
-Low-energy photons will be trapped in the detector, while high-energy photons will mostly
-escape. This cutoff happens around 100keV. Electrons are typicly on the order of a few
-MeV. Because you need a fairly large amount of material to completely stop an electron with
-energies of 5-10MeV, what is actually detected is the energy left in the detector by the
-electron as it passes through.
-Simulated data generated using Geant4 \cite{Agostinelli2003} with what is hopefully realistic detector inputs.
-The experimental data is take from a recent beta-decay experiment.
-Gaps in distribution experimentally due to pixels not responding.
+The ability to correlate decays to specific ions is dependent on the rate of ions 
+implanted. Electrons are typically on the order of a few MeV. Because you need a 
+fairly large amount of material to completely stop an electron with energies of 5-10MeV,
+what is actually detected is the energy left in the detector by the electron as it 
+passes through.
 
+\subsection{Data}
+Examples of detector images generated by both simulations and experiments
+are shown in figure \ref{fig:exp-background-sample-images}. For both types
+of data we have selected examples of single events, and double events that
+would be concidered 'easy' and 'hard' to label correctly by eye. This difficulty
+of labeling or 'classifying' is expected to increase as the separation distance
+between the events decreases. This is especially apparent in the simulated
+examples; where the 'hard' or 'close' double events i near indistinguishable
+from the single event. 
+\input{chapters/theory/figures/detector_image_sample.tex}
+Simulated data is generated using GEANT4 \cite{Agostinelli2003}, and contains
+two million simulated single and double events, balanced at a 50/50 ratio. 
+Positions of origin are uniformly distributed in the detector image, and 
+event energies are uniformly distributed between 0 to 1MeV. Pixel intensities 
+range from 0 to 10000.
+
+The experimental data is taken from a recent beta-decay experiment. This data differs
+from the simulated data in some ways:
+\begin{itemize}
+	\item The positions of events in the detector images are expected to follow a more
+	gaussian distribution rather than the uniform distribution. This is due to the
+	nature of the experiment and how the particle beam is formed.
+	\item The pixel intensities and event energies have a broader distribution.
+	Pixel intensities range from 0 to 40000 for some events.
+	\item Energy fluctuations in the scintillator makes experimental data look more
+	'noisy' than simulated data.
+	\item The ratio of single events to double events is not expected to be balanced.
+	Rather, we expect to see a much larger amount of single events than double events.
+	\item Some pixels in the experimental detector images will be set to zero if that
+	pixel exhibits erratic behaviour. For some specific pixels this is true for the
+	entire dataset. These pixels are the entire rows 0 and 15, plus pixel (13,3).
+\end{itemize}
+
+\begin{itemize}
+	\item Q values
+	\item energies on the order of keV - 10's of MeV
+	\item Beta-decay spectrum (three body process), energy observed is not characteristic,
+	energy loss is observed in detectors (tyically don't have enough material to completely
+	stop the beta decay electron)
+	\item Selection rules - allowed and forbidden decays
+	\item $\log ft$ - used to classify decays
+\end{itemize}
 

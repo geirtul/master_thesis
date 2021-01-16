@@ -3,6 +3,10 @@ using the AI-Hub computational cluster at the University of Oslo. This resource
 consists of three machines with four RTX 2080 Nvidia GPU’s (graphics
 processing unit) each. These cards have ~10GB of memory available for the
 allocation of models.
+
+\section{Preliminary analysis and comparison of simulated and experimental data}
+\input{chapters/results/figures/preliminary_comparison_intensity.tex}
+\input{chapters/results/figures/preliminary_intensity_hip_comparison.tex}
 \section{Classification}
 For classification we have used five different model types,
 spanning a range of complexities, architectures, and parameters.
@@ -42,9 +46,27 @@ Considering the confusion matrix we see that the logistic regressor and dense ne
 suffer from predicting mostly every sample to be single events. Looking back to the
 $F1$-scores again, there is not a significant increase in performance between the
 CNN and the Custom model on unmodified data, but the custom model performs strongly
-across all datasets, with a low amount of misclassified events relative to the other
+across all datasets, with a lowY amount of misclassified events relative to the other
 models.
+
+\subsection{Classification on experimental data}
+Classification of experimental data poses a different set of challenges when it comes
+to evaluating our results. We only have a handful of events that are handlabeled as
+double events, which can be used as a form of verification. As mentioned in section
+\ref{sec:experimental-background}, we expect the number of double events in the experimental
+data to be much lower than single events. Inspecting the ratio of predicted singles to predicted
+doubles can then be an initial indication of how a model is performing. It is, however,
+not conclusive. Correctly classified handlabeled events are another indication, but
+is also not conclusive. In table \ref{tab:classification-experimental-ratios}, the ratios
+of predicted singles to predicted doubles are presented for each model trained on each
+dataset. The actual number of predictions for each class are included below the ratios.
+
+\input{chapters/results/figures/classification_experimental_ratios.tex}
+\input{chapters/results/figures/classification_experimental_labeled_doubles.tex}
+\input{chapters/results/figures/classification_experimental_single_fractions.tex}
+\input{chapters/results/figures/classification_simulated_scaled.tex}
  
+\section{Regression}
 \subsection{Regression on simulated data}
 On data already classified, we attempt to predict the energy of the events and the 
 position of origin for the electrons. Because there is a travel distance between the 
@@ -53,6 +75,9 @@ the locations of the highest-intensity pixels in the detector images.
 Note that for regression the models are trained on single or double events exclusively.
 This means that for dataset $(c)$, which is imbalanced, the set of single events is
 identical to that of set $(b)$, causing near-identical results between these two sets.
+Due to the poor performance of models trained on simulated double events, and the
+expected low frequency of double events in the experimental data, we only apply models
+trained on simulated single events.
 \subsubsection{Position of origin}
 In table \ref{tab:regression-simulated-all-positions-r2} the R2-scores for all models
 trained on simulated data are presented. A similar trend as was seen for classification
@@ -73,20 +98,10 @@ R2-scores for positions. On unmodified data the models are to a large degree abl
 predict energies, with R2-score of 0.93 and above. For the modified datasets the CNN
 suffers greatly and isn't able to predict energies at all. Other models see a less
 severe effect, but still a clear reduction in performance.
-As was the case with prediction of positions, no models are able to predict energies
+As was the case with prediction of positions, no models predict energies
 of double events with any useful degree of accuracy.
 \input{chapters/results/figures/regression_simulated_all_energies_r2.tex}
 
-\subsection{Classification on experimental data}
-Classification on experimental data poses a different set of challenges when it comes
-to evaluating our results. We only have a handful or events that are hand-labeled as
-double events, which can be used as a form of verification. As mentioned in section
-\ref{sec:experimental-background}, we expect the number of double events in the experimental
-data to be much lower than single events. Inspecting the ratio of predicted singles to predicted
-doubles can then be an initial indication of how a model is performing. It is, however,
-not conclusive.
-\input{chapters/results/figures/classification_experimental_ratios.tex}
-\input{chapters/results/figures/classification_experimental_labeled_doubles.tex}
 \subsection{Regression on experimental data}
 \input{chapters/results/figures/regression-experimental-best-model-dist.tex}
 \input{chapters/results/figures/regression_experimental_dist_means.tex}

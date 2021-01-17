@@ -1,7 +1,8 @@
-The first task we face is whether or not we can use machine learning algorithms to 
+\noindent The first task we face is whether or not we can use machine learning algorithms to 
 separate two types of events in a simulated nuclear physics dataset. This being possible
 is the minimum requirement a model must meet if we are to apply it to experimental data.
-We present the results of training five different models on three simulated datasets\ref{sec:experimental-background-data}.
+We present the results of training five different models on three simulated 
+datasets\ref{sec:experimental-background-data}.
 Performance is measured using the $F1$ score and confusion matrix. The models range from
 the simple logistic regressor, to a deeper CNN architecture with multiple layers. Additionally,
 we include a model based on VGG16, as outlined in section \ref{section:method-pretrained},
@@ -9,42 +10,58 @@ fine-tuned on simulated data. Somewhat separate from classification, our second 
 is predicting positions of origin and energies associated with events in the dataset.
 We follow the same strategy as for classification, with the logistic model replaced by a linear
 regressor. The same minimum requirement is valid for regression - models trained on simulated data
-must be able to make reasonable predictions.
+must be able to make reasonable predictions. By 'reasonable' we mean 'better than random guessing'.
+For this task the performance is measured using the $R2$ score. The variability in results is 
+estimated using a K-fold cross-validation approach, with $K = 5$ \cite{Stone1974}.
+As a quick recap, the three simulated datasets mentioned are:
+\begin{enumerate}[(a)]
+    \item No changes.
+    \item Select pixels set to zero throughout the dataset.
+    \item Select pixels set to zero throughout the data, and imbalanced number of single
+    and double decays (reduced amount of double decays).
+\end{enumerate}
 
-The machine learning experiments conducted in this thesis were performed
+\noindent The machine learning experiments conducted in this thesis were performed
 using the AI-Hub computational cluster at the University of Oslo. This resource 
 consists of three machines with four RTX 2080 Nvidia GPU’s (graphics
 processing unit) each. These cards have ~10GB of memory available for the
 allocation of models.
 
-\section{Comparisons of simulated and experimental data}
-\input{chapters/results/figures/preliminary_comparison_intensity.tex}
-\input{chapters/results/figures/preliminary_intensity_hip_comparison.tex}
+\section{Preliminary analysis}
+We begin by looking into the simulated data, more specifically looking for correlations
+in the energies and pixel intensities. Note that these results are generated using
+dataset (a). In figure \ref{fig:simulated_corrcoeff} we show
+the correlation matrix for simulated single and double decays. For single decays, there
+is a strong correlation between the energy of the event, the sum of intensities in an image,
+and also between the event energy and the intensity of the highest intensity pixel.
+The correlation matrix for double events shows similar results. The same, strong correlation
+is found for $E1 + E2$ in double decays as for $E1$ in single decays. That is, the total energy
+in an event is strongly correlated with the total intensity of pixels in the image.
 \input{chapters/results/figures/preliminary_simulated_corrcoeff.tex}
+
+\noindent Next, we investigate some directly comparable quantities shared by simulated and
+experimental data. The distributions of total intensity and highest intensity pixels
+in images are shown in figure \ref{fig:comparison-intensity}. 
+\input{chapters/results/figures/preliminary_comparison_intensity.tex}
+\noindent To relate these distributions more closely to the models themselves, 
+the distributions are generated after normalization of the
+images. As such, these distributions are what the models 'see'. Looking to the top left
+in figure \ref{fig:comparison-intensity} there are a fairly large amount of experimental
+decays with higher total intensity than what is present in the simulated data. In the bottom
+left plot, it is also clear that there is a point where simulated single and double decays no longer
+overlap in total intensities. For the right-hand plots of highest intensity values, there is no such
+clear difference between the datasets.
+To provide another point of view for this difference, we plot the total intensity in images as
+a function of the highest intensity in the images. 
+The plot is shown in figure \ref{fig:intensity-hip-comparison}, along with linear fits to the
+data.
+\input{chapters/results/figures/preliminary_intensity_hip_comparison.tex}
+\noindent There is a clear difference between the datasets in that the experimental data
+has a higher total intensity. We will come back to these results as we review model
+performance on experimental data.
+
 \section{Classification}
-For classification we have used five different model types,
-spanning a range of complexities, architectures, and parameters.
-The reason for multiple models is the fundamental difference between the
-simulated and experimental datasets; labels. Without ground truth labels
-for the experimental data, we need other ways to assess how a model performs in
-its task. We attempt to gain some insight by comparing the models' performance on
-simulated data with their outputs when applied to experimental data.
-
-\noindent We train the models on three sets of simulated data.
-The first (a) is the simulated data as-is, with no changes apart from normalization
-and pre-processing. The second (b) is the same data as (a), but with specific pixels in
-the 'detector images' set to zero. These pixels are effectively "dead" in the
-experimental dataset, and we wish to monitor the effect this has on model performance.
-The last dataset (c) has been intentionally imbalanced to further mimick experimental data,
-wherein we expect the majority of events to be 'single' events, rather than 'double'
-events, as outlined in section \ref{sec:experimental-background}.
-
-\noindent The variability in results is estimated using a K-fold cross-validation approach, with
-$K = 5$ \cite{Stone1974}.
-
 \subsection{Classification on simulated data}
-As the data consists of detector \textit{images} we expect convolutional
-neural networks to be particularly well-suited for the classification task.
 In table \ref{tab:classification-simulated-all-f1-auc} the performance of each model
 is reported through the estimated $F1$-score, for each of the datasets. 
 \input{chapters/results/figures/classification_simulated_all_f1_auc.tex}
@@ -53,8 +70,8 @@ network\cite{Simonyan2015}, as outlined in section \ref{sec:method-pretrained}.
 In in figure \ref{fig:confmat-simulated}, we show the confusion matrix for prediction
 on test set data for all the models, including normalized values for each event type.
 \input{chapters/results/figures/confmat-simulated.tex}. The F1-scores show decreasing
-performance for most models when applying modifications to the original simulated dataset.
-For the CNN the effect is more severe. When training on an intentionally imbalanced
+performance for most models when applying modifications to the unmodified simulated dataset.
+When training on an intentionally imbalanced
 dataset the models without CNN architectures show a significant decrease in performance.
 Considering the confusion matrix we see that the logistic regressor and dense network
 suffer from predicting mostly every sample to be single events. Looking back to the

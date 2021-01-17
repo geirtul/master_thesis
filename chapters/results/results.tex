@@ -71,36 +71,54 @@ In in figure \ref{fig:confmat-simulated}, we show the confusion matrix for predi
 on test set data for all the models, including normalized values for each event type.
 \input{chapters/results/figures/confmat-simulated.tex}. The F1-scores show decreasing
 performance for most models when applying modifications to the unmodified simulated dataset.
-When training on an intentionally imbalanced
-dataset the models without CNN architectures show a significant decrease in performance.
+When training on an intentionally imbalanced dataset the models without CNN architectures 
+show a steep decrease in performance.
 Considering the confusion matrix we see that the logistic regressor and dense network
 suffer from predicting mostly every sample to be single events. Looking back to the
 $F1$-scores again, there is not a significant increase in performance between the
 CNN and the Custom model on unmodified data, but the custom model performs strongly
 across all datasets, with a low amount of misclassified events relative to the other
-models.
+models. Again looking at the confusion matrices (figure \ref{fig:confmat-simulated}),
+Double decays are more often misclassified as single than the opposite.
+Next, we apply the 'classifiers' to experimental data.
 
 \subsection{Classification on experimental data}
 Classification of experimental data poses a different set of challenges when it comes
-to evaluating our results. We only have a handful of events that are handlabeled as
-double events, which can be used as a form of verification. As mentioned in section
+to evaluating our results. We currently only have a small number of events that are 
+handlabeled as double events, which may be used as a form of verification. As mentioned in section
 \ref{sec:experimental-background}, we expect the number of double events in the experimental
 data to be much lower than single events. Inspecting the ratio of predicted singles to predicted
 doubles can then be an initial indication of how a model is performing. It is, however,
-not conclusive. Correctly classified handlabeled events are another indication, but
+not conclusive. Correctly classified hand labelled events are another indication, but
 is also not conclusive. In table \ref{tab:classification-experimental-ratios}, the ratios
 of predicted singles to predicted doubles are presented for each model trained on each
 dataset. The actual number of predictions for each class are included below the ratios.
-
 \input{chapters/results/figures/classification_experimental_ratios.tex}
+Overall there is a strong preference for classifying events as double decays. This makes
+the validation using hand labelled doubles in table \ref{tab:classification-experimental-labeled-doubles}
+somewhat moot, since it is hard to attribute these 'correct' classifications to the models'
+ability to recognize the double decays.
 \input{chapters/results/figures/classification_experimental_labeled_doubles.tex}
 \input{chapters/results/figures/classification_experimental_single_fractions.tex}
+As the number of events is large, manual inspection of each predicted class is not feasible.
+In figure \ref{fig:experimental-single-fractions} we show the fraction of predicted single events
+in experimental data as a function of total intensity in each image. Regardless of which simulated
+dataset a model is trained on, the majority of  single events are predicted at low total intensites.
+The only exception to this is the Dense model trained on dataset $c$. Keep in mind, however, that the
+total intensities for experimental data span from 0 to ~18 (see figure \ref{fig:comparison-intensity}).
+To further prod this apparent trend, we perform a simple test using the Custom model trained on dataset $b$.
+For a set of single events for which we know the model has good performance, we multiply the image intensities
+with a scaling factor from 0-10. The aim is to see the effect of increasing total intensity in
+images on the classification accuracy. The result is shown in figure \ref{fig:simulated-scaled-intensities}.
 \input{chapters/results/figures/classification_simulated_scaled.tex}
+From this figure, there is a clear trend toward a lower fraction of events classified as single decays
+when the intensities in images is increased. Note that at a scaling factor of 4 the total intensity in
+the simulated images approach the highest total intensities in the experimental decay data.
  
 \section{Regression}
 \subsection{Regression on simulated data}
-On data already classified, we attempt to predict the energy of the events and the 
-position of origin for the electrons. Because there is a travel distance between the 
+Assuming data has already been classified, we aim to predict the energy of the decays and their
+position of origin. Because there is a travel distance between the 
 ejection site and the point the energy is deposited, the positions aren't necessarily
 the locations of the highest-intensity pixels in the detector images.
 Note that for regression the models are trained on single or double events exclusively.

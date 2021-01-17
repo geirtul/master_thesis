@@ -1,12 +1,26 @@
+The first task we face is whether or not we can use machine learning algorithms to 
+separate two types of events in a simulated nuclear physics dataset. This being possible
+is the minimum requirement a model must meet if we are to apply it to experimental data.
+We present the results of training five different models on three simulated datasets\ref{sec:experimental-background-data}.
+Performance is measured using the $F1$ score and confusion matrix. The models range from
+the simple logistic regressor, to a deeper CNN architecture with multiple layers. Additionally,
+we include a model based on VGG16, as outlined in section \ref{section:method-pretrained},
+fine-tuned on simulated data. Somewhat separate from classification, our second objective
+is predicting positions of origin and energies associated with events in the dataset.
+We follow the same strategy as for classification, with the logistic model replaced by a linear
+regressor. The same minimum requirement is valid for regression - models trained on simulated data
+must be able to make reasonable predictions.
+
 The machine learning experiments conducted in this thesis were performed
 using the AI-Hub computational cluster at the University of Oslo. This resource 
 consists of three machines with four RTX 2080 Nvidia GPU’s (graphics
 processing unit) each. These cards have ~10GB of memory available for the
 allocation of models.
 
-\section{Preliminary analysis and comparison of simulated and experimental data}
+\section{Comparisons of simulated and experimental data}
 \input{chapters/results/figures/preliminary_comparison_intensity.tex}
 \input{chapters/results/figures/preliminary_intensity_hip_comparison.tex}
+\input{chapters/results/figures/preliminary_simulated_corrcoeff.tex}
 \section{Classification}
 For classification we have used five different model types,
 spanning a range of complexities, architectures, and parameters.
@@ -41,12 +55,12 @@ on test set data for all the models, including normalized values for each event 
 \input{chapters/results/figures/confmat-simulated.tex}. The F1-scores show decreasing
 performance for most models when applying modifications to the original simulated dataset.
 For the CNN the effect is more severe. When training on an intentionally imbalanced
-dataset the models without CNN architechtures show a significant decrease in performance.
+dataset the models without CNN architectures show a significant decrease in performance.
 Considering the confusion matrix we see that the logistic regressor and dense network
 suffer from predicting mostly every sample to be single events. Looking back to the
 $F1$-scores again, there is not a significant increase in performance between the
 CNN and the Custom model on unmodified data, but the custom model performs strongly
-across all datasets, with a lowY amount of misclassified events relative to the other
+across all datasets, with a low amount of misclassified events relative to the other
 models.
 
 \subsection{Classification on experimental data}

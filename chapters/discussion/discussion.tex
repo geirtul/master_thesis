@@ -1,0 +1,33 @@
+\section{Classification}
+With the goal of classifying experimental decay data, we set a minimum requirement
+of first showing that machine learning algorithms can classify simulated decay events.
+From the $F1$ scores shown in table \ref{tab:classification-simulated-all-f1-auc} we
+can see that classification of simulated events is possible.
+
+(((
+    \textbf{Possibly add figures on which events the top-performing model struggles with?}
+)))
+
+There is a clear performance gap between CNN-based architectures and the logistic regressor and dense
+neural network. This gap may be expected, as CNN's are specifically designed for
+machine learning involving images. Of the CNN architechtures, the deeper architectures
+(Custom \ref{appendix:model-custom}, Pretrained \ref{appendix:model-pretrained}),
+show less decrease in performance when trained on datasets with 'dead' pixels and
+imbalanced representation of classes. When training models on an imbalanced dataset
+these deeper models also appear less prone to simply classify most of events as one
+class. In figure \ref{fig:confmat-simulated} we can see that this is the case for
+the logistic and dense models.
+
+With the ability to classify simulated events as either single or double decays,
+we then applied the models trained on simulated data to experimental data.
+Lacking true labels for experimental data, we look to other expecations, such
+as the fraction of events predicted as single and double decays, shown in table
+\ref{tab:classification-experimental-ratios}. Our expectation is that there is
+a much larger amount of single decays present in experimental data than
+double decays. In light of this expectation, the models' performance is not good.
+
+
+\section{Regression}
+With energies being closely correlated with total intensity in an image,
+having dead pixels can be detrimental to the performance in predictions.
+- show this

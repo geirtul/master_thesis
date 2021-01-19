@@ -2,7 +2,7 @@
 separate two types of events in a simulated nuclear physics dataset. This being possible
 is the minimum requirement a model must meet if we are to apply it to experimental data.
 We present the results of training five different models on three simulated 
-datasets\ref{sec:experimental-background-data}.
+datasets, as described in section \ref{sec:experimental-background-data}).
 Performance is measured using the $F1$ score and confusion matrix. The models range from
 the simple logistic regressor, to a deeper CNN architecture with multiple layers. Additionally,
 we include a model based on VGG16, as outlined in section \ref{section:method-pretrained},
@@ -14,7 +14,7 @@ must be able to make reasonable predictions. By 'reasonable' we mean 'better tha
 For this task the performance is measured using the $R2$ score. The variability in results is 
 estimated using a K-fold cross-validation approach, with $K = 5$ \cite{Stone1974}.
 As a quick recap, the three simulated datasets mentioned are:
-\begin{enumerate}[(a)]
+\begin{enumerate}[a)]
     \item No changes.
     \item Select pixels set to zero throughout the dataset.
     \item Select pixels set to zero throughout the data, and imbalanced number of single
@@ -65,7 +65,7 @@ performance on experimental data.
 In table \ref{tab:classification-simulated-all-f1-auc} the performance of each model
 is reported through the estimated $F1$-score, for each of the datasets. 
 \input{chapters/results/figures/classification_simulated_all_f1_auc.tex}
-As a benchmark, we are including a model based on a state of the art pretrained 
+As a benchmark for transfer learning, we are including a model based on a state of the art pretrained 
 network\cite{Simonyan2015}, as outlined in section \ref{sec:method-pretrained}. 
 In in figure \ref{fig:confmat-simulated}, we show the confusion matrix for prediction
 on test set data for all the models, including normalized values for each event type.
@@ -84,8 +84,8 @@ Next, we apply the 'classifiers' to experimental data.
 
 \subsection{Classification on experimental data}
 Classification of experimental data poses a different set of challenges when it comes
-to evaluating our results. We currently only have a small number of events that are 
-handlabeled as double events, which may be used as a form of verification. As mentioned in section
+to evaluating our results. We currently only have a small number of events that are
+hand labelled as double events, which may be used as a form of verification. As mentioned in section
 \ref{sec:experimental-background}, we expect the number of double events in the experimental
 data to be much lower than single events. Inspecting the ratio of predicted singles to predicted
 doubles can then be an initial indication of how a model is performing. It is, however,
@@ -111,46 +111,59 @@ For a set of single events for which we know the model has good performance, we 
 with a scaling factor from 0-10. The aim is to see the effect of increasing total intensity in
 images on the classification accuracy. The result is shown in figure \ref{fig:simulated-scaled-intensities}.
 \input{chapters/results/figures/classification_simulated_scaled.tex}
-From this figure, there is a clear trend toward a lower fraction of events classified as single decays
-when the intensities in images is increased. Note that at a scaling factor of 4 the total intensity in
+From this figure, there is a clear trend towards a lower fraction of events correctly classified as single 
+decays when the intensities in images increases. Note that at a scaling factor of 4 the total intensities in
 the simulated images approach the highest total intensities in the experimental decay data.
  
 \section{Regression}
-\subsection{Regression on simulated data}
 Assuming data has already been classified, we aim to predict the energy of the decays and their
 position of origin. Because there is a travel distance between the 
 ejection site and the point the energy is deposited, the positions aren't necessarily
-the locations of the highest-intensity pixels in the detector images.
+the locations of the highest-intensity pixels in the detector images. Our hypothesis is
+then that there are sufficient structures and spacial relationships in the detector images to
+allow a model to determine these positions.
 Note that for regression the models are trained on single or double events exclusively.
-This means that for dataset $(c)$, which is imbalanced, the set of single events is
-identical to that of set $(b)$, causing near-identical results between these two sets.
-Due to the poor performance of models trained on simulated double events, and the
-expected low frequency of double events in the experimental data, we only apply models
-trained on simulated single events.
-\subsubsection{Position of origin}
+A consequence of this is that for dataset $c$ the set of single events is
+identical to that of set $b$, causing near-identical results between these two sets.
+
+\subsection{Position of origin}
 In table \ref{tab:regression-simulated-all-positions-r2} the R2-scores for all models
-trained on simulated data are presented. A similar trend as was seen for classification
+trained on simulated data are presented.
+\input{chapters/results/figures/regression_simulated_all_positions_r2.tex}
+\noindent A similar trend as was seen for classification
 can be observed for single events, where models are trained on unmodified data. Even
-a linear regressor is able to predict positions of origin fairly well, but it is clear
+a linear regressor predicts positions of origin fairly well, but it is clear
 that the neural networks perform at a much higher level in this case. They have strong
 R2-scores of 0.99 and higher, and very little degradation in performance with added 
 modifications to the training data. Again, as with classification, the custom model
-performs strongly across all datasets for single events.
-In the case of regression on double events, none of the models are able to accurately
+performs strongly across all datasets for single events, with the lowest variability across
+experiments. However, in this regression task, the pretrained model.
+In the case of regression on double events, none of the models accurately
 predict positions of origins for both events.
-\input{chapters/results/figures/regression_simulated_all_positions_r2.tex}
+\input{chapters/results/figures/regression_experimental_dist_means.tex}
+In the absence of true positions for experimental decays, we rely on other
+ways to estimate how regression models perform.
+In figure \ref{fig:experimental-pos-dist} we look at how the predicted positions
+are distributed around the highest intensity pixel in each experimental decay event.
+As a comparison, we plot the same distribution using true values for positions in
+simulated single decay events. We can see that the distributions overlap quite well
+up until their respective peaks. Predictions on experimental decays have a wider
+distribution than the target data, but as we've seen in the classification results this
+difference in distributions is not a unique case.
+
 \subsubsection{Energy}
-In table \ref{tab:regression-simulated-all-energies-r2} the R2-scores for all models
-trained on simulated data are presented.
-Performance when predicting single energies is across the board lower when compared with
-R2-scores for positions. On unmodified data the models are to a large degree able to
-predict energies, with R2-score of 0.93 and above. For the modified datasets the CNN
-suffers greatly and isn't able to predict energies at all. Other models see a less
-severe effect, but still a clear reduction in performance.
-As was the case with prediction of positions, no models predict energies
+In table \ref{tab:regression-simulated-all-energies-r2} we show the R2-scores for all
+models trained on simulated data.
+Performance when predicting single energies is across the board lower than what we saw
+for positions of origin. On unmodified data, the models are to a large degree able to
+predict energies, with R2-scores of 0.93 and above. For the modified datasets the CNN
+suffers greatly and isn't able to account for variances in the data at all. Other models
+see a less severe effect, but still a clear reduction in goodness of fit.
+As was the case with the prediction of positions, no models predict energies
 of double events with any useful degree of accuracy.
 \input{chapters/results/figures/regression_simulated_all_energies_r2.tex}
 
-\subsection{Regression on experimental data}
+Due to the poor performance of models trained on simulated double events, and the
+expected low frequency of double events in the experimental data, we only apply models
+trained on simulated single events.
 \input{chapters/results/figures/regression-experimental-best-model-dist.tex}
-\input{chapters/results/figures/regression_experimental_dist_means.tex}

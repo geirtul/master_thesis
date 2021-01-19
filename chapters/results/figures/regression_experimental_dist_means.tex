@@ -1,30 +1,30 @@
 \begin{table}
 \centering
 \caption{
-Mean distances of predicted position of origin on experimental decays, to center of highest intensity pixel (HIP).Models 
+Mean distances of predicted position of origin on experimental decays to the center of highest intensity pixel (HIP).Models 
 trained on data with: a) no modifications, b) specific pixels set to zero to mimic experimental data, and c) imbalanced dataset
 in addition to modifications in b) to further mimic experimental data.
 }
 \label{tab:regression-experimental-dist-means}
-\begin{tabular}{ll}
+\begin{tabular}{lll}
 \toprule
-{} & Mean distance [mm] \\
+{} & Mean distance [mm] & Standard Deviation [mm] \\
 \midrule
-LinReg (a)     &  $\num{ 17.61 }$ \\
-Dense (a)      &  $\num{ 16.89 }$ \\
-CNN (a)        &  $\num{ 12.53 }$ \\
-Pretrained (a) &  $\num{ 4.59 }$ \\
-Custom (a)     &  $\num{ 3.88 }$ \\
-LinReg (b)     &  $\num{ 17.49 }$ \\
-Dense (b)      &  $\num{ 13.80 }$ \\
-CNN (b)        &  $\num{ 12.49 }$ \\
-Pretrained (b) &  $\num{ 4.80 }$ \\
-Custom (b)     &  $\num{ 3.50 }$ \\
-LinReg (c)     &  $\num{ 17.49 }$ \\
-Dense (c)      &  $\num{ 13.79 }$ \\
-CNN (c)        &  $\num{ 12.40 }$ \\
-Pretrained (c) &  $\num{ 4.66 }$ \\
-Custom (c)     &  $\num{ 3.48 }$ \\
+LinReg (a)     &  $\num{ 17.61 }$ &  $\num{ 9.19 }$ \\
+Dense (a)      &  $\num{ 16.89 }$ &  $\num{ 13.06 }$ \\
+CNN (a)        &  $\num{ 12.53 }$ &  $\num{ 7.98 }$ \\
+Pretrained (a) &  $\num{ 4.59 }$ &  $\num{ 3.31 }$ \\
+Custom (a)     &  $\num{ 3.88 }$ &  $\num{ 3.04 }$ \\
+LinReg (b)     &  $\num{ 17.49 }$ &  $\num{ 8.93 }$ \\
+Dense (b)      &  $\num{ 13.80 }$ &  $\num{ 10.40 }$ \\
+CNN (b)        &  $\num{ 12.49 }$ &  $\num{ 8.73 }$ \\
+Pretrained (b) &  $\num{ 4.80 }$ &  $\num{ 2.99 }$ \\
+Custom (b)     &  $\num{ 3.50 }$ &  $\num{ 3.02 }$ \\
+LinReg (c)     &  $\num{ 17.49 }$ &  $\num{ 8.93 }$ \\
+Dense (c)      &  $\num{ 13.79 }$ &  $\num{ 10.40 }$ \\
+CNN (c)        &  $\num{ 12.40 }$ &  $\num{ 8.71 }$ \\
+Pretrained (c) &  $\num{ 4.66 }$ &  $\num{ 2.94 }$ \\
+Custom (c)     &  $\num{ 3.48 }$ &  $\num{ 2.91 }$ \\
 \bottomrule
 \end{tabular}
 \end{table}

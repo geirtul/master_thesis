@@ -3,11 +3,6 @@ With the goal of classifying experimental decay data, we set a minimum requireme
 of first showing that machine learning algorithms can classify simulated decay events.
 From the $F1$ scores shown in table \ref{tab:classification-simulated-all-f1-auc} we
 can see that classification of simulated events is possible.
-
-(((
-    \textbf{Possibly add figures on which events the top-performing model struggles with?}
-)))
-
 There is a clear performance gap between CNN-based architectures and the logistic regressor and dense
 neural network. This gap may be expected, as CNN's are specifically designed for
 machine learning involving images. Of the CNN architechtures, the deeper architectures
@@ -24,10 +19,25 @@ Lacking true labels for experimental data, we look to other expecations, such
 as the fraction of events predicted as single and double decays, shown in table
 \ref{tab:classification-experimental-ratios}. Our expectation is that there is
 a much larger amount of single decays present in experimental data than
-double decays. In light of this expectation, the models' performance is not good.
+double decays. In light of this expectation, the models' performance is not very good.
+The models performing best on simulated data predict up to 90\% or more of the
+experimental decays to be double decays. This is also the case for models trained
+on dataset $c$ (imbalanced). In figure \ref{fig:comparison-intensity} we saw that
+there is a difference in total intensity between simulated decays and experimental
+decays. The experimental decays range higher in total intensity, and in figure
+\ref{fig:intensity-hip-comparison} we also see that a higher maximum intensity in
+an experimental event corresponds to a higher total intensity than for simulated
+events. Additionally, the fraction of predicted single events as a function of total
+intensity in images which we show in figure \ref{fig:experimental-single-fractions},
+indicate that most single events are predicted for low total intensities in images.
+In fact, single events are predicted almost exclusively in the region of total intensity
+where single events are distributed in simulated data. This difference between simulated
+and experimental data may partially explain why a lot of events are classified as double
+decays.
+
 
 
 \section{Regression}
 With energies being closely correlated with total intensity in an image,
 having dead pixels can be detrimental to the performance in predictions.
-- show this
+- show this somehow?

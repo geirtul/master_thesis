@@ -1,0 +1,22 @@
+\begin{table}
+\centering
+\caption{
+Test set Mean Squared Error for regression of energies on simulated data, with models trained on data with: 
+a) no modifications, b) specific pixels set to zero to mimic experimental data, and c) imbalanced dataset
+in addition to modifications in b) to further mimic experimental data. Error estimates are the standard deviation 
+in results from validation data in k-fold cross-validation with $K=5$ folds.
+}
+\label{tab:regression-simulated-all-energies-r2}
+\begin{tabular}{llllll}
+\toprule
+{} &                                              Linear &                                               Dense &                                                 CNN &                                          Pretrained &                                              Custom \\
+\midrule
+Single (a) &  $\underset{\num{+- 3.334e-02 }  }{\num{ 0.932 } }$ &  $\underset{\num{+- 3.623e-02 }  }{\num{ 0.934 } }$ &  $\underset{\num{+- 4.088e-02 }  }{\num{ 0.937 } }$ &  $\underset{\num{+- 3.761e-02 }  }{\num{ 0.926 } }$ &  $\underset{\num{+- 2.997e-02 }  }{\num{ 0.944 } }$ \\
+Single (b) &  $\underset{\num{+- 2.459e-02 }  }{\num{ 0.768 } }$ &  $\underset{\num{+- 2.222e-02 }  }{\num{ 0.745 } }$ &  $\underset{\num{+- 2.575e-02 }  }{\num{ 0.48 } }$ &  $\underset{\num{+- 1.948e-02 }  }{\num{ 0.781 } }$ &  $\underset{\num{+- 3.167e-02 }  }{\num{ 0.752 } }$ \\
+Single (c) &  $\underset{\num{+- 2.459e-02 }  }{\num{ 0.768 } }$ &  $\underset{\num{+- 2.223e-02 }  }{\num{ 0.745 } }$ &  $\underset{\num{+- 2.522e-02 }  }{\num{ 0.432 } }$ &  $\underset{\num{+- 1.955e-02 }  }{\num{ 0.781 } }$ &  $\underset{\num{+- 2.956e-02 }  }{\num{ 0.724 } }$ \\
+Double (a) &  $\underset{\num{+- 3.349e-02 }  }{\num{ 0.49 } }$ &  $\underset{\num{+- 3.084e-02 }  }{\num{ 0.49 } }$ &  $\underset{\num{+- 4.130e-02 }  }{\num{ 0.488 } }$ &  $\underset{\num{+- 3.138e-02 }  }{\num{ 0.489 } }$ &  $\underset{\num{+- 3.618e-02 }  }{\num{ 0.491 } }$ \\
+Double (b) &  $\underset{\num{+- 3.157e-03 }  }{\num{ 0.485 } }$ &  $\underset{\num{+- 2.347e-03 }  }{\num{ 0.487 } }$ &  $\underset{\num{+- 7.096e-03 }  }{\num{ 0.478 } }$ &  $\underset{\num{+- 4.508e-03 }  }{\num{ 0.489 } }$ &  $\underset{\num{+- 3.659e-03 }  }{\num{ 0.464 } }$ \\
+Double (c) &  $\underset{\num{+- 4.611e-02 }  }{\num{ 0.434 } }$ &  $\underset{\num{+- 4.583e-02 }  }{\num{ 0.422 } }$ &  $\underset{\num{+- 4.554e-02 }  }{\num{ 0.446 } }$ &  $\underset{\num{+- 3.868e-02 }  }{\num{ 0.417 } }$ &  $\underset{\num{+- 4.802e-02 }  }{\num{ 0.401 } }$ \\
+\bottomrule
+\end{tabular}
+\end{table}

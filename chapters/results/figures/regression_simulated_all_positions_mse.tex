@@ -1,0 +1,22 @@
+\begin{table}
+\centering
+\caption{
+Test set Mean Squared Error (MSE) for regression of positions of origin on simulated data, with models trained on data with: 
+a) no modifications, b) specific pixels set to zero to mimic experimental data, and c) imbalanced dataset
+in addition to modifications in b) to further mimic experimental data. Error estimates are the standard deviation 
+in results from validation data in k-fold cross-validation with $K=5$ folds.
+}
+\label{tab:regression-simulated-all-positions-mse}
+\begin{tabular}{llllll}
+\toprule
+{} &                                             Linear &                                              Dense &                                                 CNN &                                          Pretrained &                                              Custom \\
+\midrule
+Single (a) [mm] &  $\underset{\num{+- 6.427e-01 }  }{\num{ 5.68 } }$ &  $\underset{\num{+- 3.382e-01 }  }{\num{ 1.36 } }$ &  $\underset{\num{+- 3.843e-01 }  }{\num{ 0.699 } }$ &  $\underset{\num{+- 5.990e+00 }  }{\num{ 0.676 } }$ &  $\underset{\num{+- 1.477e-01 }  }{\num{ 0.378 } }$ \\
+Single (b) [mm] &  $\underset{\num{+- 6.824e-01 }  }{\num{ 5.95 } }$ &  $\underset{\num{+- 4.791e-01 }  }{\num{ 1.7 } }$ &  $\underset{\num{+- 4.221e-01 }  }{\num{ 1.81 } }$ &  $\underset{\num{+- 2.694e-01 }  }{\num{ 0.707 } }$ &  $\underset{\num{+- 3.938e-01 }  }{\num{ 0.904 } }$ \\
+Single (c) [mm] &  $\underset{\num{+- 6.824e-01 }  }{\num{ 5.95 } }$ &  $\underset{\num{+- 4.820e-01 }  }{\num{ 1.7 } }$ &  $\underset{\num{+- 4.164e-01 }  }{\num{ 1.79 } }$ &  $\underset{\num{+- 2.817e-01 }  }{\num{ 0.723 } }$ &  $\underset{\num{+- 5.147e-01 }  }{\num{ 1.03 } }$ \\
+Double (a) [mm] &  $\underset{\num{+- 7.746e-01 }  }{\num{ 10.1 } }$ &  $\underset{\num{+- 9.506e-01 }  }{\num{ 9.37 } }$ &  $\underset{\num{+- 5.069e-01 }  }{\num{ 9.25 } }$ &  $\underset{\num{+- 5.002e+00 }  }{\num{ 10.7 } }$ &  $\underset{\num{+- 3.342e-01 }  }{\num{ 9.05 } }$ \\
+Double (b) [mm] &  $\underset{\num{+- 3.748e-01 }  }{\num{ 10.1 } }$ &  $\underset{\num{+- 7.344e-01 }  }{\num{ 9.36 } }$ &  $\underset{\num{+- 5.014e-01 }  }{\num{ 9.55 } }$ &  $\underset{\num{+- 4.999e+00 }  }{\num{ 10.7 } }$ &  $\underset{\num{+- 2.491e-01 }  }{\num{ 9.09 } }$ \\
+Double (c) [mm] &  $\underset{\num{+- 1.299e+00 }  }{\num{ 10.2 } }$ &  $\underset{\num{+- 1.345e+00 }  }{\num{ 9.7 } }$ &  $\underset{\num{+- 8.811e-01 }  }{\num{ 9.49 } }$ &  $\underset{\num{+- 1.171e+01 }  }{\num{ 17.6 } }$ &  $\underset{\num{+- 1.033e+00 }  }{\num{ 9.18 } }$ \\
+\bottomrule
+\end{tabular}
+\end{table}

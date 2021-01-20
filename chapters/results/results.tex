@@ -137,7 +137,8 @@ that the neural networks perform at a much higher level in this case. They have 
 R2-scores of 0.99 and higher, and very little degradation in performance with added 
 modifications to the training data. Again, as with classification, the custom model
 performs strongly across all datasets for single events, with the lowest variability across
-experiments. However, in this regression task, the pretrained model.
+experiments.
+\input{chapters/results/figures/regression_simulated_all_positions_mse.tex}
 In the case of regression on double events, none of the models accurately
 predict positions of origins for both events.
 \input{chapters/results/figures/regression_experimental_dist_means.tex}
@@ -163,6 +164,7 @@ see a less severe effect, but still a clear reduction in the goodness of fit.
 As was the case with the prediction of positions, no models predict energies
 of double events with any useful degree of accuracy.
 \input{chapters/results/figures/regression_simulated_all_energies_r2.tex}
+\input{chapters/results/figures/regression_simulated_all_energies_mse.tex}
 
 Due to the poor performance of models trained on simulated double events, and the
 expected low frequency of double events in the experimental data, we only apply models
@@ -180,3 +182,12 @@ in a region of the detector with few such pixels.
 We also calculate the correlation coefficients between total image intensity and
 predicted energy for all models applied to experimental data. For all models the
 correlation coefficients range from 0.95 to 0.999.
+By fitting a straight line
+$$\text{Predicted energy} = a_{DDAS}\times\text{DDAS} + b$$
+and
+$$\text{Predicted energy} = a_{fit}\times\text{fit} + b$$
+we can compare the slopes with calibration constants (see section \ref{sec:experimental-background-data}) to determine if our models
+are predicting reasonable energies. The slopes from fitting a 1st order polynomial to
+the data are shown in table \ref{tab:regression-experimental-energy-polyfit}.
+\input{chapters/results/figures/regression_experimental_energy_polyfit.tex}
+

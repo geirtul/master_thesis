@@ -1,4 +1,66 @@
-\section{Models}
-As the data consists of detector \textit{images} we expect convolutional
-neural networks to be particularly well-suited for the classification task.
-\section{Pretrained network}\label{section:method-pretrained}
+The programming language chosen for implementing experiments performed
+in this thesis is Python. Python has quickly grown to become one of the
+most popular languages overall, and especially in the machine learning community.
+Together with its extensive amount of available libraries, it allows for
+fast prototyping of solutions, and excellent readability. For machine learning
+purposes there are several libraries commonly used in the natural sciences.
+The code developed for data processing and analysis in the thesis is available in two
+GitHub repositories:
+\begin{itemize}
+    \item \url{https://github.com/geirtul/master_analysis}
+    contains scripts and notebooks used in analysis of the data, as well as trained
+    models and experiment logs.
+    \item \url{https://github.com/geirtul/master_scripts}
+    contains an installable python module with data import scripts and various helper
+    functions used by the analysis repository.
+\end{itemize}
+Additionally, for a briefer overview and introduction to analysis of beta-decay
+data using machine learning we have made a smaller example repository available
+at \url{https://github.com/geirtul/event_classification_example}.
+
+\section{TensorFlow}
+The TensorFlow\cite{tensorflow2016} library is developed by Google, and is one of the most
+used libraries for machine learning in Python. It allows for designing complex learning
+algorithms efficiently, and also includes the Keras API\cite{keras2015}, allowing
+easy-to-follow implementations of standard architectures and pipelines. Using this API,
+with TensorFlow as the backend framework, we build and train all models in this thesis.
+
+\section{Building and training a model}
+Building a machine learning model using TensorFlow and Keras is a straightforward
+process. By utilizing the \lstinline{Sequential} class, we can stack the desired layers
+with given properties, and TensorFlow takes care of the rest.
+\lstinputlisting[label={code:end-to-end-example}, caption={End-to-end example of building, training,
+and evaluating a model.}]{chapters/theory/tensorflow_example.py}
+An end-to-end example of how to build, train and evaluate a model using
+a small sample of simulated data is shown in \ref{code:end-to-end-example}.
+
+\section{Pretrained network and feature extraction}\label{section:method-pretrained}
+A common strategy when working with representation- or transfer learning,
+is to use a \textit{pretrained} model. State-of-the-art (SOTA) models typically
+require enormous hardware resources and considerable time to train,
+but simply passing inputs through them without any backpropagation does not.
+They are trained on millions of inputs, and we seek to exploit their ability to
+generalize. The SOTA models serve as feature extractors, and we train our own,
+more specialized models to make predictions from the extracted features.
+Many such models are available through the Keras API, and we have used
+parts of VGG16 \cite{Simonyan2015} as part of this feature extraction.
+The steps involved are as follows:
+\begin{itemize}
+    \item Initialize a \lstinline{Sequential} model like shown in \ref{code:end-to-end-example}.
+    \item Add an \lstinline{InputLayer} suited to our inputs to the model. In our case this is
+    (16, 16, 3) because VGG16 is trained on RGB images. Our images only have one channel, but we 
+    can create 'pseudo-channels' by concatenating our images along the last axis.
+    \item Loop over layers in the pretrained VGG16 model, adding them one by one to
+    our Sequential model until the maximum number of layers have been added.
+    Due to \lstinline{MaxPooling2D} layers, which cut the size of the inputs to the
+    next layer in half, the number of layers we can use is lower than the number of layers
+    in the full VGG16 model.
+    \item Set each extracted layer's \textit{trainable} attribute to False. We don't want
+    to adjust weights in this large, complex network.
+    \item Add a \lstinline{Flatten} layer, which creates a one-dimensional vector of the
+    extracted features.
+    \item Add a desired number of \lstinline{Dense} layers to build a top-level network
+    which will take the extracted features as input.
+\end{itemize}
+We are essentially treating the SOTA model's layers as a good initialization for our
+final model.

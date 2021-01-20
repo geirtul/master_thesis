@@ -1121,8 +1121,6 @@ from the simulated data in some ways:
 	\item The positions of events in the detector images are expected to follow a more
 	gaussian distribution rather than the uniform distribution. This is due to the
 	nature of the experiment and how the particle beam is formed.
-	\item The pixel intensities and event energies have a broader distribution.
-	Pixel intensities range from 0 to 40000 for some events.
 	\item Energy fluctuations in the scintillator makes experimental data look more
 	'noisy' than simulated data.
 	\item The ratio of single events to double events is not expected to be balanced.
@@ -1131,16 +1129,25 @@ from the simulated data in some ways:
 	pixel exhibits erratic behaviour. For some specific pixels this is true for the
 	entire dataset. These pixels are the entire rows 0 and 15, plus pixel (13,3).
 \end{itemize}
+In our analysis of experimental data, we use two datasets. One set of 260147 decay events from a beta-decay
+experiments, and one set of 100000 decay events where we have two additional energy-related
+attributes available. These are DDAS\cite{msu-ddas}-energies and fit-energies. 
+Both are measured using the PSPMT dynode signal. The DDAS energy is the energy
+provided by the onboard signal processing algorithms of the DDAS system.
+It is determined from the digitized detector signal using a trapezoidal filter.
+The fit energy is determined offline by analyzing digitized detector signals.
+The detector signal is modeled using a constant baseline plus a logistic rise 
+convoluted with an exponential decay. This model signal is fit to the recorded
+pulse using standard nonlinear regression methods, and the fit energy is given by the
+amplitude of the best fit to the recorded detector signal.
 
-\begin{itemize}
-	\item Q values
-	\item energies on the order of keV - 10's of MeV
-	\item Beta-decay spectrum (three body process), energy observed is not characteristic,
-	energy loss is observed in detectors (tyically don't have enough material to completely
-	stop the beta decay electron)
-	\item Selection rules - allowed and forbidden decays
-	\item $\log ft$ - used to classify decays
-\end{itemize}
+The relationship between the arbitrary energy values determined by DDAS or the fitting and 
+real energies define a set of calibration parameters which can be compared to calibration 
+parameters determined using source data. Ideally, the calibration parameters determined using
+machine learning models and the calibration parameters determined using source data should 
+be the same or similar. We can use these energies as a performance indicator for our
+models when it comes to energy prediction.
+
 
 \subsection{Simulated datasets}\label{sec:experimental-background-data-sim}
 To explore the effect of some properties found in the experimental data, we

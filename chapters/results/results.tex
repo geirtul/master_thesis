@@ -143,6 +143,7 @@ predict positions of origins for both events.
 \input{chapters/results/figures/regression_experimental_dist_means.tex}
 In the absence of true positions for experimental decays, we rely on other
 ways to estimate how regression models perform.
+\input{chapters/results/figures/regression-experimental-best-model-dist.tex}
 In figure \ref{fig:experimental-pos-dist} we look at how the predicted positions
 are distributed around the highest intensity pixel in each experimental decay event.
 As a comparison, we plot the same distribution using true values for positions in
@@ -158,12 +159,24 @@ Performance when predicting single energies is across the board lower than what 
 for positions of origin. On unmodified data, the models are to a large degree able to
 predict energies, with R2-scores of 0.93 and above. For the modified datasets the CNN
 suffers greatly and isn't able to account for variances in the data at all. Other models
-see a less severe effect, but still a clear reduction in goodness of fit.
+see a less severe effect, but still a clear reduction in the goodness of fit.
 As was the case with the prediction of positions, no models predict energies
 of double events with any useful degree of accuracy.
 \input{chapters/results/figures/regression_simulated_all_energies_r2.tex}
 
 Due to the poor performance of models trained on simulated double events, and the
 expected low frequency of double events in the experimental data, we only apply models
-trained on simulated single events.
-\input{chapters/results/figures/regression-experimental-best-model-dist.tex}
+trained on simulated single events. From figure \ref{fig:simulated_corrcoeff}, we know
+that total image intensity and energy are closely correlated for simulated data,
+and from $R2$ scores shown in table \ref{tab:regression-simulated-all-energies-r2}
+that goodness of fit decreases with added 'dead' pixels. Without true values for
+energies in experimental data, we show in figure \ref{fig:regression-energy-intensity-prediction-energy-zeros}
+the related quantities for experimental decays. Total image intensity decreases with
+increasing number of pixels with value zero, as expected. The predicted energy
+follows this same trend very closely. The 'peaks' in the plots correspond to events
+where there are a fairly large amount of 'dead' pixels, but the decay was registered
+in a region of the detector with few such pixels.
+\input{chapters/results/figures/regression_total_intensity_predicted_energy_zeros.tex}
+We also calculate the correlation coefficients between total image intensity and
+predicted energy for all models applied to experimental data. For all models the
+correlation coefficients range from 0.95 to 0.999.

@@ -1,0 +1,22 @@
+\begin{table}
+\centering
+\caption{
+Slopes from 1st order polynomial fit of predicted energies vs. DDAS energies and predicted energies
+vs. fit energies. $a$, $b$, and $c$ specify which simulated dataset the models were trained on. Keep
+in mind that all these models were trained exclusively on single decay events, thus making dataset $b$
+and $c$ identical in which samples models are trained on.
+}
+\label{tab:regression-simulated-energy-polyfit}
+\begin{tabular}{llllll}
+\toprule
+{} &              Linear &               Dense &                 CNN &          Pretrained &              Custom \\
+\midrule
+$a_{DDAS}$ (a) &  $\num{ 9.12e-05 }$ &  $\num{ 8.90e-05 }$ &  $\num{ 9.30e-05 }$ &  $\num{ 3.63e-05 }$ &  $\num{ 8.80e-05 }$ \\
+$a_{DDAS}$ (b) &  $\num{ 8.40e-05 }$ &  $\num{ 8.16e-05 }$ &  $\num{ 8.47e-05 }$ &  $\num{ 3.20e-05 }$ &  $\num{ 6.40e-05 }$ \\
+$a_{DDAS}$ (c) &  $\num{ 8.40e-05 }$ &  $\num{ 8.15e-05 }$ &  $\num{ 8.53e-05 }$ &  $\num{ 3.20e-05 }$ &  $\num{ 1.02e-04 }$ \\
+$a_{fit}$ (a)  &  $\num{ 2.75e-04 }$ &  $\num{ 2.69e-04 }$ &  $\num{ 2.81e-04 }$ &  $\num{ 1.10e-04 }$ &  $\num{ 2.66e-04 }$ \\
+$a_{fit}$ (b)  &  $\num{ 2.53e-04 }$ &  $\num{ 2.46e-04 }$ &  $\num{ 2.55e-04 }$ &  $\num{ 9.64e-05 }$ &  $\num{ 1.93e-04 }$ \\
+$a_{fit}$ (c)  &  $\num{ 2.53e-04 }$ &  $\num{ 2.46e-04 }$ &  $\num{ 2.57e-04 }$ &  $\num{ 9.64e-05 }$ &  $\num{ 3.07e-04 }$ \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -127,20 +127,19 @@ A consequence of this is that for dataset $c$ the set of single events is
 identical to that of set $b$, causing near-identical results between these two sets.
 
 \subsection{Position of origin}
-In table \ref{tab:regression-simulated-all-positions-r2} the R2-scores for all models
-trained on simulated data are presented.
+In table \ref{tab:regression-simulated-all-positions-r2} we present the R2-scores for all models
+trained on simulated data.
 \input{chapters/results/figures/regression_simulated_all_positions_r2.tex}
-\noindent A similar trend as was seen for classification
-can be observed for single events, where models are trained on unmodified data. Even
-a linear regressor predicts positions of origin fairly well, but it is clear
-that the neural networks perform at a much higher level in this case. They have strong
-R2-scores of 0.99 and higher, and very little degradation in performance with added 
-modifications to the training data. Again, as with classification, the custom model
-performs strongly across all datasets for single events, with the lowest variability across
-experiments.
+\noindent All but the simple linear regressor perform excellently. Notably, there is
+little decrease in $R2$ scores when modifying the training data (datasets $b$ and $c$).
 \input{chapters/results/figures/regression_simulated_all_positions_mse.tex}
+In table \ref{tab:regression-simulated-all-positions-mse} we show the mean errors in $mm$.
+Here we do see a decrease in performance from added modification to training data.
+The pretrained model sticks out as the more stable of the architectures, and is overall
+the highest performing model. All the CNN architectures predict with sub-pixel accuracy.
 In the case of regression on double events, none of the models accurately
-predict positions of origins for both events.
+predict positions of origins for both events. The models predict positions on average
+9 $mm$ off, which is roughly equal to three pixel-widths.
 \input{chapters/results/figures/regression_experimental_dist_means.tex}
 In the absence of true positions for experimental decays, we rely on other
 ways to estimate how regression models perform.
@@ -160,10 +159,13 @@ Performance when predicting single energies is across the board lower than what 
 for positions of origin. On unmodified data, the models are to a large degree able to
 predict energies, with R2-scores of 0.93 and above. For the modified datasets the CNN
 suffers greatly and isn't able to account for variances in the data at all. Other models
-see a less severe effect, but still a clear reduction in the goodness of fit.
-As was the case with the prediction of positions, no models predict energies
-of double events with any useful degree of accuracy.
+see a less severe effect. In general, the degree of explained variance is considerably
+reduced when 'dead' pixels are introduced.
 \input{chapters/results/figures/regression_simulated_all_energies_r2.tex}
+The same effect is seen in the mean errors shown in table \ref{tab:regression-simulated-all-energies-mse}.
+With no modifications to the training data, the custom model predicts energies with an error of
+~$0.07MeV$, with the other models close behind. For modified data and double events the error
+is doubled or more.
 \input{chapters/results/figures/regression_simulated_all_energies_mse.tex}
 
 Due to the poor performance of models trained on simulated double events, and the
@@ -180,14 +182,19 @@ where there are a fairly large amount of 'dead' pixels, but the decay was regist
 in a region of the detector with few such pixels.
 \input{chapters/results/figures/regression_total_intensity_predicted_energy_zeros.tex}
 We also calculate the correlation coefficients between total image intensity and
-predicted energy for all models applied to experimental data. For all models the
+predicted energy for all models applied to experimental data. For all models, the
 correlation coefficients range from 0.95 to 0.999.
-By fitting a straight line
-$$\text{Predicted energy} = a_{DDAS}\times\text{DDAS} + b$$
-and
-$$\text{Predicted energy} = a_{fit}\times\text{fit} + b$$
-we can compare the slopes with calibration constants (see section \ref{sec:experimental-background-data}) to determine if our models
-are predicting reasonable energies. The slopes from fitting a 1st order polynomial to
-the data are shown in table \ref{tab:regression-experimental-energy-polyfit}.
+
+\noindent By fitting straight lines,
+\begin{align}
+    \text{Predicted energy} &= a_{\text{DDAS}}\times E_{\text{DDAS}} + b\\
+    \text{Predicted energy} &= a_{\text{fit}}\times E_{{fit}} + b
+\end{align}
+we can compare the slopes $a_{\text{DDAS}}$ and $a_{\text{fit}}$ with calibration constants (see section \ref{sec:experimental-background-data}) 
+to determine if our models are predicting reasonable energies. The slopes from fitting a 1st order 
+polynomial to the data are shown in table \ref{tab:regression-experimental-energy-polyfit}.
 \input{chapters/results/figures/regression_experimental_energy_polyfit.tex}
+Overall most models show similar slopes within training on the same dataset. The pretrained model,
+however, shows lower slopes in all cases.
+
 

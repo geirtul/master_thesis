@@ -1,21 +1,27 @@
-\lstinputlisting[
-    label={model:logistic},
-    caption={Summary of the logistic model architecture for classification.
-    }]{model_logistic.py}
-
-\lstinputlisting[
-    label={model:dense},
-    caption={Summary of the dense model architecture for classification.
-    }]{model_dense.py}
-\lstinputlisting[
-    label={model:cnn},
-    caption={Summary of the CNN model architecture for classification.
-    }]{model_cnn.py}
-\lstinputlisting[
-    label={model:custom},
-    caption={Summary of the custom model architecture for classification.
-    }]{model_custom.py}
-\lstinputlisting[
-    label={model:pretrained},
-    caption={Summary of the pretrained model architecture for classification.
-    }]{model_pretrained.py}
+\section{Model architectures}
+Here we show the base architectures for all models used in this thesis.
+All layers except final output layers use the ReLU activation function.
+The output layers depend on the task, as follows:
+\begin{itemize}
+    \item Classification - Output uses the sigmoid function.
+    \item Regression - Output has a linear activation.
+\end{itemize}
+Additionally, the final output layers for regression differ from those used in classification.
+\begin{itemize}
+    \item Positions of origin, single events - \lstinline{Dense(2)}
+    \item Positions of origin, double events - \lstinline{Dense(4)}
+    \item Energy, single events - \lstinline{Dense(1)}
+    \item Energy, double events - \lstinline{Dense(2)}
+\end{itemize}
+We also note that the compilation of models is different between these tasks.
+The compile code for models in classification is listed in listing \ref{appendix:code-compile-classification},
+and for regression in listing \ref{appendix:code-compile-regression}. We include this as the loss function is defined
+at compile time for Sequential models.
+\lstinputlisting[label={appendix:code-compile-classification},caption={Code for compiling classification models.}]{chapters/appendix/compile_classification.py}
+\lstinputlisting[label={appendix:code-compile-regression},caption={Code for compiling regression models.}]{chapters/appendix/compile_regression.py}
+\lstinputlisting[label={appendix:model-linreg},caption={Summary of the linear regression model architecture for regression.}]{chapters/appendix/model_linreg.py}
+\lstinputlisting[label={appendix:model-logistic},caption={Summary of the logistic model architecture for classification.}]{chapters/appendix/model_logistic.py}
+\lstinputlisting[label={appendix:model-dense},caption={Summary of the dense model architecture for classification.}]{chapters/appendix/model_dense.py}
+\lstinputlisting[label={appendix:model-cnn},caption={Summary of the CNN model architecture for classification.}]{chapters/appendix/model_cnn.py}
+\lstinputlisting[label={appendix:model-custom},caption={Summary of the custom model architecture for classification.}]{chapters/appendix/model_custom.py}
+\lstinputlisting[label={appendix:model-pretrained},caption={Summary of the pretrained model architecture for classification.}]{chapters/appendix/model_pretrained.py}

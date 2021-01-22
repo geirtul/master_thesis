@@ -1,3 +1,36 @@
 \begin{abstract}
-    This is the abstract text.
+    We apply supervised machine learning algorithms to simulated and experimental
+    nuclear physics data. Leveraging the ability to generate arbitrary amount of labelled data with perfect
+    knowledge of information could be extremely useful in reducing the need for human labelling of
+    exponentially growing experimental datasets. To determine the effects so-called 'dead' pixels in 
+    specific locations, and imbalanced class distribution, in the experimental data, we generate three
+    simulated datasets.
+    We found that for simulated data a Convolutional Neural Network-based architecture is highly successful in the
+    classification of events across all the prepared datasets. Classification of experimental data was not successful,
+    regardless of model performance on simulated data. 
+    This may be partly explained by a difference in total intensity between simulated and experimental data. 
+    We observe a trend across all models and training data, that when classifying experimental decay events,
+    most all event classified as single are in the lower
+    regime of total intensities. We observe a similar trend if we classify simulated single decays 
+    where all pixel intensities are scaled up.
+    
+    We successfully trained models to predict positions of origin for simulated single decay events,
+    with $R2$ scores of $0.99$ and above for all simulated datasets. However, we were unable to
+    predict positions of origin for simulated double decay events with any degree of precision.
+    We found the same problem when predicting energies, and energy prediction was also sensitive
+    to the modifications in the data. A likely cause of this sensitivity may be the strong correlation
+    between energy and total pixel intensity in detector images, and the modifications effectively
+    acting as removal of information.
+    
+    Without true positions for experimental data to directly test the models against,
+    making any strong conclusions for these results is hard. Proper verification of performance 
+    will have to wait until researchers can test the predicted positions on source data from the
+    experiment. However, we find that the positions predicted seem within reasonable limits, compared
+    with what is seen in simulated data.
+    
+    For energy predictions on experimental decays, preliminary comparisons
+    with experimental calibration constants indicate that the predictions are not good on experimental
+    decays. The working theory is that the simulated training data predicts too many photons per unit
+    energy, resulting in the knowledge from simulated data not being transferable to the experimental
+    domain.
 \end{abstract}

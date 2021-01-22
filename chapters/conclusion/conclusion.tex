@@ -5,8 +5,9 @@ or 'double', and to predict the energy and positions of origin for events. To de
 some properties of the experimental data, we prepared additional simulated datasets where we incorporated
 these properties. They were so-called 'dead' pixels in specific locations, and imbalanced class distribution.
 We found that for simulated data a Convolutional Neural Network-based architecture is highly successful in the
-classification of events across all the prepared datasets. This is not the case for the 'simpler' logistic
-and dense models, which suffer from the included properties in the datasets.
+classification of events across all the prepared datasets, with $F1$ scores up to $0.97$. 
+This is not the case for the 'simpler' logistic and dense models, which suffer from the included properties 
+in the datasets.
 Classification on experimental data was not found to be successful, regardless of model performance on
 simulated data. This may be partly explained by a difference in total intensity, or deposited energy,
 between simulated and experimental data. We observe a trend across all models and training data, that
@@ -42,6 +43,6 @@ experimental data, or post-process the simulated datasets to better represent th
 Another option could be to invest in hand labelling an experimental dataset which can be used
 to tune the models used in this thesis. This could also allow for estimating upper and lower bounds
 for the Receiver Operating Characteristic \ref{Claesen2015}, which we have not used in this thesis.
-As the effect of pixels being set to zero value is detrimental to energy predictions in particular,
-efforts might be made to assess the size of the effect, and whether or not it could be reasonable
+As the effect of pixels being set to zero value is detrimental to energy predictions, in particular,
+efforts might be made to assess the magnitute of the effect, and whether or not it could be reasonable
 to approximate pixel values.

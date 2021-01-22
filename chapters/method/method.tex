@@ -69,4 +69,13 @@ We are essentially treating the SOTA model's layers as a good initialization for
 final model.
 
 \section{Data separation}
-Training, validation, and test.
+Separating our data into two sets with no overlap allows us to make an estimate of
+our models' performance in the real world, on so-called 'out-of-sample' data.
+This relates closely to the concepts of over- and underfitting. Neither the models,
+nor ourselves, will see the split off dataset until all optimization and training
+is completed. This way, leakage of information from what should be the out-of-sample
+dataset is prevented, and a better performance estimate is reached. In this thesis we
+use three terms for datasets - training, validation, and test. The test set is the data
+which is hidden away until we have done all we can to optimize our models.
+The training data is the rest, which when split into K folds for cross-validation
+serves as $K-1$ folds of training data, and 1 fold as vaildation data.

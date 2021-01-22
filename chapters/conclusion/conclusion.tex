@@ -37,8 +37,11 @@ energy, resulting in the knowledge from simulated data not being transferable to
 domain.
 
 \section{Future work}
-
-Assess the effect of dead pixels, and possibly determine a way to identify whether a given
-pixel is zero due to erratic behaviour or not having any energy deposited.
-Generate a dataset of labelled experimental events and explore the effects of combined training,
-and also determine ROC-curves upper and lower bounds. (ref article here)
+From the results found in this thesis, there may be grounds to adjust simulations based on
+experimental data, or post-process the simulated datasets to better represent the experiment.
+Another option could be to invest in hand labelling an experimental dataset which can be used
+to tune the models used in this thesis. This could also allow for estimating upper and lower bounds
+for the Receiver Operating Characteristic \ref{Claesen2015}, which we have not used in this thesis.
+As the effect of pixels being set to zero value is detrimental to energy predictions in particular,
+efforts might be made to assess the size of the effect, and whether or not it could be reasonable
+to approximate pixel values.

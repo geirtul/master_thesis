@@ -1,19 +1,30 @@
-\noindent In this thesis, we the gap between simulation and experiment.
-Modelling the world around us to predict behaviour and increase our understanding is a key concept
-in physics, and science as a whole. Simulating physical processes often lay the groundwork for verifying
-theory, and designing experiments. For many branches of physics, and especially nuclear physics,
-there has been an exponential growth in data generated from experiments. This brings several challenges,
-the most immediate of which may be "how do we process it all?". If there are multiple types of
+\noindent In this thesis, we approach the problem arising from copious amounts of unlabeled data
+generated in nuclear physics experiments. Modelling the world around us to predict behaviour and increase 
+our understanding is a key concept in physics, and science as a whole. Simulating physical processes often 
+lay the groundwork for verifying theory, and designing experiments. For many branches of physics, 
+and especially nuclear physics, there has been an exponential growth in data generated from experiments. 
+This brings several challenges, the most immediate of which may be "how do we process it all?". If there are 
+multiple types of
 reactions occurring in an experiment, how can we separate them when there are billions of events?
 In the later years, machine learning algorithms have gained popularity for accomplishing this task,
 alleviating the need for humans to sift through vast amounts of data by hand. In this thesis, we
 explore the leveraging of simulated experiments to train machine learning models and subsequently
-apply them to data gathered from real-world experiments. 
+apply them to data gathered from real-world experiments.
 
 
+\noindent In simulations, we have complete knowledge of every parameter. The energy of a decay, the exact positions
+of the ion where the decay originated, the exact time of the decay are all examples of knowledge we have about
+simulations. For experimental data, these details are what we seek to learn in order to verify and improve our
+model of the physical universe, and they are not necessarily directly measurable.
+Traditional methods of analysis may be computationally expensive to run, especially considering the
+amounts of data these methods must churn through, with repeated calculations for every sample.
+With machine learning algorithms we can front-load all these computations, training them to perform
+the task of extracting our desired information based on simulations. If our simulations capture crucial
+attributes of the real data, we may be able to approximate even values that would be notoriously difficult 
+to measure or infer from data alone. Another avenue is determining the types of reactions or events that
+occur in experimental data. The is of particular interest in this case, as there is currently no methods
+other than the human eye to separate events into their respective categories. 
 
-Nuclear physics seeks to understand the building blocks of the universe - nuclei - and from that 
-understanding build a comprehensive and predictive model of them. The vast majority of nuclei discovered 
-so far are not stable, and the study of many of them requires specialized equipment.
-
-
+\noindent We investigate the possibility of carrying out three different tasks. Classification, prediction of event energy, and prediction of
+positions of origin. We introduce the fundamental concepts for machine learning theory, our methods and
+implementation, and present results of carrying our these tasks on simulated and experimental data.

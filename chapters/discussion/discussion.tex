@@ -13,7 +13,7 @@ these deeper models also appear less prone to simply classify most of events as 
 class. In figure \ref{fig:confmat-simulated} we can see that this is the case for
 the logistic and dense models.
 
-With the ability to classify simulated events as either single or double decays,
+\noindent With the ability to classify simulated events as either single or double decays,
 we then applied the models trained on simulated data to experimental data.
 Lacking true labels for experimental data, we look to other expecations, such
 as the fraction of events predicted as single and double decays, shown in table
@@ -35,11 +35,45 @@ where single events are distributed in simulated data. We also concider the tren
 of decreased fraction of correctly classified single decays in simulated data,
 presented in figure \ref{fig:simulated-scaled-intensities}. Together,
 this difference between simulated and experimental data may partially explain why a 
-lot of events are classified as double decays.
+lot of events are classified as double decays. 
 
 \section{Regression}
 \subsection{Positions of origin}
+With the $R2$ scores shown in table \ref{tab:regression-simulated-all-positions-r2},
+and mean errors from table \ref{tab:regression-simulated-all-energies-mse}, prediction
+of positions of origin seems highly successful for simulated single decays. The portion
+of explained has low variance with added modifications to the training data, although
+the mean error increases with added 'dead' pixels. This is to some degree to be expected,
+as this also degrades the information in the image. In spite of these modifications, models
+are still able to predict positions of origin with sub-pixel width accuracy for all simulated
+datasets. Without access to something akin to true positions for experimental decays, properly
+determining performance is not currently possible. Viewing the distributions of distances from
+the highest intensity pixel in figure \ref{fig:experimental-pos-dist} indicates at least that models
+predict reasonable positions. This distribution must be taken with a grain of salt, however. When the
+number of 'dead' pixels in images increase, the likelihood of the model seeing the 'true' highest intensity
+pixel decreases. That is, with increasing numbers of 'dead' pixels, the probability that the model is not
+predicting the position of the actual origin increases. Considering the mean distances and their standard deviations
+shown in table \ref{tab:regression-experimental-dist-means}, it is clear that overall the pretrained
+and custom models outclass the others in this task. Note, however, the standard deviations in the mean
+distances from the highest intensity pixel are almost the size of the mean, indicating wider distributions.
 \subsection{Energy}
-With energies being closely correlated with total intensity in an image,
-having dead pixels can be detrimental to the performance in predictions.
-- show this somehow?
+Based on scores shown in table \ref{tab:regression-simulated-all-energies-r2} and mean error from
+\ref{tab:regression-simulated-all-energies-mse}, prediction of energies from simulated events is
+indeed possible. With the energy being strongly correlated with total intensity in the detector images,
+we expect the introduction of 'dead' pixels to have a greater impact on energy prediction than for
+positions, and based on the $R2$ scores (table \ref{tab:regression-simulated-all-energies-r2})
+this seems to be the case. This sensitivity to 'dead' pixels may be detrimental to prediction on
+experimental data. In figure \ref{fig:regression-energy-intensity-prediction-energy-zeros} we see
+that the predicted energies on experimental decays vs number of 'dead' pixels closely follows the trend
+of total image intensity. This likely indicates that the strong correlation between total image intensity
+and energy found in simulated data is preserved through to predicted energies on experimental decays.
+This also means that when the number of pixels with value zero increases, it is crucial to know
+whether that is because of no detected energy or erratic behaviour. Otherwise you cannot determine
+whether the prediction is that of the event itself, or simply a function of the sum of the
+inputs. With the sharp decrease in explained variance seen in the $R2$-scores, energy prediction
+for experimental decays using models trained on simulated data is likely not particularly successful
+in this case. This is further supported by the calculated slopes ('calibration constants') based on 
+predicted energies shown in table \ref{tab:regression-experimental-energy-polyfit}.
+A current working hypothesis is that the simulation data used to train the models probably predicted too 
+many photons per unit energy. This would partly explain good predicted energies for simulated data and
+poor predicted energies for the real data compared with calibration parameters based on source data.

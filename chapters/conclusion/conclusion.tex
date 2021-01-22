@@ -1,4 +1,44 @@
+In this thesis, we have applied supervised machine learning algorithms to simulated and experimental
+nuclear physics data. With the goal of leveraging the exact knowledge of properties in simulations to extract
+vital patterns and representations, we trained models to classify simulated decay events as either 'single'
+or 'double', and to predict the energy and positions of origin for events. To determine the effects of
+some properties of the experimental data, we prepared additional simulated datasets where we incorporated
+these properties. They were so-called 'dead' pixels in specific locations, and imbalanced class distribution.
+We found that for simulated data a Convolutional Neural Network-based architecture is highly successful in the
+classification of events across all the prepared datasets. This is not the case for the 'simpler' logistic
+and dense models, which suffer from the included properties in the datasets.
+Classification on experimental data was not found to be successful, regardless of model performance on
+simulated data. This may be partly explained by a difference in total intensity, or deposited energy,
+between simulated and experimental data. We observe a trend across all models and training data, that
+when classifying experimental decay events, most all event classified as single are in the lower
+regime of total intensities. We observe the same trend if we classify simulated data where all pixel
+intensities are scaled up.
+
+We successfully trained models to predict positions of origin for simulated single decay events,
+with $R2$ scores of $0.99$ and above for all simulated datasets. However, we were unable to
+predict positions of origin for simulated double decay events with any degree of precision.
+We found the same problem when predicting energies, and energy prediction was also sensitive
+to the modifications in the data. A likely cause of this sensitivity may be the strong correlation
+between energy and total pixel intensity in detector images, and the modifications effectively
+acting as removal of information.
+
 Without true positions for experimental data to directly test the models against,
 making any strong conclusions for these results is hard. Proper verification of performance 
 will have to wait until researchers can test the predicted positions on source data from the
-experiment.
+experiment. However, we find that the positions predicted seem within reasonable limits, compared
+with what is seen in simulated data. There is a risk that when the number of 'dead' pixels in a detector
+image increases, the positions predicted may not be positions of the event itself, rather a position
+based on the remaining information in the image.
+
+We found similar results when predicting energies for experimental decays. Preliminary comparisons
+with experimental calibration constants indicate that the predictions are not good on experimental
+decays. The working theory is that the simulated training data predicts too many photons per unit
+energy, resulting in the knowledge from simulated data not being transferable to the experimental
+domain.
+
+\section{Future work}
+
+Assess the effect of dead pixels, and possibly determine a way to identify whether a given
+pixel is zero due to erratic behaviour or not having any energy deposited.
+Generate a dataset of labelled experimental events and explore the effects of combined training,
+and also determine ROC-curves upper and lower bounds. (ref article here)

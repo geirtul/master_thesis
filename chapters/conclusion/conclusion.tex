@@ -7,9 +7,10 @@ these properties. They were so-called 'dead' pixels in specific locations, and i
 We found that for simulated data a Convolutional Neural Network-based architecture is highly successful in the
 classification of events across all the prepared datasets, with $F1$ scores up to $0.97$. 
 This is not the case for the 'simpler' logistic and dense models, which suffer from the included properties 
-in the datasets.
+in the datasets. 
 Classification on experimental data was not found to be successful, regardless of model performance on
-simulated data. This may be partly explained by a difference in total intensity, or deposited energy,
+simulated data. The models overall predict half or more of the events (up to 90\%) to be
+double event. This may be partly explained by a difference in total intensity, or deposited energy,
 between simulated and experimental data. We observe a trend across all models and training data, that
 when classifying experimental decay events, most all event classified as single are in the lower
 regime of total intensities. We observe the same trend if we classify simulated data where all pixel
@@ -42,7 +43,7 @@ From the results found in this thesis, there may be grounds to adjust simulation
 experimental data, or post-process the simulated datasets to better represent the experiment.
 Another option could be to invest in hand labelling an experimental dataset which can be used
 to tune the models used in this thesis. This could also allow for estimating upper and lower bounds
-for the Receiver Operating Characteristic \ref{Claesen2015}, which we have not used in this thesis.
+for the Receiver Operating Characteristic \cite{Claesen2015}, which we have not used in this thesis.
 As the effect of pixels being set to zero value is detrimental to energy predictions, in particular,
 efforts might be made to assess the magnitude of the effect, and whether or not it could be reasonable
 to approximate pixel values. It may be worth looking into more traditional 2D peak-finding algorithms

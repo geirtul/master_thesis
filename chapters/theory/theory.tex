@@ -856,6 +856,8 @@ are consistent with the labels in the training set for each image.
 we refer to Stanford's excellent course CS231n, and their text on CNNs \cite{cs231n}.
 
 \section{Performance metrics}
+In this thesis, we use Scikit-Learn's \cite{PedregosaFABIANPEDREGOSA2011} implementations
+of the metrics outlined in this section.
 To go further into the backround for the chosen metrics, we need to establish four 
 quantities that appear in most, if not all discussion of the topic. These are
 \begin{itemize}
@@ -947,6 +949,15 @@ you something about how good the model is at classifying your "positive" class.
 %indicating a random choice classifier.
 %For a thorough explanation of ROC curves and the underlying concepts,
 %see \cite{Fawcett2006}.
+
+\subsection{R2 score}
+The R2 score ("R squared") or coefficient of determination is widely used
+in statistical modeling with the purpose of predicting future outcomes or
+testing of hypotheses. It measures how well the observed outcomes are
+replicated by the model, based on the proportion of total variation of outcomes
+explained by the model \cite{Heinisch1962}. The score can be negative, and can
+at most be 1.0, which is to say that 100\% of the variability in the inputs
+is accounted for.
 
 \section{Experimental Background}\label{sec:experimental-background}
 %* Low-energy nuclear physics
